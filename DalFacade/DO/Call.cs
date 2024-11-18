@@ -2,7 +2,7 @@
 /// <summary>
 ///  Call Entity represents a call with all its props
 /// </summary>
-/// <param name="Id">Qnique ID number of the call</param>
+/// <param name="Id"> Qnique ID number of the call</param>
 /// <param name="CallType">The type of call according to the type of specific system.</param>
 /// <param name="CallDescription">Description of the Call. Detailed details on the Call.</param>
 /// <param name="CallAddress">Full and real address in correct format, of the Call location.</param>
