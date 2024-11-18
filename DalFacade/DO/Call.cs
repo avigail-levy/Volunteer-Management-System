@@ -9,7 +9,7 @@
 /// <param name="Latitude">A number that indicates how far a point on Earth is south or north of the equator.</param>
 /// <param name="Longitude">A number indicating how far a point on Earth is east or west of the equator.</param>
 /// <param name="OpeningTime">Time (date and time) when the call was opened by the manager.</param>
-/// <param name="MaxTimeFinishCall">Time (date and time) by which the reading should be closed.</param>
+/// <param name="MaxTimeFinishCall">Time (date and time) by which the reading should be closed</param>
 public record Call
 (
     int Id,
