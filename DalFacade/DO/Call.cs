@@ -14,11 +14,11 @@ public record Call
 (
     int Id,
     Enum CallType,
-    string CallDescription,
     string CallAddress,
     double Latitude,
     double Longitude,
     DateTime OpeningTime,
-    DateTime MaxTimeFinishCall
+    string? CallDescription = null,
+    DateTime? MaxTimeFinishCall=null
 );
 
