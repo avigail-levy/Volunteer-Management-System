@@ -9,6 +9,7 @@
 /// <param name="EndOfTreatmentTime">Time when the current volunteer finished handling the current call.</param>
 /// <param name="TypeOfTreatmentTermination">The manner in which the treatment of the 
 /// current reading was completed by the current volunteer. Handled, self cancel, admin cancel, cancel expired</param>
+
 public record Assignment
 (
 int Id,
@@ -18,3 +19,4 @@ DateTime EntryTimeForTreatment,
 DateTime EndOfTreatmentTime,
 Enum TypeOfTreatmentTermination
 );
+
