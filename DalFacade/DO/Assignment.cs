@@ -16,7 +16,10 @@ int Id,
 int CallId,
 int VolunteerId,
 DateTime EntryTimeForTreatment,
-DateTime EndOfTreatmentTime,
-Enum TypeOfTreatmentTermination
-);
+Enum? TypeOfTreatmentTermination=null,
+DateTime? EndOfTreatmentTime = null
+)
+{
+    public Assignment() : this(0, 0, 0, DateTime.Now) { }
+}
 

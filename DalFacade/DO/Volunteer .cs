@@ -13,8 +13,8 @@
 /// <param name="Longitude">A number indicating how far a point on Earth is east or west of the equator</param>
 /// <param name="Role">"Manager" or "Volunteer"</param>
 /// <param name="Active">Is the volunteer active or inactive (retired from the organization). A retired 
-/// volunteer also has his reading history saved for him, but he cannot handle new readings.</param>
-/// <param name="MaxDistanceForReading">Maximum distance for reading</param>
+/// volunteer also has his call history saved for him, but he cannot handle new calls.</param>
+/// <param name="MaxDistanceForCall">Maximum distance for call</param>
 /// <param name="DistanceType">Aerial distance, walking distance, driving distance
 ///The default is air distance.</param>
 public record Volunteer
@@ -23,12 +23,13 @@ public record Volunteer
     string Name,
     string Phone,
     string Email,
-    string Password,
-    string Address,
-    double Latitude,
-    double Longitude,
     Enum Role,
     bool Active,
-    double MaxDistanceForReading,
-    Enum DistanceType
+    Enum DistanceType,
+    double? Latitude=null,
+    double? Longitude = null,
+    string? Password=null,
+    string? Address = null,
+    double? MaxDistanceForCall = null
 );
+
