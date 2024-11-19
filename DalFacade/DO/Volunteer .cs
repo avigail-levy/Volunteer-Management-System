@@ -23,13 +23,17 @@ public record Volunteer
     string Name,
     string Phone,
     string Email,
-    Enum Role,
+    Role Role,
     bool Active,
-    Enum DistanceType,
+    DistanceType DistanceType,
     double? Latitude=null,
     double? Longitude = null,
     string? Password=null,
     string? Address = null,
     double? MaxDistanceForCall = null
-);
+)
+{
+ public Volunteer() : this(0, "", "","", Role.Volunteer,false,DistanceType.Aerial) { }
+}
+
 

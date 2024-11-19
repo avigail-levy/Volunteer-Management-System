@@ -1,4 +1,5 @@
-﻿namespace DO;
+﻿using System.Reflection.Metadata;
+namespace DO;
 /// <summary>
 /// Assignment Entity represents a assignment with all its props
 /// </summary>
@@ -16,7 +17,7 @@ int Id,
 int CallId,
 int VolunteerId,
 DateTime EntryTimeForTreatment,
-Enum? TypeOfTreatmentTermination=null,
+TypeOfTreatmentTermination ? TypeOfTreatmentTermination= null,
 DateTime? EndOfTreatmentTime = null
 )
 {

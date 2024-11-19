@@ -13,12 +13,16 @@
 public record Call
 (
     int Id,
-    Enum CallType,
+    CallType CallType,
     string CallAddress,
     double Latitude,
     double Longitude,
     DateTime OpeningTime,
     string? CallDescription = null,
     DateTime? MaxTimeFinishCall=null
-);
+)
+{
+    public Call() : this(0,CallType.HouseCleaning,"", 0,0, DateTime.Now) { }
+}
+
 
