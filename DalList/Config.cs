@@ -14,8 +14,8 @@
         internal static TimeSpan RiskRange { get; set; } = TimeSpan.MinValue;
         internal static void Reset()
         {
-            nextCallId = 0;
-            nextAssignmentId = 0;
+            nextCallId = startCallId;
+            nextAssignmentId = startAssignmentId;
         }
     }
 }
