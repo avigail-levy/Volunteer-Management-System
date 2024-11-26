@@ -33,20 +33,21 @@ namespace DalTest
         }
         private static void CreateVolunteer()
         {
-            Volunteer volunteer = new Volunteer() {
-             Id = ReadHelper.ReadInt("insert id volunteer: ",200000000,400000000),
-             Name = ReadHelper.ReadString("insert address: "),
-             Phone = ReadHelper.ReadString("insert address: "),
-             Email = ReadHelper.ReadString("insert email: "),
-             Role = ReadHelper.ReadEnum<Role>("insert role "),
-             Active = bool.Parse(Console.ReadLine()),
-             DistanceType = ReadHelper.ReadEnum<DistanceType>("insert distance type "),
-             Latitude = ReadHelper.ReadDouble("insert latitude "),
-             Longitude = ReadHelper.ReadDouble("insert longitude "),
-             Password = ReadHelper.ReadString("insert password: "),
-             Address = ReadHelper.ReadString("insert address: "),
-             MaxDistanceForCall = double.Parse(Console.ReadLine())
-             };
+            Volunteer volunteer = new Volunteer()
+            {
+                Id = ReadHelper.ReadInt("insert id volunteer: ", 200000000, 400000000),
+                Name = ReadHelper.ReadString("insert full name: "),
+                Phone = ReadHelper.ReadString("insert phone number: "),
+                Email = ReadHelper.ReadString("insert email: "),
+                Role = ReadHelper.ReadEnum<Role>("insert role "),
+                Active = ReadHelper.ReadBool("insert is active: "),
+                DistanceType = ReadHelper.ReadEnum<DistanceType>("insert distance type "),
+                Latitude = ReadHelper.ReadDouble("insert latitude "),
+                Longitude = ReadHelper.ReadDouble("insert longitude "),
+                Password = ReadHelper.ReadString("insert password: "),
+                Address = ReadHelper.ReadString("insert address: "),
+                MaxDistanceForCall = ReadHelper.ReadDouble("insert max distance for call")
+            };
             s_dalVolunteer.Create(volunteer);
         }
         private static void CreateCall()

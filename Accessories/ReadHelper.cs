@@ -59,13 +59,26 @@ namespace Accessories
             return data;
 
         }
+        public static bool ReadBool(string message)
+        {
+            Console.WriteLine(message);
+            string dateInput = Console.ReadLine();
+            bool data;
+            while (!bool.TryParse(dateInput, out data))
+            {
+                Console.WriteLine("הערך שהקשת אינו תקין. נא הקש שנית!");
+                dateInput = Console.ReadLine();
+            }
+            return data;
+
+        }
 
         public static T ReadEnum<T>(string message)
         {
             Console.WriteLine(message);
             string enumInput = Console.ReadLine();
             object data;
-            while (Enum.TryParse(typeof(T), enumInput, out data))
+            while (!Enum.TryParse(typeof(T), enumInput, out data))
             {
                 Console.WriteLine("הערך שהקשת אינו תקין. נא הקש שנית!");
                 enumInput = Console.ReadLine();
