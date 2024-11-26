@@ -8,109 +8,131 @@ using System.Net.Mail;
 
 public static class Initialization
 {
-    private static IVolunteer? s_dalVolunteer; //stage 1
-    private static ICall? s_dalCall; //stage 1
-    private static IAssignment? s_dalAssignment; //stage 1
-    private static IConfig? s_dalConfig; //stage 1
-    private static readonly Random s_rand = new();
-    const int MIN_ID = 200000000;
-    const int MAX_ID = 400000000;
-    private static void createVolunteer()
+    // שדות פרטיים לאחסון ה-DALים (אובייקטים המתקשרים למאגר הנתונים)
+    private static IVolunteer? s_dalVolunteer; 
+    private static ICall? s_dalCall; 
+    private static IAssignment? s_dalAssignment; 
+    private static IConfig? s_dalConfig; 
+    private static readonly Random s_rand = new(); // אובייקט שמייצר מספרים אקראיים
+    const int MIN_ID = 200000000; // מזהה מינימלי למתנדב/קריאה/הקצאה
+    const int MAX_ID = 400000000; // מזהה מקסימלי למתנדב/קריאה/הקצאה
+    static List<AddAddress> addresses = AddAddress.GetAddAddresses(); // רשימת כתובות
+        // מתודה ליצירת מתנדבים חדשים עם נתונים אקראיים
+    private static void CreateVolunteer()
     {
+        // שמות המתנדבים וטלפונים אקראיים
         string[] valunteerNames =
         { "Dani Levy", "Eli Amar", "Yair Cohen", "Ariela Levin", "Dina Klein", "Shira Israelof",
-          "David Gold", "Rachel Green", "Miriam Azulay", "Eyal Shani", "Noa Bar", "Yael Harel" };
+          "David Gold", "Rachel Green", "Miriam Azulay", "Eyal Shani", "Noa Bar", "Yael Harel",
+            "zipi salomon","avigail levy","yaeli shushan"};
         string[] phones = { "0504133382", "0556726282", "0527175821", "0527175820", "0504160838", "0504156891",
         "0503133382", "0556724282", "0527175221", "0528175820", "0504160837", "0504756891",
-        "0504113382", "0556723282", "0527575821", "0527175840", "0504160828", "0504106891",
-        "0504133383", "0526726282", "0527175821", "0527145820", "0504166838", "0504196891"};
+        "0504113382", "0556723282", "0527575821"};
+        // יצירת מתנדבים ושמירתם ב-DAL
         for (int i = 0; i < valunteerNames.Length; i++)
         {
-            int id;
-            string phone;
-            string name;
-            string email;
-            Role role;
-            bool active;
-            DistanceType distanceType;
-            double? latitude;
-            double? longitude;
-            string? password;
-            string? address;
-            double? maxDistanceForCall;
-            do
-                id = s_rand.Next(MIN_ID, MAX_ID);
-            while (s_dalVolunteer!.Read(id) != null);
-            phone = phones[i];
-            name = valunteerNames[i];
-            email = name + "@gmail.com";
-            role = i % 2 == 0 ? Role.Volunteer : Role.Manager;
-            active = i % 2 == 0 ? true : false;
-            distanceType = (DistanceType)s_rand.Next(0, 3);
-            latitude = s_rand.NextDouble() * 360 - 180;
-            longitude = s_rand.NextDouble() * 360 - 180;
-            password = name + phone;
-            address = $"{s_rand.Next(1, 500)} {new[] { "Main", "Maple", "Elm", "Oak", "Cedar" }[s_rand.Next(5)]} St";
-            maxDistanceForCall = s_rand.NextDouble() * 50;
-            s_dalVolunteer!.Create(new(id, name, phone, email, role, active, distanceType, latitude, longitude, password, address));
+            AddAddress randAddress = addresses[s_rand.Next(addresses.Count)];
+            Volunteer newVolunteer = new Volunteer()
+            {
+                Id = s_rand.Next(MIN_ID, MAX_ID), // מזהה אקראי
+                Name = valunteerNames[i], // שם המתנדב
+                Phone = phones[i], // טלפון המתנדב
+                Email = valunteerNames[i] + "@gmail.com", // אימייל אקראי
+                Role = i % 2 == 0 ? Role.Volunteer : Role.Manager, // תפקיד המתנדב (מתנדב או מנהל)
+                Active = i % 2 == 0 ? true : false, // אם המתנדב פעיל או לא
+                DistanceType = (DistanceType)s_rand.Next(0, 3), // סוג המרחק (אווירי, הליכה, רכב)
+                Latitude = randAddress.Latitude, // קו רוחב של הכתובת
+                Longitude = randAddress.Longitude, // קו אורך של הכתובת
+                Password = valunteerNames[i] + phones[i], // סיסמה
+                Address = randAddress.StringAddress, // כתובת מלאה
+                MaxDistanceForCall = s_rand.NextDouble() * 50 // המרחק המרבי לקבלת קריאה
+            };
+            s_dalVolunteer!.Create(newVolunteer); // שמירת המתנדב ב-DAL
+
         }
     }
 
-    private static void createCall()
+    private static void CreateCall()
     {
-        DO.CallType callType;
-        string callAddress;
-        double latitude;
-        double longitude;
-        DateTime openingTime;
-        string? callDescription;
-        DateTime? maxTimeFinishCall;
         for (int i = 0; i < 50; i++)
         {
-
-            callType = (DO.CallType)s_rand.Next(0, 6);
-            callAddress = $"{s_rand.Next(1, 500)} {new[] { "Aharonson", "Shalos Hashaot", "Rabi Akiva", "Oak", "Cedar" }[s_rand.Next(5)]} St";
-            latitude = s_rand.NextDouble() * 360 - 180; ;
-            longitude = s_rand.NextDouble() * 360 - 180; ;
-            openingTime = s_dalConfig.Clock;
-            callDescription = callAddress + " " + latitude.ToString() + " " + longitude.ToString() + " " + openingTime.ToString();
-            maxTimeFinishCall = openingTime.AddDays(5);
-            s_dalCall!.Create(new(0, callType, callAddress, latitude, longitude, openingTime, callDescription, maxTimeFinishCall));
+           int rand_day=s_rand.Next(3,14);
+           AddAddress randAddress = addresses[s_rand.Next(addresses.Count)];
+            Call newCall = new Call()
+            {
+                CallType = (DO.CallType)s_rand.Next(0, 6),
+                CallAddress = randAddress.StringAddress,
+                Latitude = randAddress.Latitude,
+                Longitude = randAddress.Longitude,
+                OpeningTime =s_dalConfig.Clock.AddDays(-rand_day),
+                CallDescription = randAddress.StringAddress + " " + randAddress.Longitude.ToString() + " " + randAddress.Latitude.ToString() + " call",
+                MaxTimeFinishCall = i < 5 ? s_dalConfig.Clock.AddDays(-rand_day+1) : s_dalConfig.Clock.AddDays(rand_day),
+            };
+            s_dalCall!.Create(newCall);
         }
     }
     private static void CreateAssignment()
-    {/*סימן שאלה ענק??????????????????????????????????????????????????????
-      */
-        foreach (var i in Enumerable.Range(0, 16))
+    {
+        // שאיבת נתוני מתנדבים וקריאות מתוך ה-DAL
+        List<Volunteer> volunteers = s_dalVolunteer.ReadAll().ToList();
+        List<Call> calls = s_dalCall.ReadAll().ToList();
+        // בדיקה אם רשימות המתנדבים או הקריאות ריקות
+        if (!volunteers.Any() || !calls.Any())
+            throw new InvalidOperationException("Volunteers or Calls data is empty!");
+        // יצירת הקצאות עבור קריאות
+        foreach (var call in calls)
         {
-            // קבלת רשימת המתנדבים
-            var volunteers = s_dalVolunteer.ReadAll();
-            // חילוץ volunteerId מתוך המתנדב שנמצא באינדקס i
-            int volunteerId = volunteers[i].Id;  // גישה לאובייקט המתנדב לפי אינדקס והחזרת ה-Id שלו
+            // אחוז קטן מהקריאות (20%) לא יקבלו הקצאה
+            if (s_rand.NextDouble() < 0.2)
+                continue;
+            // בחירת מתנדב אקראי מתוך הרשימה
+            var volunteer = volunteers.Skip(4).ElementAt(s_rand.Next(volunteers.Count - 4));
+            // חישוב זמן תחילת טיפול (בין 30 דקות ל-24 שעות לאחר פתיחת הקריאה)
+            DateTime entryTimeOfTreatment = call.OpeningTime.AddMinutes(s_rand.Next(30, 1440));
+            // משתנה לסיום טיפול (אופציונל)י
+            DateTime? endTimeOfTreatment = null;
+            // קביעה אם הקריאה טופלה
+            bool isCompleted = s_rand.NextDouble() < 0.7; // 70% סיכוי שהקריאה טופלה
+            if (isCompleted)
+            {
+                // זמן סיום טיפול (בין 30 דקות ל-48 שעות לאחר תחילת הטיפול)
+                endTimeOfTreatment = entryTimeOfTreatment.AddMinutes(s_rand.Next(30, 2880));
+                // אם זמן סיום הטיפול חורג מזמן הסיום המקסימלי, מוסיפים חריגה קטנה
+                endTimeOfTreatment = endTimeOfTreatment ?? call.MaxTimeFinishCall;
+                endTimeOfTreatment = endTimeOfTreatment.Value.AddMinutes(s_rand.Next(30, 1440));
+            }
 
-            var calls = s_dalCall.ReadAll();
-            int callId = calls[i].Id;
+            // קביעה של סוג סיום הטיפול
+            TypeOfTreatmentTermination typeOfEndTreatment;
+            if (!isCompleted)
+            {
+                // אם הקריאה לא טופלה, סוג הסיום יהיה "ביטול מנהל"
+                typeOfEndTreatment = TypeOfTreatmentTermination.CancelAdministrator;
+            }
+            else
+            {
+                // אם הקריאה טופלה, סוג הסיום ייבחר באופן אקראי
+                typeOfEndTreatment = (TypeOfTreatmentTermination)s_rand.Next(0, Enum.GetValues(typeof(TypeOfTreatmentTermination)).Length);
+            }
 
-            DateTime start = new DateTime(s_dalConfig.Clock.Year - 2, 1, 1); // שנתיים אחורה
-            int range = (s_dalConfig.Clock - start).Days;
-            DateTime entryTimeOfTreatment = start.AddDays(s_rand.Next(range));
-            DateTime? endTimeOfTreatment = entryTimeOfTreatment.AddDays(s_rand.Next(1, 7)); // עד 7 ימים לאחר מכן
+            // יצירת אובייקט הקצאה חדש
+            Assignment newAssignment = new Assignment()
+            {
+                CallId = call.Id,                        // מזהה הקריאה
+                VolunteerId = volunteer.Id,              // מזהה המתנדב
+                EntryTimeForTreatment = entryTimeOfTreatment, // זמן תחילת הטיפול
+                TypeOfTreatmentTermination = typeOfEndTreatment,    // סוג סיום הטיפול
+                EndOfTreatmentTime = endTimeOfTreatment     // זמן סיום הטיפול (אם קיים)
+            };
 
-            TypeOfTreatmentTermination typeOfEndTreatment = (TypeOfTreatmentTermination)s_rand.Next(0, Enum.GetValues(typeof(TypeOfTreatmentTermination)).Length);
-
-            // יצירת אובייקט מתנדב
-            var assignment = new Assignment(
-                0,
-                callId,
-                volunteerId,
-                entryTimeOfTreatment,
-                typeOfEndTreatment,
-                endTimeOfTreatment
-            );
-            // שמירה למערכת הנתונים
-            s_dalAssignment!.Create(assignment);
+            // שמירת ההקצאה ב-DAL
+            s_dalAssignment.Create(newAssignment);
         }
+
+        // סימון חלק מהמתנדבים ככאלו שלא טיפלו כלל בקריאות (20%)
+        var idleVolunteers = volunteers.Take(volunteers.Count / 5).ToList(); // 20% מהמתנדבים
     }
+
     public static void Do(IVolunteer? dalVolunteer, ICall? dalCall, IAssignment? dalAssignment, IConfig? dalConfig) //stage 1
     {
         s_dalVolunteer = dalVolunteer ?? throw new NullReferenceException("DAL object can not be null!"); //stage 1
@@ -124,9 +146,9 @@ public static class Initialization
         s_dalCall.DeleteAll();
         s_dalAssignment.DeleteAll();
         Console.WriteLine("Initializing Students list ...");
-        createVolunteer();
+        CreateVolunteer();
         CreateAssignment();
-        createCall();
+        CreateCall();
     }
 
 

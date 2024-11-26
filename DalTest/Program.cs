@@ -1,7 +1,9 @@
 ﻿using Dal;
 using DalApi;
 using DO;
+using Accessories;
 using System.Runtime.InteropServices;
+
 
 namespace DalTest
 {
@@ -31,51 +33,48 @@ namespace DalTest
         }
         private static void CreateVolunteer()
         {
-            Console.WriteLine("insert id, name, phone, email,role,active,distance type,latitude,longitude,password,address,max distance for call");
-            int id = int.Parse(Console.ReadLine());
-            string name = Console.ReadLine();
-            string phone = Console.ReadLine();
-            string email = Console.ReadLine();
-            Role role = (Role)int.Parse(Console.ReadLine());
-            bool active = bool.Parse(Console.ReadLine());
-            DistanceType distanceType = (DistanceType)int.Parse(Console.ReadLine());
-            double latitude = double.Parse(Console.ReadLine());
-            double longitude = double.Parse(Console.ReadLine());
-            string password = Console.ReadLine();
-            string address = Console.ReadLine();
-            double maxDistanceForCall = double.Parse(Console.ReadLine());
-            Volunteer volunteer = new(id, name, phone, email, role, active, distanceType, latitude, longitude, password, address, maxDistanceForCall);
+            Volunteer volunteer = new Volunteer() {
+             Id = ReadHelper.ReadInt("insert id volunteer: ",200000000,400000000),
+             Name = ReadHelper.ReadString("insert address: "),
+             Phone = ReadHelper.ReadString("insert address: "),
+             Email = ReadHelper.ReadString("insert email: "),
+             Role = ReadHelper.ReadEnum<Role>("insert role "),
+             Active = bool.Parse(Console.ReadLine()),
+             DistanceType = ReadHelper.ReadEnum<DistanceType>("insert distance type "),
+             Latitude = ReadHelper.ReadDouble("insert latitude "),
+             Longitude = ReadHelper.ReadDouble("insert longitude "),
+             Password = ReadHelper.ReadString("insert password: "),
+             Address = ReadHelper.ReadString("insert address: "),
+             MaxDistanceForCall = double.Parse(Console.ReadLine())
+             };
             s_dalVolunteer.Create(volunteer);
         }
         private static void CreateCall()
         {
-            Console.WriteLine("insert id, callType, callAddress, latitude,longitude,opening time,call Description,max Time Finish Call");
-            int id = int.Parse(Console.ReadLine());
-            CallType callType = (CallType)int.Parse(Console.ReadLine());
-            string callAddress = Console.ReadLine();
-            double latitude = double.Parse(Console.ReadLine());
-            double longitude=double.Parse(Console.ReadLine());
-            DateTime openingTime = s_dalConfig.Clock;
-            string callDescription = Console.ReadLine();
-            DateTime? maxTimeFinishCall = s_dalConfig.Clock.AddDays(double.Parse(Console.ReadLine()));
-            Call call = new(id, callType, callAddress, latitude, longitude, openingTime, callDescription, maxTimeFinishCall );
+            Call call = new Call()
+            {
+                CallType = ReadHelper.ReadEnum<CallType>("insert call type: "),
+                CallAddress = ReadHelper.ReadString("insert call address: "),
+                Latitude = ReadHelper.ReadDouble("insert a latitude:"),
+                Longitude = ReadHelper.ReadDouble("insert a longitude:"),
+                OpeningTime = ReadHelper.ReadDate("insert opening time for call: "),
+                CallDescription = ReadHelper.ReadString("insert call description: "),
+                MaxTimeFinishCall = ReadHelper.ReadDate("insert max time finish call:")
+            };
             s_dalCall.Create(call);
         }
-        private static void CreateAssignment ()
+        private static void CreateAssignment()
         {
-            Console.WriteLine("insert id, call id, volunteer id, entry time for treatment, type of treatment termination,end of treatment time");
-            int id = int.Parse(Console.ReadLine());
-            int callId = int.Parse(Console.ReadLine());
-            int volunteerId = int.Parse(Console.ReadLine());
-            DateTime entryTimeForTreatment = s_dalConfig.Clock;
-            TypeOfTreatmentTermination typeOfTreatmentTermination = (TypeOfTreatmentTermination)int.Parse(Console.ReadLine());
-            DateTime? endOfTreatmentTime = s_dalConfig.Clock.AddDays(double.Parse(Console.ReadLine()));
-            Assignment assignment = new(id,callId,volunteerId,entryTimeForTreatment,typeOfTreatmentTermination);
+            Assignment assignment = new Assignment()
+            {
+                CallId = ReadHelper.ReadInt("insert id of call: "),
+                VolunteerId = ReadHelper.ReadInt("insert id of volunteer: "),
+                EntryTimeForTreatment = ReadHelper.ReadDate("insert entry time for treatment: "),
+                TypeOfTreatmentTermination = ReadHelper.ReadEnum<TypeOfTreatmentTermination>("insert type of treatment termination"),
+                EndOfTreatmentTime = ReadHelper.ReadDate("insert end of treatment time")
+            };
             s_dalAssignment.Create(assignment);
-
-
         }
-
         private static void Delete(string entityName)
         {
             int idToDelete;
@@ -105,18 +104,162 @@ namespace DalTest
                 Console.WriteLine("An error occurred: " + ex.Message);
             }
         }
-        private static void Update(string entityName)
+        private static void UpdateCall()
         {
+            Console.WriteLine("insert id-entity to update:");
+            int idToUpdate = int.Parse(Console.ReadLine());
             try
             {
-                switch ()
+                Call oldCall = s_dalCall.Read(idToUpdate);
+                Console.WriteLine("Enter the data to create a new object of type call:");
+                Console.WriteLine("Enter the data of: type of call, full address, latitude, longitude, opening time, maximum time of finish call, description");
+                Call newCall = new Call()
                 {
-                    default:
+                    CallType = int.TryParse(Console.ReadLine(), out int typeOfCall) ? (CallType)typeOfCall : oldCall.CallType,
+                    CallAddress = Console.ReadLine() ?? oldCall.CallAddress,
+                    Latitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : oldCall.Latitude,
+                    Longitude = double.TryParse(Console.ReadLine(), out double Longitude) ? Longitude : oldCall.Longitude,
+                    OpeningTime = DateTime.TryParse(Console.ReadLine(), out DateTime OpeningTime) ? OpeningTime : oldCall.OpeningTime,
+                    MaxTimeFinishCall = DateTime.TryParse(Console.ReadLine(), out DateTime MaximumTimeFinishCall) ? MaximumTimeFinishCall : oldCall.MaxTimeFinishCall
+                };
+                s_dalCall.Update(newCall);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+        private static void UpdateVolunteer()
+        {
+            Console.WriteLine("insert id-entity to update:");
+            int idToUpdate = int.Parse(Console.ReadLine());
+            try
+            {
+                Volunteer oldVolunteer = s_dalVolunteer.Read(idToUpdate);
+                Console.WriteLine("Enter the data to create a new object of type volunteer:");
+                Console.WriteLine("Enter the data of:  full name, phone, email, role, active, distance type,latitude,longitude,password, address, max distance for call");
+                Volunteer newVolunteer = new Volunteer()
+                {
+                    Id = oldVolunteer.Id,
+                    Name = Console.ReadLine() ?? oldVolunteer.Name,
+                    Phone = Console.ReadLine() ?? oldVolunteer.Phone,
+                    Email = Console.ReadLine() ?? oldVolunteer.Email,
+                    Role = int.TryParse(Console.ReadLine(), out int role) ? (Role)role : oldVolunteer.Role,
+                    Active = bool.TryParse(Console.ReadLine(), out bool active) ? active : oldVolunteer.Active,
+                    DistanceType = int.TryParse(Console.ReadLine(), out int distanceType) ? (DistanceType)distanceType : oldVolunteer.DistanceType,
+                    Latitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : oldVolunteer.Latitude,
+                    Longitude = double.TryParse(Console.ReadLine(), out double Longitude) ? Longitude : oldVolunteer.Longitude,
+                    Password = Console.ReadLine() ?? oldVolunteer.Password,
+                    Address = Console.ReadLine() ?? oldVolunteer.Address,
+                    MaxDistanceForCall = double.TryParse(Console.ReadLine(), out double maxDistanceForCall) ? maxDistanceForCall : oldVolunteer.MaxDistanceForCall,
+                };
+                s_dalVolunteer.Update(newVolunteer);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+        private static void UpdateAssignment()
+        {
+            Console.WriteLine("insert id-entity to update:");
+            int idToUpdate = int.Parse(Console.ReadLine());
+            try
+            {
+                Assignment oldAssignment = s_dalAssignment.Read(idToUpdate);
+                Console.WriteLine("Enter the data to create a new object of type assignment:");
+                Console.WriteLine("insert  call id, volunteer id, entry time for treatment, type of treatment termination,end of treatment time");
+                Assignment newAssignment = new Assignment()
+                {
+                    CallId = int.TryParse(Console.ReadLine(), out int callid) ? callid : oldAssignment.CallId,
+                    VolunteerId = int.TryParse(Console.ReadLine(), out int volunteerId) ? volunteerId : oldAssignment.VolunteerId,
+                    EntryTimeForTreatment = DateTime.TryParse(Console.ReadLine(), out DateTime entryTimeForTreatment) ? entryTimeForTreatment : oldAssignment.EntryTimeForTreatment,
+                    TypeOfTreatmentTermination = int.TryParse(Console.ReadLine(), out int typeOfTreatmentTermination) ? (TypeOfTreatmentTermination)typeOfTreatmentTermination : oldAssignment.TypeOfTreatmentTermination,
+                    EndOfTreatmentTime = DateTime.TryParse(Console.ReadLine(), out DateTime endOfTreatmentTime) ? endOfTreatmentTime : oldAssignment.EndOfTreatmentTime,
+                };
+                s_dalAssignment.Update(newAssignment);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        private static void Update(string entityName)
+        {
+            Console.WriteLine("insert id-entity to update:");
+            int idToUpdate = int.Parse(Console.ReadLine());
+            try
+            {
+                switch (entityName)
+                {
+                    case "Volunteer":
+                        UpdateVolunteer();
+                        break;
+                    case "Call":
+                        UpdateCall();
+                        break;
+                    case "Assignment":
+                        UpdateAssignment();
+                        break;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("An error occurred: " + ex.Message);
+            }
+        }
+        private static void ReadVolunteer(int idToRead)
+        {
+            if (s_dalVolunteer.Read(idToRead) != null)
+            {
+                Volunteer volunteer = s_dalVolunteer.Read(idToRead);
+                // הצגת המידע של המשימה
+                Console.WriteLine("Volunteer Details:");
+                Console.WriteLine($"Volunteer ID: {volunteer.Id}");
+                Console.WriteLine($"Volunteer name: {volunteer.Name}");
+                Console.WriteLine($"Volunteer phone: {volunteer.Phone}");
+                Console.WriteLine($"Volunteer email: {volunteer.Email}");
+                Console.WriteLine($"Volunteer role: {volunteer.Role}");
+                Console.WriteLine($"Active: {volunteer.Active}");
+                Console.WriteLine($"Distance type: {volunteer.DistanceType}");
+                Console.WriteLine($"Latitude: {volunteer.Latitude?.ToString() ?? "there isn't Latitude"}");
+                Console.WriteLine($"Longitude: {volunteer.Longitude?.ToString() ?? "there isn't Longitude"}");
+                Console.WriteLine($"Password: {volunteer.Password?.ToString() ?? "there isn't Password"}");
+                Console.WriteLine($"Address: {volunteer.Address?.ToString() ?? "there isn't Address"}");
+                Console.WriteLine($"Max distance for call: {volunteer.MaxDistanceForCall?.ToString() ?? "there isn't max distance for call"}");
+            }
+        }
+        private static void ReadCall(int idToRead)
+        {
+            if (s_dalCall.Read(idToRead) != null)
+            {
+                Call call = s_dalCall.Read(idToRead);
+                // הצגת המידע של המשימה
+                Console.WriteLine("Call Details:");
+                Console.WriteLine($"Call ID: {call.Id}");
+                Console.WriteLine($"Call type: {call.CallType}");
+                Console.WriteLine($"Call address: {call.CallAddress}");
+                Console.WriteLine($"Latitude: {call.Latitude}");
+                Console.WriteLine($"Longitude: {call.Longitude}");
+                Console.WriteLine($"Opening time: {call.OpeningTime.ToString()}");
+                Console.WriteLine($"Call description: {call.CallDescription?.ToString() ?? "there isn't call description"}");
+                Console.WriteLine($"Max time finish call: {call.MaxTimeFinishCall?.ToString() ?? "there isn't max time finish to call"}");
+            }
+        }
+        private static void ReadAssignment(int idToRead)
+        {
+            if (s_dalAssignment.Read(idToRead) != null)
+            {
+                Assignment assignment = s_dalAssignment.Read(idToRead);
+                // הצגת המידע של המשימה
+                Console.WriteLine("Assignment Details:");
+                Console.WriteLine($"Assignment ID: {assignment.Id}");
+                Console.WriteLine($"Call ID: {assignment.CallId}");
+                Console.WriteLine($"Volunteer ID: {assignment.VolunteerId}");
+                Console.WriteLine($"Entry Time of Treatment: {assignment.EntryTimeForTreatment}");
+                Console.WriteLine($"End Time of Treatment: {assignment.EndOfTreatmentTime?.ToString() ?? "N/A"}");
+                Console.WriteLine($"Type of End Treatment: {assignment.TypeOfTreatmentTermination?.ToString() ?? "N/A"}");
             }
         }
         private static void Read(string entityName, int idToRead)
@@ -129,55 +272,14 @@ namespace DalTest
             switch (entityName)
             {
                 case "Volunteer":
-                    if (s_dalVolunteer.Read(idToRead) != null)
-                    {
-                        Volunteer volunteer = s_dalVolunteer.Read(idToRead);
-                        // הצגת המידע של המשימה
-                        Console.WriteLine("Volunteer Details:");
-                        Console.WriteLine($"Volunteer ID: {volunteer.Id}");
-                        Console.WriteLine($"Volunteer name: {volunteer.Name}");
-                        Console.WriteLine($"Volunteer phone: {volunteer.Phone}");
-                        Console.WriteLine($"Volunteer email: {volunteer.Email}");
-                        Console.WriteLine($"Volunteer role: {volunteer.Role}");
-                        Console.WriteLine($"Active: {volunteer.Active}");
-                        Console.WriteLine($"Distance type: {volunteer.DistanceType}");
-                        Console.WriteLine($"Latitude: {volunteer.Latitude?.ToString() ?? "there isn't Latitude"}");
-                        Console.WriteLine($"Longitude: {volunteer.Longitude?.ToString() ?? "there isn't Longitude"}");
-                        Console.WriteLine($"Password: {volunteer.Password?.ToString() ?? "there isn't Password"}");
-                        Console.WriteLine($"Address: {volunteer.Address?.ToString() ?? "there isn't Address"}");
-                        Console.WriteLine($"Max distance for call: {volunteer.MaxDistanceForCall?.ToString() ?? "there isn't max distance for call"}");
-                    }
+                    ReadVolunteer(idToRead);
                     break;
                 case "Call":
-                    if (s_dalCall.Read(idToRead) != null)
-                    {
-                        Call call = s_dalCall.Read(idToRead);
-                        // הצגת המידע של המשימה
-                        Console.WriteLine("Call Details:");
-                        Console.WriteLine($"Call ID: {call.Id}");
-                        Console.WriteLine($"Call type: {call.CallType}");
-                        Console.WriteLine($"Call address: {call.CallAddress}");
-                        Console.WriteLine($"Latitude: {call.Latitude}");
-                        Console.WriteLine($"Longitude: {call.Longitude}");
-                        Console.WriteLine($"Opening time: {call.OpeningTime.ToString()}");
-                        Console.WriteLine($"Call description: {call.CallDescription?.ToString() ?? "there isn't call description"}");
-                        Console.WriteLine($"Max time finish call: {call.MaxTimeFinishCall?.ToString() ?? "there isn't max time finish to call"}");
-                    }
+                    ReadCall(idToRead);
                     break;
 
                 case "Assignment":
-                    if (s_dalAssignment.Read(idToRead) != null)
-                    {
-                        Assignment assignment = s_dalAssignment.Read(idToRead);
-                        // הצגת המידע של המשימה
-                        Console.WriteLine("Assignment Details:");
-                        Console.WriteLine($"Assignment ID: {assignment.Id}");
-                        Console.WriteLine($"Call ID: {assignment.CallId}");
-                        Console.WriteLine($"Volunteer ID: {assignment.VolunteerId}");
-                        Console.WriteLine($"Entry Time of Treatment: {assignment.EntryTimeForTreatment}");
-                        Console.WriteLine($"End Time of Treatment: {assignment.EndOfTreatmentTime?.ToString() ?? "N/A"}");
-                        Console.WriteLine($"Type of End Treatment: {assignment.TypeOfTreatmentTermination?.ToString() ?? "N/A"}");
-                    }
+                    ReadAssignment(idToRead);
                     break;
 
                 default:
@@ -234,6 +336,44 @@ namespace DalTest
             }
             Console.Write("Choose an option: ");
         }
+        static void MenuConfig()
+        {
+            Console.Write("Choose an option: ");
+            int numericChoice = int.Parse(Console.ReadLine());
+            ConfigMenuOptions choice = (ConfigMenuOptions)numericChoice;
+            switch (choice)
+            {
+
+                case ConfigMenuOptions.Exit:
+                    return;
+                case ConfigMenuOptions.AdvanceClockMinute:
+                    s_dalConfig.Clock.AddMinutes(1);
+                    break;
+                case ConfigMenuOptions.AdvanceClockHour:
+                    s_dalConfig.Clock.AddHours(1);
+                    break;
+                case ConfigMenuOptions.ViewCurrentClock:
+                    Console.WriteLine(s_dalConfig.Clock);
+                    break;
+                case ConfigMenuOptions.NewConfigValue:
+                    s_dalConfig.Clock = s_dalConfig.Clock.AddMinutes(3);
+                    break;
+                case ConfigMenuOptions.ViewConfigValue:
+                    Console.WriteLine($"the risk range is: {s_dalConfig.RiskRange.ToString()}");
+                    break;
+                case ConfigMenuOptions.ResetConfigValues:
+                    s_dalConfig.Reset();
+                    break;
+                default:
+                    break;
+            }
+        }
+        static void ShowAll()
+        {
+            ReadAll("Volunteer");
+            ReadAll("Call");
+            ReadAll("Assignment");
+        }
         static void PrintCrudMenu()
         {
             Console.WriteLine("\nMain Menu:");
@@ -243,18 +383,6 @@ namespace DalTest
             }
             Console.Write("Choose an option: ");
         }
-        /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////
-        /// ///////////////////////////////////////////////////////////////////////////////////////
-        /// ///////////////////////////////////////////////////////////////////////////////////////
-        /// ///////////////////////////////////////////////////////////////////////////////////////
-        /// ///////////////////////////////////////////////////////////////////////////////////////
-        /// ///////////////////////////////////////////////////////////////////////////////////////
-        /// ///////////////////////////////////////////////////////////////////////////////////////
-        /// ///////////////////////////////////////////////////////////////////////////////////////
-        /// </summary>
-        /// <param name="args"></param>
-
         static void Main(string[] args)
         {
             while (true)
@@ -285,6 +413,12 @@ namespace DalTest
                         break;
                     case MainMenuOptions.CallMenu:
                         CrudMenu("Call");
+                        break;
+                    case MainMenuOptions.ConfigMenu:
+                        MenuConfig();
+                        break;
+                    case MainMenuOptions.ShowAll:
+                        ShowAll();
                         break;
                     case MainMenuOptions.InitializeDatabase:
                         Initialization.Do(s_dalVolunteer, s_dalCall, s_dalAssignment, s_dalConfig);

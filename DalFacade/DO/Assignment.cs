@@ -21,6 +21,6 @@ TypeOfTreatmentTermination ? TypeOfTreatmentTermination= null,
 DateTime? EndOfTreatmentTime = null
 )
 {
-    public Assignment(int V) : this(0, 0, 0, DateTime.Now) { }
+    public Assignment() : this(0, 0, 0, DateTime.Now) { }
 }
 
