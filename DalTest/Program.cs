@@ -431,7 +431,7 @@ namespace DalTest
             }
         }
         /// <summary>
-        /// פונקציה הלדפסת כל האוביקטים
+        /// פונקציה להדפסת כל האוביקטים
         /// </summary>
         static void ShowAll()
         {
@@ -455,7 +455,7 @@ namespace DalTest
         {
             while (true)
             {
-                //פונקציה שמדפסיסה את התפריט הראשי
+                //פונקציה שמדפיסה את התפריט הראשי
                 PrintMainMenu();
                 string input = Console.ReadLine();
                 int numericChoice;

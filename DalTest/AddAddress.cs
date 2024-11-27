@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DalTest
-{
+{        //מחלקה ליצירת אובייקטים של כתובות 
      internal class AddAddress
     {
         public string StringAddress;

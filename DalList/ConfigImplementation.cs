@@ -8,7 +8,6 @@ public class ConfigImplementation : IConfig
         get => Config.Clock;
         set => Config.Clock = value;
     }
-    //...
     public void Reset()
     {
         Config.Reset();

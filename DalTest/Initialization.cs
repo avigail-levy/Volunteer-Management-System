@@ -51,6 +51,7 @@ public static class Initialization
 
         }
     }
+    // מתודה ליצירת קריאות חדשות עם נתונים אקראיים
 
     private static void CreateCall()
     {
@@ -71,6 +72,7 @@ public static class Initialization
             s_dalCall!.Create(newCall);
         }
     }
+    // מתודה ליצירת הקצאות חדשות עם נתונים אקראיים
     private static void CreateAssignment()
     {
         // שאיבת נתוני מתנדבים וקריאות מתוך ה-DAL
@@ -132,7 +134,7 @@ public static class Initialization
         // סימון חלק מהמתנדבים ככאלו שלא טיפלו כלל בקריאות (20%)
         var idleVolunteers = volunteers.Take(volunteers.Count / 5).ToList(); // 20% מהמתנדבים
     }
-
+    //מתודה לאתחול הנתונים
     public static void Do(IVolunteer? dalVolunteer, ICall? dalCall, IAssignment? dalAssignment, IConfig? dalConfig) //stage 1
     {
         s_dalVolunteer = dalVolunteer ?? throw new NullReferenceException("DAL object can not be null!"); //stage 1
