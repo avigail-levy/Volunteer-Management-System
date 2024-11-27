@@ -16,7 +16,7 @@ namespace DalTest
         private static IConfig? s_dalConfig = new ConfigImplementation(); //stage 1
 
         /// <summary>
-        /// 
+        /// פונקציה המזמנת את הפונקציה ליצירת האוביקט מסוג הפרמטר שהתקבל
         /// </summary>
         /// <param name="entityName">סוג ישות</param>
         private static void Create(string entityName)
@@ -35,6 +35,9 @@ namespace DalTest
                     break;
             }
         }
+        /// <summary>
+        /// פונקציה ליצירת מתנדב
+        /// </summary>
         private static void CreateVolunteer()
         {
             Volunteer volunteer = new Volunteer()
@@ -54,6 +57,9 @@ namespace DalTest
             };
             s_dalVolunteer.Create(volunteer);
         }
+        /// <summary>
+        /// פונקציה ליצירת קריאה חדשה
+        /// </summary>
         private static void CreateCall()
         {
             Call call = new Call()
@@ -68,6 +74,9 @@ namespace DalTest
             };
             s_dalCall.Create(call);
         }
+        /// <summary>
+        /// פונקציה ליצירת הקצאה
+        /// </summary>
         private static void CreateAssignment()
         {
             Assignment assignment = new Assignment()
@@ -80,6 +89,10 @@ namespace DalTest
             };
             s_dalAssignment.Create(assignment);
         }
+        /// <summary>
+        /// פונקציה הקולטת אי.די. למחיקה ומוחקת מהרשימה המתאימה
+        /// </summary>
+        /// <param name="entityName">סוג היישות למחיקה</param>
         private static void Delete(string entityName)
         {
             int idToDelete;
@@ -109,6 +122,9 @@ namespace DalTest
                 Console.WriteLine("An error occurred: " + ex.Message);
             }
         }
+        /// <summary>
+        /// פונקציה לעדכון קריאה לפי אי.די שקולט המשתמש
+        /// </summary>
         private static void UpdateCall()
         {
             Console.WriteLine("insert id-entity to update:");
@@ -134,6 +150,9 @@ namespace DalTest
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
+        /// <summary>
+        /// פונקציה לעדכון מתנדב לפי אי.די שקולט המשתמש
+        /// </summary>
         private static void UpdateVolunteer()
         {
             Console.WriteLine("insert id-entity to update:");
@@ -165,6 +184,9 @@ namespace DalTest
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
+        /// <summary>
+        /// פונקציה לעדכון הקצאה לפי אי.די שקולט המשתמש
+        /// </summary>
         private static void UpdateAssignment()
         {
             Console.WriteLine("insert id-entity to update:");
@@ -189,7 +211,10 @@ namespace DalTest
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
-
+        /// <summary>
+        /// פונקציה לעדכון אוביקט בהתאם לסוג היישות שמתקבלת
+        /// </summary>
+        /// <param name="entityName">סוג היישות של האוביקט לעדכון</param>
         private static void Update(string entityName)
         {
             Console.WriteLine("insert id-entity to update:");
@@ -214,6 +239,10 @@ namespace DalTest
                 Console.WriteLine("An error occurred: " + ex.Message);
             }
         }
+        /// <summary>
+        /// פונקצית הדפסת פרטי מתנדב מסוים לפי האי.די שנקלט מהמשתמש
+        /// </summary>
+        /// <param name="idToRead">אי.די של המתנדב להדפסה</param>
         private static void ReadVolunteer(int idToRead)
         {
             if (s_dalVolunteer.Read(idToRead) != null)
@@ -235,6 +264,10 @@ namespace DalTest
                 Console.WriteLine($"Max distance for call: {volunteer.MaxDistanceForCall?.ToString() ?? "there isn't max distance for call"}");
             }
         }
+        /// <summary>
+        /// פונקצית הדפסת פרטי קריאה מסוימת לפי האי.די שנקלט מהמשתמש
+        /// </summary>
+        /// <param name="idToRead">אי.די של הקיראה להדפסה</param>
         private static void ReadCall(int idToRead)
         {
             if (s_dalCall.Read(idToRead) != null)
@@ -252,6 +285,10 @@ namespace DalTest
                 Console.WriteLine($"Max time finish call: {call.MaxTimeFinishCall?.ToString() ?? "there isn't max time finish to call"}");
             }
         }
+        /// <summary>
+        /// פונקצית הדפסת פרטי הקצאה מסוימת לפי האי.די שנקלט מהמשתמש
+        /// </summary>
+        /// <param name="idToRead">אי.די של ההקצאה להדפסה</param>
         private static void ReadAssignment(int idToRead)
         {
             if (s_dalAssignment.Read(idToRead) != null)
@@ -267,6 +304,11 @@ namespace DalTest
                 Console.WriteLine($"Type of End Treatment: {assignment.TypeOfTreatmentTermination?.ToString() ?? "N/A"}");
             }
         }
+        /// <summary>
+        /// פונקציה להדפסת פרטי אוביקט
+        /// </summary>
+        /// <param name="entityName">סוג יישות האוביקט</param>
+        /// <param name="idToRead">אי.די של האוביקט להדפסה</param>
         private static void Read(string entityName, int idToRead)
         {
             if (idToRead == 0)
@@ -293,6 +335,10 @@ namespace DalTest
             }
 
         }
+        /// <summary>
+        /// פונקציה להדפסת כל האוביקטים מסוג מסויים
+        /// </summary>
+        /// <param name="entityName">סוג היישות להדפסה</param>
         private static void ReadAll(string entityName)
         {
             switch (entityName)
@@ -313,6 +359,10 @@ namespace DalTest
                     break;
             }
         }
+        /// <summary>
+        /// פונקציה למחיקת כל האוביקטים מסוג מסוים
+        /// </summary>
+        /// <param name="entityName">סוג היישות למחיקה</param>
         private static void DeleteAll(string entityName)
         {
             switch (entityName)
@@ -331,7 +381,9 @@ namespace DalTest
                     break;
             }
         }
-
+        /// <summary>
+        /// פונקציה להדפסת התפריט הראשי
+        /// </summary>
         static void PrintMainMenu()
         {
             Console.WriteLine("\nMain Menu:");
@@ -378,12 +430,18 @@ namespace DalTest
                     break;
             }
         }
+        /// <summary>
+        /// פונקציה הלדפסת כל האוביקטים
+        /// </summary>
         static void ShowAll()
         {
             ReadAll("Volunteer");
             ReadAll("Call");
             ReadAll("Assignment");
         }
+        /// <summary>
+        /// פונקציה להדפסת התת תפריט ליישות
+        /// </summary>
         static void PrintCrudMenu()
         {
             Console.WriteLine("\nMain Menu:");
@@ -443,6 +501,10 @@ namespace DalTest
                 }
             }
         }
+        /// <summary>
+        /// פונקציה לזימון הפעולה הרצויה מהתפריט משנה
+        /// </summary>
+        /// <param name="entityName">סוג היישות</param>
         static void CrudMenu(string entityName)
         {
             PrintCrudMenu();
