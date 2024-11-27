@@ -9,12 +9,16 @@ namespace DalTest
 {
     internal class Program
     {
-
+       
         private static IVolunteer? s_dalVolunteer = new VolunteerImplementation(); //stage 1
         private static ICall? s_dalCall = new CallImplementation(); //stage 1
         private static IAssignment? s_dalAssignment = new AssignmentImplementation(); //stage 1
         private static IConfig? s_dalConfig = new ConfigImplementation(); //stage 1
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entityName">סוג ישות</param>
         private static void Create(string entityName)
         {
             switch (entityName)
