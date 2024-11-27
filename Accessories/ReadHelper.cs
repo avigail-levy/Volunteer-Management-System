@@ -81,5 +81,9 @@ namespace Accessories
             return (T)data;
 
         }
+        public static string ReadOrDefault(string? input, string defaultValue)
+        {
+            return string.IsNullOrWhiteSpace(input) ? defaultValue : input;
+        }
     }
 }

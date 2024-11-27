@@ -14,8 +14,10 @@
         internal static TimeSpan RiskRange { get; set; } = TimeSpan.MinValue;
         internal static void Reset()
         {
+            Clock= DateTime.Now;
             nextCallId = startCallId;
             nextAssignmentId = startAssignmentId;
+            RiskRange = TimeSpan.Zero;
         }
     }
 }

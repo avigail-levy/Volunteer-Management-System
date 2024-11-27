@@ -9,7 +9,7 @@ namespace DalTest
 {
     internal class Program
     {
-       
+
         private static IVolunteer? s_dalVolunteer = new VolunteerImplementation(); //stage 1
         private static ICall? s_dalCall = new CallImplementation(); //stage 1
         private static IAssignment? s_dalAssignment = new AssignmentImplementation(); //stage 1
@@ -137,11 +137,13 @@ namespace DalTest
                 Call newCall = new Call()
                 {
                     CallType = int.TryParse(Console.ReadLine(), out int typeOfCall) ? (CallType)typeOfCall : oldCall.CallType,
-                    CallAddress = Console.ReadLine() ?? oldCall.CallAddress,
+                    CallAddress = ReadHelper.ReadOrDefault(Console.ReadLine(), oldCall.CallAddress),
                     Latitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : oldCall.Latitude,
                     Longitude = double.TryParse(Console.ReadLine(), out double Longitude) ? Longitude : oldCall.Longitude,
                     OpeningTime = DateTime.TryParse(Console.ReadLine(), out DateTime OpeningTime) ? OpeningTime : oldCall.OpeningTime,
-                    MaxTimeFinishCall = DateTime.TryParse(Console.ReadLine(), out DateTime MaximumTimeFinishCall) ? MaximumTimeFinishCall : oldCall.MaxTimeFinishCall
+                    MaxTimeFinishCall = DateTime.TryParse(Console.ReadLine(), out DateTime MaximumTimeFinishCall) ? MaximumTimeFinishCall : oldCall.MaxTimeFinishCall,
+                    CallDescription = ReadHelper.ReadOrDefault(Console.ReadLine(), oldCall.CallDescription),
+
                 };
                 s_dalCall.Update(newCall);
             }
@@ -153,6 +155,7 @@ namespace DalTest
         /// <summary>
         /// פונקציה לעדכון מתנדב לפי אי.די שקולט המשתמש
         /// </summary>
+        /// // פונקציה לבדיקת המחרוזת והחזרת ערך ברירת המחדל במקרה שהיא ריקה
         private static void UpdateVolunteer()
         {
             Console.WriteLine("insert id-entity to update:");
@@ -160,21 +163,20 @@ namespace DalTest
             try
             {
                 Volunteer oldVolunteer = s_dalVolunteer.Read(idToUpdate);
-                Console.WriteLine("Enter the data to create a new object of type volunteer:");
                 Console.WriteLine("Enter the data of:  full name, phone, email, role, active, distance type,latitude,longitude,password, address, max distance for call");
                 Volunteer newVolunteer = new Volunteer()
                 {
                     Id = oldVolunteer.Id,
-                    Name = Console.ReadLine() ?? oldVolunteer.Name,
-                    Phone = Console.ReadLine() ?? oldVolunteer.Phone,
-                    Email = Console.ReadLine() ?? oldVolunteer.Email,
+                    Name = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Name),
+                    Phone = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Phone),
+                    Email = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Email),
                     Role = int.TryParse(Console.ReadLine(), out int role) ? (Role)role : oldVolunteer.Role,
                     Active = bool.TryParse(Console.ReadLine(), out bool active) ? active : oldVolunteer.Active,
                     DistanceType = int.TryParse(Console.ReadLine(), out int distanceType) ? (DistanceType)distanceType : oldVolunteer.DistanceType,
                     Latitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : oldVolunteer.Latitude,
-                    Longitude = double.TryParse(Console.ReadLine(), out double Longitude) ? Longitude : oldVolunteer.Longitude,
-                    Password = Console.ReadLine() ?? oldVolunteer.Password,
-                    Address = Console.ReadLine() ?? oldVolunteer.Address,
+                    Longitude = double.TryParse(Console.ReadLine(), out double longitude) ? longitude : oldVolunteer.Longitude,
+                    Password = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Password),
+                    Address = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Address),
                     MaxDistanceForCall = double.TryParse(Console.ReadLine(), out double maxDistanceForCall) ? maxDistanceForCall : oldVolunteer.MaxDistanceForCall,
                 };
                 s_dalVolunteer.Update(newVolunteer);
@@ -217,8 +219,6 @@ namespace DalTest
         /// <param name="entityName">סוג היישות של האוביקט לעדכון</param>
         private static void Update(string entityName)
         {
-            Console.WriteLine("insert id-entity to update:");
-            int idToUpdate = int.Parse(Console.ReadLine());
             try
             {
                 switch (entityName)
@@ -409,10 +409,10 @@ namespace DalTest
                 case ConfigMenuOptions.Exit:
                     return;
                 case ConfigMenuOptions.AdvanceClockMinute:
-                    s_dalConfig.Clock.AddMinutes(1);
+                    s_dalConfig.Clock=s_dalConfig.Clock.AddMinutes(1);
                     break;
                 case ConfigMenuOptions.AdvanceClockHour:
-                    s_dalConfig.Clock.AddHours(1);
+                    s_dalConfig.Clock=s_dalConfig.Clock.AddHours(1);
                     break;
                 case ConfigMenuOptions.ViewCurrentClock:
                     Console.WriteLine(s_dalConfig.Clock);
@@ -489,8 +489,11 @@ namespace DalTest
                         ShowAll();
                         break;
                     case MainMenuOptions.InitializeDatabase:
-                        try { Initialization.Do(s_dalVolunteer, s_dalCall, s_dalAssignment, s_dalConfig);}
-                        catch(Exception ex)
+                        try
+                        {
+                            Initialization.Do(s_dalVolunteer, s_dalCall, s_dalAssignment, s_dalConfig);
+                        }
+                        catch (Exception ex)
                         {
                             Console.WriteLine(ex);
                         }

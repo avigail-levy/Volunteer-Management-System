@@ -147,8 +147,7 @@ public static class Initialization
         s_dalAssignment.DeleteAll();
         CreateCall();
         CreateVolunteer();
-        CreateAssignment()כ;
-        
+        CreateAssignment();
     }
 
 
