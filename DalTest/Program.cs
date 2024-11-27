@@ -35,7 +35,7 @@ namespace DalTest
         {
             Volunteer volunteer = new Volunteer()
             {
-                Id = ReadHelper.ReadInt("insert id volunteer: ", 200000000, 400000000),
+                Id = ReadHelper.ReadInt("insert id volunteer: "),
                 Name = ReadHelper.ReadString("insert full name: "),
                 Phone = ReadHelper.ReadString("insert phone number: "),
                 Email = ReadHelper.ReadString("insert email: "),
@@ -339,6 +339,11 @@ namespace DalTest
         }
         static void MenuConfig()
         {
+            Console.WriteLine("\nConfig Menu:");
+            foreach (var option in Enum.GetValues<ConfigMenuOptions>())
+            {
+                Console.WriteLine($"{(int)option}: {option}");
+            }
             Console.Write("Choose an option: ");
             int numericChoice = int.Parse(Console.ReadLine());
             ConfigMenuOptions choice = (ConfigMenuOptions)numericChoice;
@@ -422,7 +427,11 @@ namespace DalTest
                         ShowAll();
                         break;
                     case MainMenuOptions.InitializeDatabase:
-                        Initialization.Do(s_dalVolunteer, s_dalCall, s_dalAssignment, s_dalConfig);
+                        try { Initialization.Do(s_dalVolunteer, s_dalCall, s_dalAssignment, s_dalConfig);}
+                        catch(Exception ex)
+                        {
+                            Console.WriteLine(ex);
+                        }
                         break;
                     case MainMenuOptions.ResetDatabase:
                         s_dalConfig.Reset();

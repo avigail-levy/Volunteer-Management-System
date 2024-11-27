@@ -145,10 +145,10 @@ public static class Initialization
         s_dalVolunteer.DeleteAll(); //stage 1
         s_dalCall.DeleteAll();
         s_dalAssignment.DeleteAll();
-        Console.WriteLine("Initializing Students list ...");
-        CreateVolunteer();
-        CreateAssignment();
         CreateCall();
+        CreateVolunteer();
+        CreateAssignment()כ;
+        
     }
 
 

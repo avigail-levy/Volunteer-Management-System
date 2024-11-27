@@ -7,19 +7,14 @@ namespace Accessories
 {
     public class ReadHelper
     {
-        public static int ReadInt(string message, int? minValue = null, int? maxValue = null)
+        public static int ReadInt(string message)
         {
             Console.WriteLine(message);
             string numInput = Console.ReadLine();
             int number;
-            while (!int.TryParse(numInput, out number)
-                &&
-                minValue != null ? number >= minValue : true
-                &&
-                maxValue != null ? number <= minValue : true
-                )
+            while (!int.TryParse(numInput, out number))
             {
-                Console.WriteLine("הערך שהקשת אינו תקין. נא הקש שנית!");
+                Console.WriteLine("The value you entered is invalid. Please enter it again!");
                 numInput = Console.ReadLine();
             }
             return number;
@@ -32,7 +27,7 @@ namespace Accessories
             double data;
             while (!double.TryParse(ageInput, out data))
             {
-                Console.WriteLine("הערך שהקשת אינו תקין. נא הקש שנית!");
+                Console.WriteLine("The value you entered is invalid. Please enter it again!");
                 ageInput = Console.ReadLine();
             }
             return data;
@@ -53,7 +48,7 @@ namespace Accessories
             DateTime data;
             while (!DateTime.TryParse(dateInput, out data))
             {
-                Console.WriteLine("הערך שהקשת אינו תקין. נא הקש שנית!");
+                Console.WriteLine("The value you entered is invalid. Please enter it again!");
                 dateInput = Console.ReadLine();
             }
             return data;
@@ -66,7 +61,7 @@ namespace Accessories
             bool data;
             while (!bool.TryParse(dateInput, out data))
             {
-                Console.WriteLine("הערך שהקשת אינו תקין. נא הקש שנית!");
+                Console.WriteLine("The value you entered is invalid. Please enter it again!");
                 dateInput = Console.ReadLine();
             }
             return data;
@@ -80,7 +75,7 @@ namespace Accessories
             object data;
             while (!Enum.TryParse(typeof(T), enumInput, out data))
             {
-                Console.WriteLine("הערך שהקשת אינו תקין. נא הקש שנית!");
+                Console.WriteLine("The value you entered is invalid. Please enter it again!");
                 enumInput = Console.ReadLine();
             }
             return (T)data;
