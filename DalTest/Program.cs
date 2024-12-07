@@ -10,10 +10,12 @@ namespace DalTest
     internal class Program
     {
 
-        private static IVolunteer? s_dalVolunteer = new VolunteerImplementation(); //stage 1
-        private static ICall? s_dalCall = new CallImplementation(); //stage 1
-        private static IAssignment? s_dalAssignment = new AssignmentImplementation(); //stage 1
-        private static IConfig? s_dalConfig = new ConfigImplementation(); //stage 1
+        //private static IVolunteer? s_dalVolunteer = new VolunteerImplementation(); //stage 1
+        //private static ICall? s_dalCall = new CallImplementation(); //stage 1
+        //private static IAssignment? s_dalAssignment = new AssignmentImplementation(); //stage 1
+        //private static IConfig? s_dalConfig = new ConfigImplementation(); //stage 1
+        static readonly IDal s_dal = new DalList(); //stage 2
+
 
         /// <summary>
         /// פונקציה המזמנת את הפונקציה ליצירת האוביקט מסוג הפרמטר שהתקבל
@@ -55,7 +57,7 @@ namespace DalTest
                 Address = ReadHelper.ReadString("insert address: "),
                 MaxDistanceForCall = ReadHelper.ReadDouble("insert max distance for call")
             };
-            s_dalVolunteer.Create(volunteer);
+            s_dal.Volunteer.Create(volunteer);
         }
         /// <summary>
         /// פונקציה ליצירת קריאה חדשה
@@ -72,7 +74,7 @@ namespace DalTest
                 CallDescription = ReadHelper.ReadString("insert call description: "),
                 MaxTimeFinishCall = ReadHelper.ReadDate("insert max time finish call:")
             };
-            s_dalCall.Create(call);
+            s_dal.Call.Create(call);
         }
         /// <summary>
         /// פונקציה ליצירת הקצאה
@@ -87,7 +89,7 @@ namespace DalTest
                 TypeOfTreatmentTermination = ReadHelper.ReadEnum<TypeOfTreatmentTermination>("insert type of treatment termination"),
                 EndOfTreatmentTime = ReadHelper.ReadDate("insert end of treatment time")
             };
-            s_dalAssignment.Create(assignment);
+            s_dal.Assignment.Create(assignment);
         }
         /// <summary>
         /// פונקציה הקולטת אי.די. למחיקה ומוחקת מהרשימה המתאימה
@@ -103,14 +105,14 @@ namespace DalTest
                 switch (entityName)
                 {
                     case "Volunteer":
-                        s_dalVolunteer.Delete(idToDelete);
+                        s_dal.Volunteer.Delete(idToDelete);
                         break;
 
                     case "Call":
-                        s_dalCall.Delete(idToDelete);
+                        s_dal.Call.Delete(idToDelete);
                         break;
                     case "Assignment":
-                        s_dalAssignment.Delete(idToDelete);
+                        s_dal.Assignment.Delete(idToDelete);
                         break;
                     default:
                         Console.WriteLine("Unsupported type: " + entityName);
@@ -131,7 +133,7 @@ namespace DalTest
             int idToUpdate = int.Parse(Console.ReadLine());
             try
             {
-                Call oldCall = s_dalCall.Read(idToUpdate);
+                Call oldCall = s_dal.Call.Read(idToUpdate);
                 Console.WriteLine("Enter the data to create a new object of type call:");
                 Console.WriteLine("Enter the data of: type of call, full address, latitude, longitude, opening time, maximum time of finish call, description");
                 Call newCall = new Call()
@@ -145,7 +147,7 @@ namespace DalTest
                     CallDescription = ReadHelper.ReadOrDefault(Console.ReadLine(), oldCall.CallDescription),
 
                 };
-                s_dalCall.Update(newCall);
+                s_dal.Call.Update(newCall);
             }
             catch (Exception ex)
             {
@@ -162,7 +164,7 @@ namespace DalTest
             int idToUpdate = int.Parse(Console.ReadLine());
             try
             {
-                Volunteer oldVolunteer = s_dalVolunteer.Read(idToUpdate);
+                Volunteer oldVolunteer = s_dal.Volunteer.Read(idToUpdate);
                 Console.WriteLine("Enter the data of:  full name, phone, email, role, active, distance type,latitude,longitude,password, address, max distance for call");
                 Volunteer newVolunteer = new Volunteer()
                 {
@@ -179,7 +181,7 @@ namespace DalTest
                     Address = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Address),
                     MaxDistanceForCall = double.TryParse(Console.ReadLine(), out double maxDistanceForCall) ? maxDistanceForCall : oldVolunteer.MaxDistanceForCall,
                 };
-                s_dalVolunteer.Update(newVolunteer);
+                s_dal.Volunteer.Update(newVolunteer);
             }
             catch (Exception ex)
             {
@@ -195,7 +197,7 @@ namespace DalTest
             int idToUpdate = int.Parse(Console.ReadLine());
             try
             {
-                Assignment oldAssignment = s_dalAssignment.Read(idToUpdate);
+                Assignment oldAssignment = s_dal.Assignment.Read(idToUpdate);
                 Console.WriteLine("Enter the data to create a new object of type assignment:");
                 Console.WriteLine("insert  call id, volunteer id, entry time for treatment, type of treatment termination,end of treatment time");
                 Assignment newAssignment = new Assignment()
@@ -206,7 +208,7 @@ namespace DalTest
                     TypeOfTreatmentTermination = int.TryParse(Console.ReadLine(), out int typeOfTreatmentTermination) ? (TypeOfTreatmentTermination)typeOfTreatmentTermination : oldAssignment.TypeOfTreatmentTermination,
                     EndOfTreatmentTime = DateTime.TryParse(Console.ReadLine(), out DateTime endOfTreatmentTime) ? endOfTreatmentTime : oldAssignment.EndOfTreatmentTime,
                 };
-                s_dalAssignment.Update(newAssignment);
+                s_dal.Assignment.Update(newAssignment);
             }
             catch (Exception ex)
             {
@@ -245,9 +247,9 @@ namespace DalTest
         /// <param name="idToRead">אי.די של המתנדב להדפסה</param>
         private static void ReadVolunteer(int idToRead)
         {
-            if (s_dalVolunteer.Read(idToRead) != null)
+            if (s_dal.Volunteer.Read(idToRead) != null)
             {
-                Volunteer volunteer = s_dalVolunteer.Read(idToRead);
+                Volunteer volunteer = s_dal.Volunteer.Read(idToRead);
                 // הצגת המידע של המשימה
                 Console.WriteLine("Volunteer Details:");
                 Console.WriteLine($"Volunteer ID: {volunteer.Id}");
@@ -270,9 +272,9 @@ namespace DalTest
         /// <param name="idToRead">אי.די של הקיראה להדפסה</param>
         private static void ReadCall(int idToRead)
         {
-            if (s_dalCall.Read(idToRead) != null)
+            if (s_dal.Call.Read(idToRead) != null)
             {
-                Call call = s_dalCall.Read(idToRead);
+                Call call = s_dal.Call.Read(idToRead);
                 // הצגת המידע של המשימה
                 Console.WriteLine("Call Details:");
                 Console.WriteLine($"Call ID: {call.Id}");
@@ -291,9 +293,9 @@ namespace DalTest
         /// <param name="idToRead">אי.די של ההקצאה להדפסה</param>
         private static void ReadAssignment(int idToRead)
         {
-            if (s_dalAssignment.Read(idToRead) != null)
+            if (s_dal.Assignment.Read(idToRead) != null)
             {
-                Assignment assignment = s_dalAssignment.Read(idToRead);
+                Assignment assignment = s_dal.Assignment.Read(idToRead);
                 // הצגת המידע של המשימה
                 Console.WriteLine("Assignment Details:");
                 Console.WriteLine($"Assignment ID: {assignment.Id}");
@@ -344,15 +346,15 @@ namespace DalTest
             switch (entityName)
             {
                 case "Volunteer":
-                    foreach (var volunteer in s_dalVolunteer.ReadAll())
+                    foreach (var volunteer in s_dal.Volunteer.ReadAll())
                         Read("Volunteer", volunteer.Id);
                     break;
                 case "Call":
-                    foreach (var call in s_dalCall.ReadAll())
+                    foreach (var call in s_dal.Call.ReadAll())
                         Read("Call", call.Id);
                     break;
                 case "Assignment":
-                    foreach (var assignment in s_dalAssignment.ReadAll())
+                    foreach (var assignment in s_dal.Assignment.ReadAll())
                         Read("Assignment", assignment.Id);
                     break;
                 default:
@@ -368,13 +370,13 @@ namespace DalTest
             switch (entityName)
             {
                 case "Volunteer":
-                    s_dalVolunteer.DeleteAll();
+                    s_dal.Volunteer.DeleteAll();
                     break;
                 case "Call":
-                    s_dalCall.DeleteAll();
+                    s_dal.Call.DeleteAll();
                     break;
                 case "Assignment":
-                    s_dalAssignment.DeleteAll();
+                    s_dal.Assignment.DeleteAll();
                     break;
                 default:
                     Console.WriteLine("Unsupported type: " + entityName);
@@ -409,22 +411,22 @@ namespace DalTest
                 case ConfigMenuOptions.Exit:
                     return;
                 case ConfigMenuOptions.AdvanceClockMinute:
-                    s_dalConfig.Clock=s_dalConfig.Clock.AddMinutes(1);
+                    s_dal.Config.Clock=s_dal.Config.Clock.AddMinutes(1);
                     break;
                 case ConfigMenuOptions.AdvanceClockHour:
-                    s_dalConfig.Clock=s_dalConfig.Clock.AddHours(1);
+                    s_dal.Config.Clock=s_dal.Config.Clock.AddHours(1);
                     break;
                 case ConfigMenuOptions.ViewCurrentClock:
-                    Console.WriteLine(s_dalConfig.Clock);
+                    Console.WriteLine(s_dal.Config.Clock);
                     break;
                 case ConfigMenuOptions.NewConfigValue:
-                    s_dalConfig.Clock = s_dalConfig.Clock.AddMinutes(3);
+                    s_dal.Config.Clock = s_dal.Config.Clock.AddMinutes(3);
                     break;
                 case ConfigMenuOptions.ViewConfigValue:
-                    Console.WriteLine($"the risk range is: {s_dalConfig.RiskRange.ToString()}");
+                    Console.WriteLine($"the risk range is: {s_dal.Config.RiskRange.ToString()}");
                     break;
                 case ConfigMenuOptions.ResetConfigValues:
-                    s_dalConfig.Reset();
+                    s_dal.Config.Reset();
                     break;
                 default:
                     break;
@@ -491,7 +493,7 @@ namespace DalTest
                     case MainMenuOptions.InitializeDatabase:
                         try
                         {
-                            Initialization.Do(s_dalVolunteer, s_dalCall, s_dalAssignment, s_dalConfig);
+                            Initialization.Do(s_dal); //stage 2
                         }
                         catch (Exception ex)
                         {
@@ -499,7 +501,7 @@ namespace DalTest
                         }
                         break;
                     case MainMenuOptions.ResetDatabase:
-                        s_dalConfig.Reset();
+                        s_dal.Config.Reset();
                         break;
                 }
             }

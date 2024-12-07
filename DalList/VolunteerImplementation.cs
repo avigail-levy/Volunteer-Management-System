@@ -3,7 +3,7 @@ using DalApi;
 using DO;
 using System.Collections.Generic;
 
-public class VolunteerImplementation : IVolunteer
+internal class VolunteerImplementation : IVolunteer
 {/// <summary>
 /// מתודה להוספת מתנדב חדש
 /// </summary>
@@ -52,11 +52,25 @@ public class VolunteerImplementation : IVolunteer
     {
         return DataSource.Volunteers.Find(volunteer => volunteer.Id == id);
     }
-    //מתודה לקריאת כל המתנדבים
-    public List<Volunteer> ReadAll()
-    {
-        return new List<Volunteer>(DataSource.Volunteers);
-    }
+
+    /// <summary>
+    /// method to return data.
+    /// </summary>
+    /// <param name="filter">boolian function to filter the data to be returned</param>
+    /// <returns>one data</returns>
+    public Volunteer Read(Func<Volunteer, bool>? filter)
+     => DataSource.Volunteers.FirstOrDefault(filter);
+
+    /// <summary>
+    /// method to return data.
+    /// </summary>
+    /// <param name="filter">boolian function to filter the data to be returned</param>
+    /// <returns>all or part of the data</returns>
+    public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null) //stage 2
+      => filter == null
+         ? DataSource.Volunteers.Select(item => item)
+          : DataSource.Volunteers.Where(filter);
+
     /// <summary>
     /// מתודה לעידכון פרטי מתנדב ע"פ ת.ז שלו
     /// </summary>

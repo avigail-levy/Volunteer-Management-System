@@ -3,7 +3,7 @@ using DalApi;
 using DO;
 using System.Collections.Generic;
 
-public class AssignmentImplementation : IAssignment
+internal class AssignmentImplementation : IAssignment
 {
     /// <summary>
     /// מתודה ליצירת הקצאה חדשה 
@@ -34,20 +34,35 @@ public class AssignmentImplementation : IAssignment
     {
         DataSource.Assignments.Clear();
     }
+
     /// <summary>
-    /// מתודה לקריאת הקצאה ע"פ מספרה
+    ///מתודה לקריאת הקצאה ע"פ מספר זיהוי 
     /// </summary>
-    /// <param name="id">מספר הקצאה</param>
+    /// <param name="id">מספר זיהוי של הקצאה</param>
     /// <returns></returns>
     public Assignment? Read(int id)
     {
         return DataSource.Assignments.Find(assignment => assignment.Id == id);
     }
-    // מתודה לקריאת כל ההקצאות
-    public List<Assignment> ReadAll()
-    {
-        return new List<Assignment>(DataSource.Assignments);
-    }
+
+    /// <summary>
+    /// method to return data.
+    /// </summary>
+    /// <param name="filter">boolian function to filter the data to be returned</param>
+    /// <returns>one data</returns>
+    public Assignment Read(Func<Assignment, bool>? filter)
+     => DataSource.Assignments.FirstOrDefault(filter);
+
+    /// <summary>
+    /// method to return data.
+    /// </summary>
+    /// <param name="filter">boolian function to filter the data to be returned</param>
+    /// <returns>all or part of the data</returns>
+    public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
+      => filter == null
+          ? DataSource.Assignments.Select(item => item)
+          : DataSource.Assignments.Where(filter);
+
     /// <summary>
     ///  מתודה לעדכון הקצאה ע"פ המספר שלה
     /// </summary>

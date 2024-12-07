@@ -9,10 +9,14 @@ using System.Net.Mail;
 public static class Initialization
 {
     // שדות פרטיים לאחסון ה-DALים (אובייקטים המתקשרים למאגר הנתונים)
-    private static IVolunteer? s_dalVolunteer; 
-    private static ICall? s_dalCall; 
-    private static IAssignment? s_dalAssignment; 
-    private static IConfig? s_dalConfig; 
+
+    //private static IVolunteer? s_dalVolunteer; 
+    //private static ICall? s_dalCall; 
+    //private static IAssignment? s_dalAssignment; 
+    //private static IConfig? s_dalConfig; 
+
+    private static IDal? s_dal; 
+
     private static readonly Random s_rand = new(); // אובייקט שמייצר מספרים אקראיים
     const int MIN_ID = 200000000; // מזהה מינימלי למתנדב/קריאה/הקצאה
     const int MAX_ID = 400000000; // מזהה מקסימלי למתנדב/קריאה/הקצאה
@@ -47,7 +51,7 @@ public static class Initialization
                 Address = randAddress.StringAddress, // כתובת מלאה
                 MaxDistanceForCall = s_rand.NextDouble() * 50 // המרחק המרבי לקבלת קריאה
             };
-            s_dalVolunteer!.Create(newVolunteer); // שמירת המתנדב ב-DAL
+            s_dal!.Volunteer.Create(newVolunteer); // שמירת המתנדב ב-DAL
 
         }
     }
@@ -65,19 +69,19 @@ public static class Initialization
                 CallAddress = randAddress.StringAddress,
                 Latitude = randAddress.Latitude,
                 Longitude = randAddress.Longitude,
-                OpeningTime =s_dalConfig.Clock.AddDays(-rand_day),
+                OpeningTime =s_dal.Config.Clock.AddDays(-rand_day),
                 CallDescription = randAddress.StringAddress + " " + randAddress.Longitude.ToString() + " " + randAddress.Latitude.ToString() + " call",
-                MaxTimeFinishCall = i < 5 ? s_dalConfig.Clock.AddDays(-rand_day+1) : s_dalConfig.Clock.AddDays(rand_day),
+                MaxTimeFinishCall = i < 5 ? s_dal.Config.Clock.AddDays(-rand_day+1) : s_dal.Config.Clock.AddDays(rand_day),
             };
-            s_dalCall!.Create(newCall);
+            s_dal.Call!.Create(newCall);
         }
     }
     // מתודה ליצירת הקצאות חדשות עם נתונים אקראיים
     private static void CreateAssignment()
     {
         // שאיבת נתוני מתנדבים וקריאות מתוך ה-DAL
-        List<Volunteer> volunteers = s_dalVolunteer.ReadAll().ToList();
-        List<Call> calls = s_dalCall.ReadAll().ToList();
+        List<Volunteer> volunteers = s_dal.Volunteer.ReadAll().ToList();
+        List<Call> calls = s_dal.Call.ReadAll().ToList();
         // בדיקה אם רשימות המתנדבים או הקריאות ריקות
         if (!volunteers.Any() || !calls.Any())
             throw new InvalidOperationException("Volunteers or Calls data is empty!");
@@ -128,25 +132,27 @@ public static class Initialization
             };
 
             // שמירת ההקצאה ב-DAL
-            s_dalAssignment.Create(newAssignment);
+            s_dal.Assignment.Create(newAssignment);
         }
 
         // סימון חלק מהמתנדבים ככאלו שלא טיפלו כלל בקריאות (20%)
         var idleVolunteers = volunteers.Take(volunteers.Count / 5).ToList(); // 20% מהמתנדבים
     }
     //מתודה לאתחול הנתונים
-    public static void Do(IVolunteer? dalVolunteer, ICall? dalCall, IAssignment? dalAssignment, IConfig? dalConfig) //stage 1
+    public static void Do(IDal dal) //stage 1
     {
-        s_dalVolunteer = dalVolunteer ?? throw new NullReferenceException("DAL object can not be null!"); //stage 1
-        s_dalCall = dalCall ?? throw new NullReferenceException("DAL object can not be null!"); //stage 1
-        s_dalAssignment = dalAssignment ?? throw new NullReferenceException("DAL object can not be null!"); //stage 1
-        s_dalConfig = dalConfig ?? throw new NullReferenceException("DAL object can not be null!"); //stage 1
+        //s_dalVolunteer = dalVolunteer ?? throw new NullReferenceException("DAL object can not be null!"); //stage 1
+        //s_dalCall = dalCall ?? throw new NullReferenceException("DAL object can not be null!"); //stage 1
+        //s_dalAssignment = dalAssignment ?? throw new NullReferenceException("DAL object can not be null!"); //stage 1
+        //s_dalConfig = dalConfig ?? throw new NullReferenceException("DAL object can not be null!"); //stage 1
+        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); // stage 2
 
         Console.WriteLine("Reset Configuration values and List values...");
-        s_dalConfig.Reset(); //stage 1
-        s_dalVolunteer.DeleteAll(); //stage 1
-        s_dalCall.DeleteAll();
-        s_dalAssignment.DeleteAll();
+        //s_dalConfig.Reset(); //stage 1
+        //s_dalVolunteer.DeleteAll(); //stage 1
+        //s_dalCall.DeleteAll();
+        //s_dalAssignment.DeleteAll();
+        s_dal.ResetDB();//stage 2
         CreateCall();
         CreateVolunteer();
         CreateAssignment();
