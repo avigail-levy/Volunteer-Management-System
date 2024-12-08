@@ -66,10 +66,10 @@ public static class Initialization
             Call newCall = new Call()
             {
                 CallType = (DO.CallType)s_rand.Next(0, 6),
-                CallAddress = randAddress.StringAddress,
+                CallAddress = randAddress.StringAddress!,
                 Latitude = randAddress.Latitude,
                 Longitude = randAddress.Longitude,
-                OpeningTime =s_dal.Config.Clock.AddDays(-rand_day),
+                OpeningTime =s_dal!.Config.Clock.AddDays(-rand_day),
                 CallDescription = randAddress.StringAddress + " " + randAddress.Longitude.ToString() + " " + randAddress.Latitude.ToString() + " call",
                 MaxTimeFinishCall = i < 5 ? s_dal.Config.Clock.AddDays(-rand_day+1) : s_dal.Config.Clock.AddDays(rand_day),
             };
@@ -80,7 +80,7 @@ public static class Initialization
     private static void CreateAssignment()
     {
         // שאיבת נתוני מתנדבים וקריאות מתוך ה-DAL
-        List<Volunteer> volunteers = s_dal.Volunteer.ReadAll().ToList();
+        List<Volunteer> volunteers = s_dal!.Volunteer.ReadAll().ToList();
         List<Call> calls = s_dal.Call.ReadAll().ToList();
         // בדיקה אם רשימות המתנדבים או הקריאות ריקות
         if (!volunteers.Any() || !calls.Any())
@@ -105,7 +105,7 @@ public static class Initialization
                 endTimeOfTreatment = entryTimeOfTreatment.AddMinutes(s_rand.Next(30, 2880));
                 // אם זמן סיום הטיפול חורג מזמן הסיום המקסימלי, מוסיפים חריגה קטנה
                 endTimeOfTreatment = endTimeOfTreatment ?? call.MaxTimeFinishCall;
-                endTimeOfTreatment = endTimeOfTreatment.Value.AddMinutes(s_rand.Next(30, 1440));
+                endTimeOfTreatment = endTimeOfTreatment!.Value.AddMinutes(s_rand.Next(30, 1440));
             }
 
             // קביעה של סוג סיום הטיפול

@@ -22,12 +22,9 @@ internal class AssignmentImplementation : IAssignment
     /// <exception cref="Exception"></exception>
     public void Delete(int id)
     {
-        Assignment? assignmentToRemove = DataSource.Assignments.Find(assignment => assignment.Id == id);
-        if (assignmentToRemove != null)
-            DataSource.Assignments.Remove(assignmentToRemove);
-
-        else
-            throw new Exception($"Assignment with ID={id} is not exists");
+        if (Read(id) is null)
+            throw new DalDoesNotExistException($"Assignment with ID={id} does not exists");
+        DataSource.Assignments.Remove(Read(id)!);
     }
     //מתודה למחיקת כל ההקצאות
     public void DeleteAll()
@@ -42,7 +39,7 @@ internal class AssignmentImplementation : IAssignment
     /// <returns></returns>
     public Assignment? Read(int id)
     {
-        return DataSource.Assignments.Find(assignment => assignment.Id == id);
+        return DataSource.Assignments.FirstOrDefault(assignment => assignment.Id == id);
     }
 
     /// <summary>
@@ -50,7 +47,7 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="filter">boolian function to filter the data to be returned</param>
     /// <returns>one data</returns>
-    public Assignment Read(Func<Assignment, bool>? filter)
+    public Assignment? Read(Func<Assignment, bool> filter)
      => DataSource.Assignments.FirstOrDefault(filter);
 
     /// <summary>
@@ -70,15 +67,9 @@ internal class AssignmentImplementation : IAssignment
     /// <exception cref="Exception"></exception>
     public void Update(Assignment item)
     {
-        Assignment? updateAssignment = DataSource.Assignments.Find(assignment => assignment.Id == item.Id);
-        if (updateAssignment != null)
-        {
-            DataSource.Assignments.Remove(updateAssignment);
-            DataSource.Assignments.Add(updateAssignment);
-        }
-        else
-        {
-            throw new Exception($"Assignment with ID={item.Id} is not exists");
-        }
+        if (Read(item.Id) is null)
+            throw new DalDoesNotExistException($"Assignment with ID={item.Id} does not exists");
+        DataSource.Assignments.Remove(Read(item.Id)!);
+        DataSource.Assignments.Add(item);
     }
 }

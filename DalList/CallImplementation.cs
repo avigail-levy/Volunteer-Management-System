@@ -21,12 +21,9 @@ internal class CallImplementation : ICall
     /// <exception cref="Exception"></exception>
     public void Delete(int id)
     {
-        Call? callToRemove=DataSource.Calls.Find(call=>call.Id == id);
-        if (callToRemove != null) 
-            DataSource.Calls.Remove(callToRemove);
-            
-        else
-            throw new Exception($"Call with ID={id} is not exists");
+        if (Read(id) is null)
+            throw new DalDoesNotExistException($"Call with ID={id} does not exists");
+        DataSource.Calls.Remove(Read(id)!);
     }
     // מתודה למחיקת כל הקריאות
     public void DeleteAll()
@@ -41,7 +38,7 @@ internal class CallImplementation : ICall
     /// <returns></returns>
     public Call? Read(int id)
     {
-        return DataSource.Calls.Find(call => call.Id == id);
+        return DataSource.Calls.FirstOrDefault(call => call.Id == id);
     }
 
     /// <summary>
@@ -49,7 +46,7 @@ internal class CallImplementation : ICall
     /// </summary>
     /// <param name="filter">boolian function to filter the data to be returned</param>
     /// <returns>one data</returns>
-    public Call Read(Func<Call, bool>? filter)
+    public Call? Read(Func<Call, bool> filter)
      => DataSource.Calls.FirstOrDefault(filter);
 
     /// <summary>
@@ -68,15 +65,9 @@ internal class CallImplementation : ICall
     /// <exception cref="Exception"></exception>
     public void Update(Call item)
     {
-        Call? updateCall = DataSource.Calls.Find(call => call.Id == item.Id);
-        if (updateCall != null)
-        {
-            DataSource.Calls.Remove(updateCall);
-            DataSource.Calls.Add(updateCall);
-        }
-        else
-        {
-            throw new Exception($"Call with ID={item.Id} is not exists");
-        }
+        if (Read(item.Id) is null)
+            throw new DalDoesNotExistException($"Call with ID={item.Id} does not exists");
+        DataSource.Calls.Remove(Read(item.Id)!);
+        DataSource.Calls.Add(item);
     }
 }

@@ -11,18 +11,11 @@ internal class VolunteerImplementation : IVolunteer
 /// <exception cref="Exception"></exception>
     public void Create(Volunteer item)
     {
-        Volunteer? createVolunteer = DataSource.Volunteers.Find(volunteer => volunteer.Id == item.Id);
-        if (createVolunteer == null)
-        {
-            createVolunteer = item;
-            DataSource.Volunteers.Add(createVolunteer);
-        }
-        else
-        {
-            throw new Exception($"Volunteer with ID={item.Id} already exists");
-        }
-
+        if (Read(item.Id) is not null)
+            throw new DalAlreadyExistsException($"Volunteer with ID={item.Id} already exists");
+        DataSource.Volunteers.Add(item);
     }
+
     /// <summary>
     /// מתודה למחיקת מתנדב ע"פ הת.ז שלו 
     /// </summary>
@@ -30,12 +23,9 @@ internal class VolunteerImplementation : IVolunteer
     /// <exception cref="Exception"></exception>
     public void Delete(int id)
     {
-        Volunteer? volunteerToRemove = DataSource.Volunteers.Find(volunteer => volunteer.Id == id);
-        if (volunteerToRemove != null)
-            DataSource.Volunteers.Remove(volunteerToRemove);
-
-        else
-            throw new Exception($"Volunteer with ID={id} is not exists");
+        if (Read(id) is null)
+            throw new DalDoesNotExistException($"Volunteer with ID={id} does not exists");
+        DataSource.Volunteers.Remove(Read(id)!);
     }
    //מתודה למחיקת כל המתנדבים
     public void DeleteAll()
@@ -50,7 +40,7 @@ internal class VolunteerImplementation : IVolunteer
 
     public Volunteer? Read(int id)
     {
-        return DataSource.Volunteers.Find(volunteer => volunteer.Id == id);
+        return DataSource.Volunteers.FirstOrDefault(volunteer => volunteer.Id == id);
     }
 
     /// <summary>
@@ -58,7 +48,7 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="filter">boolian function to filter the data to be returned</param>
     /// <returns>one data</returns>
-    public Volunteer Read(Func<Volunteer, bool>? filter)
+    public Volunteer? Read(Func<Volunteer, bool> filter)
      => DataSource.Volunteers.FirstOrDefault(filter);
 
     /// <summary>
@@ -78,15 +68,9 @@ internal class VolunteerImplementation : IVolunteer
     /// <exception cref="Exception"></exception>
     public void Update(Volunteer item)
     {
-        Volunteer? updateVolunteer = DataSource.Volunteers.Find(volunteer => volunteer.Id == item.Id);
-        if (updateVolunteer != null)
-        {
-            DataSource.Volunteers.Remove(updateVolunteer);
-            DataSource.Volunteers.Add(item);
-        }
-        else
-        {
-            throw new Exception($"Volunteer with ID={item.Id} is not exists");
-        }
+        if (Read(item.Id) is null)
+            throw new DalDoesNotExistException($"Volunteer with ID={item.Id} does not exists");
+        DataSource.Volunteers.Remove(Read(item.Id)!);
+        DataSource.Volunteers.Add(item);
     }
 }

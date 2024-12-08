@@ -42,7 +42,7 @@ namespace DalTest
         /// </summary>
         private static void CreateVolunteer()
         {
-            Volunteer volunteer = new Volunteer()
+            Volunteer volunteer = new()
             {
                 Id = ReadHelper.ReadInt("insert id volunteer: "),
                 Name = ReadHelper.ReadString("insert full name: "),
@@ -64,7 +64,7 @@ namespace DalTest
         /// </summary>
         private static void CreateCall()
         {
-            Call call = new Call()
+            Call call = new ()
             {
                 CallType = ReadHelper.ReadEnum<CallType>("insert call type: "),
                 CallAddress = ReadHelper.ReadString("insert call address: "),
@@ -81,7 +81,7 @@ namespace DalTest
         /// </summary>
         private static void CreateAssignment()
         {
-            Assignment assignment = new Assignment()
+            Assignment assignment = new()
             {
                 CallId = ReadHelper.ReadInt("insert id of call: "),
                 VolunteerId = ReadHelper.ReadInt("insert id of volunteer: "),
@@ -99,7 +99,7 @@ namespace DalTest
         {
             int idToDelete;
             Console.WriteLine("insert id-entity to delete:");
-            idToDelete = int.Parse(Console.ReadLine());
+            idToDelete = int.TryParse(Console.ReadLine(), out int result) ? result : throw new DalMustValueExeption("insert value");
             try
             {
                 switch (entityName)
@@ -130,21 +130,21 @@ namespace DalTest
         private static void UpdateCall()
         {
             Console.WriteLine("insert id-entity to update:");
-            int idToUpdate = int.Parse(Console.ReadLine());
+            int idToUpdate = int.TryParse(Console.ReadLine(), out int result) ? result : throw new DalMustValueExeption("insert value");
             try
             {
-                Call oldCall = s_dal.Call.Read(idToUpdate);
+                Call? oldCall = s_dal.Call.Read(idToUpdate);
                 Console.WriteLine("Enter the data to create a new object of type call:");
                 Console.WriteLine("Enter the data of: type of call, full address, latitude, longitude, opening time, maximum time of finish call, description");
                 Call newCall = new Call()
                 {
-                    CallType = int.TryParse(Console.ReadLine(), out int typeOfCall) ? (CallType)typeOfCall : oldCall.CallType,
-                    CallAddress = ReadHelper.ReadOrDefault(Console.ReadLine(), oldCall.CallAddress),
+                    CallType = int.TryParse(Console.ReadLine(), out int typeOfCall) ? (CallType)typeOfCall : oldCall!.CallType,
+                    CallAddress = ReadHelper.ReadOrDefault(Console.ReadLine(), oldCall!.CallAddress),
                     Latitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : oldCall.Latitude,
                     Longitude = double.TryParse(Console.ReadLine(), out double Longitude) ? Longitude : oldCall.Longitude,
                     OpeningTime = DateTime.TryParse(Console.ReadLine(), out DateTime OpeningTime) ? OpeningTime : oldCall.OpeningTime,
                     MaxTimeFinishCall = DateTime.TryParse(Console.ReadLine(), out DateTime MaximumTimeFinishCall) ? MaximumTimeFinishCall : oldCall.MaxTimeFinishCall,
-                    CallDescription = ReadHelper.ReadOrDefault(Console.ReadLine(), oldCall.CallDescription),
+                    CallDescription = ReadHelper.ReadOrDefault(Console.ReadLine(), oldCall.CallDescription!),
 
                 };
                 s_dal.Call.Update(newCall);
@@ -161,14 +161,14 @@ namespace DalTest
         private static void UpdateVolunteer()
         {
             Console.WriteLine("insert id-entity to update:");
-            int idToUpdate = int.Parse(Console.ReadLine());
+           int idToUpdate = int.TryParse(Console.ReadLine(), out int result) ? result : throw new DalMustValueExeption("insert value");
             try
             {
-                Volunteer oldVolunteer = s_dal.Volunteer.Read(idToUpdate);
+                Volunteer? oldVolunteer = s_dal.Volunteer.Read(idToUpdate);
                 Console.WriteLine("Enter the data of:  full name, phone, email, role, active, distance type,latitude,longitude,password, address, max distance for call");
                 Volunteer newVolunteer = new Volunteer()
                 {
-                    Id = oldVolunteer.Id,
+                    Id = oldVolunteer!.Id,
                     Name = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Name),
                     Phone = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Phone),
                     Email = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Email),
@@ -177,8 +177,8 @@ namespace DalTest
                     DistanceType = int.TryParse(Console.ReadLine(), out int distanceType) ? (DistanceType)distanceType : oldVolunteer.DistanceType,
                     Latitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : oldVolunteer.Latitude,
                     Longitude = double.TryParse(Console.ReadLine(), out double longitude) ? longitude : oldVolunteer.Longitude,
-                    Password = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Password),
-                    Address = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Address),
+                    Password = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Password!),
+                    Address = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Address!),
                     MaxDistanceForCall = double.TryParse(Console.ReadLine(), out double maxDistanceForCall) ? maxDistanceForCall : oldVolunteer.MaxDistanceForCall,
                 };
                 s_dal.Volunteer.Update(newVolunteer);
@@ -194,19 +194,19 @@ namespace DalTest
         private static void UpdateAssignment()
         {
             Console.WriteLine("insert id-entity to update:");
-            int idToUpdate = int.Parse(Console.ReadLine());
+            int idToUpdate = int.TryParse(Console.ReadLine(), out int result) ? result : throw new DalMustValueExeption("insert value");
             try
             {
-                Assignment oldAssignment = s_dal.Assignment.Read(idToUpdate);
+                Assignment? oldAssignment = s_dal.Assignment.Read(idToUpdate);
                 Console.WriteLine("Enter the data to create a new object of type assignment:");
                 Console.WriteLine("insert  call id, volunteer id, entry time for treatment, type of treatment termination,end of treatment time");
                 Assignment newAssignment = new Assignment()
                 {
-                    CallId = int.TryParse(Console.ReadLine(), out int callid) ? callid : oldAssignment.CallId,
-                    VolunteerId = int.TryParse(Console.ReadLine(), out int volunteerId) ? volunteerId : oldAssignment.VolunteerId,
-                    EntryTimeForTreatment = DateTime.TryParse(Console.ReadLine(), out DateTime entryTimeForTreatment) ? entryTimeForTreatment : oldAssignment.EntryTimeForTreatment,
-                    TypeOfTreatmentTermination = int.TryParse(Console.ReadLine(), out int typeOfTreatmentTermination) ? (TypeOfTreatmentTermination)typeOfTreatmentTermination : oldAssignment.TypeOfTreatmentTermination,
-                    EndOfTreatmentTime = DateTime.TryParse(Console.ReadLine(), out DateTime endOfTreatmentTime) ? endOfTreatmentTime : oldAssignment.EndOfTreatmentTime,
+                    CallId = int.TryParse(Console.ReadLine(), out int callId) ? callId : oldAssignment!.CallId,
+                    VolunteerId = int.TryParse(Console.ReadLine(), out int volunteerId) ? volunteerId : oldAssignment!.VolunteerId,
+                    EntryTimeForTreatment = DateTime.TryParse(Console.ReadLine(), out DateTime entryTimeForTreatment) ? entryTimeForTreatment : oldAssignment!.EntryTimeForTreatment,
+                    TypeOfTreatmentTermination = int.TryParse(Console.ReadLine(), out int typeOfTreatmentTermination) ? (TypeOfTreatmentTermination)typeOfTreatmentTermination : oldAssignment!.TypeOfTreatmentTermination,
+                    EndOfTreatmentTime = DateTime.TryParse(Console.ReadLine(), out DateTime endOfTreatmentTime) ? endOfTreatmentTime : oldAssignment!.EndOfTreatmentTime,
                 };
                 s_dal.Assignment.Update(newAssignment);
             }
@@ -249,8 +249,7 @@ namespace DalTest
         {
             if (s_dal.Volunteer.Read(idToRead) != null)
             {
-                Volunteer volunteer = s_dal.Volunteer.Read(idToRead);
-                // הצגת המידע של המשימה
+                Volunteer volunteer = s_dal.Volunteer.Read(idToRead) ?? throw new DalDoesNotExistException("the volunteer does not exist");
                 Console.WriteLine("Volunteer Details:");
                 Console.WriteLine($"Volunteer ID: {volunteer.Id}");
                 Console.WriteLine($"Volunteer name: {volunteer.Name}");
@@ -274,7 +273,7 @@ namespace DalTest
         {
             if (s_dal.Call.Read(idToRead) != null)
             {
-                Call call = s_dal.Call.Read(idToRead);
+                Call call = s_dal.Call.Read(idToRead) ?? throw new DalDoesNotExistException("the call does not exist");
                 // הצגת המידע של המשימה
                 Console.WriteLine("Call Details:");
                 Console.WriteLine($"Call ID: {call.Id}");
@@ -295,7 +294,7 @@ namespace DalTest
         {
             if (s_dal.Assignment.Read(idToRead) != null)
             {
-                Assignment assignment = s_dal.Assignment.Read(idToRead);
+                Assignment assignment = s_dal.Assignment.Read(idToRead) ?? throw new DalDoesNotExistException("the assignment does not exist");
                 // הצגת המידע של המשימה
                 Console.WriteLine("Assignment Details:");
                 Console.WriteLine($"Assignment ID: {assignment.Id}");
@@ -316,7 +315,7 @@ namespace DalTest
             if (idToRead == 0)
             {
                 Console.WriteLine("insert id-entity to delete:");
-                idToRead = int.Parse(Console.ReadLine());
+                idToRead = int.TryParse(Console.ReadLine(), out int result) ? result : throw new DalMustValueExeption("insert value");
             }
             switch (entityName)
             {
@@ -403,7 +402,7 @@ namespace DalTest
                 Console.WriteLine($"{(int)option}: {option}");
             }
             Console.Write("Choose an option: ");
-            int numericChoice = int.Parse(Console.ReadLine());
+            int numericChoice = int.TryParse(Console.ReadLine(), out int result) ? result : throw new DalMustValueExeption("insert value");
             ConfigMenuOptions choice = (ConfigMenuOptions)numericChoice;
             switch (choice)
             {
@@ -411,10 +410,10 @@ namespace DalTest
                 case ConfigMenuOptions.Exit:
                     return;
                 case ConfigMenuOptions.AdvanceClockMinute:
-                    s_dal.Config.Clock=s_dal.Config.Clock.AddMinutes(1);
+                    s_dal.Config.Clock = s_dal.Config.Clock.AddMinutes(1);
                     break;
                 case ConfigMenuOptions.AdvanceClockHour:
-                    s_dal.Config.Clock=s_dal.Config.Clock.AddHours(1);
+                    s_dal.Config.Clock = s_dal.Config.Clock.AddHours(1);
                     break;
                 case ConfigMenuOptions.ViewCurrentClock:
                     Console.WriteLine(s_dal.Config.Clock);
@@ -459,7 +458,7 @@ namespace DalTest
             {
                 //פונקציה שמדפיסה את התפריט הראשי
                 PrintMainMenu();
-                string input = Console.ReadLine();
+                string? input = Console.ReadLine();
                 int numericChoice;
 
                 // בדיקת קלט
@@ -513,7 +512,7 @@ namespace DalTest
         static void CrudMenu(string entityName)
         {
             PrintCrudMenu();
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
             int numericCrudChoice;
 
             // בדיקת קלט

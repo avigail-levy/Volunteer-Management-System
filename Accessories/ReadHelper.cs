@@ -10,7 +10,7 @@ namespace Accessories
         public static int ReadInt(string message)
         {
             Console.WriteLine(message);
-            string numInput = Console.ReadLine();
+            string? numInput = Console.ReadLine();
             int number;
             while (!int.TryParse(numInput, out number))
             {
@@ -23,7 +23,7 @@ namespace Accessories
         public static double ReadDouble(string message)
         {
             Console.WriteLine(message);
-            string ageInput = Console.ReadLine();
+            string? ageInput = Console.ReadLine();
             double data;
             while (!double.TryParse(ageInput, out data))
             {
@@ -36,7 +36,11 @@ namespace Accessories
         public static string ReadString(string message)
         {
             Console.WriteLine(message);
-            string ageInput = Console.ReadLine();
+            string? ageInput = Console.ReadLine();
+            while (ageInput is null)
+            {
+                ageInput = Console.ReadLine();
+            }
             return ageInput;
 
         }
@@ -44,7 +48,7 @@ namespace Accessories
         public static DateTime ReadDate(string message)
         {
             Console.WriteLine(message);
-            string dateInput = Console.ReadLine();
+            string? dateInput = Console.ReadLine();
             DateTime data;
             while (!DateTime.TryParse(dateInput, out data))
             {
@@ -57,7 +61,7 @@ namespace Accessories
         public static bool ReadBool(string message)
         {
             Console.WriteLine(message);
-            string dateInput = Console.ReadLine();
+            string? dateInput = Console.ReadLine();
             bool data;
             while (!bool.TryParse(dateInput, out data))
             {
@@ -71,8 +75,8 @@ namespace Accessories
         public static T ReadEnum<T>(string message)
         {
             Console.WriteLine(message);
-            string enumInput = Console.ReadLine();
-            object data;
+            string? enumInput = Console.ReadLine();
+            object? data;
             while (!Enum.TryParse(typeof(T), enumInput, out data))
             {
                 Console.WriteLine("The value you entered is invalid. Please enter it again!");

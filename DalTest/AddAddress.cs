@@ -8,7 +8,7 @@ namespace DalTest
 {        //מחלקה ליצירת אובייקטים של כתובות 
      internal class AddAddress
     {
-        public string StringAddress;
+        public string? StringAddress;
         public double Latitude;
         public double Longitude;
     
