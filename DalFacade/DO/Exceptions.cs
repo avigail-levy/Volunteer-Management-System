@@ -9,7 +9,7 @@ public class DalDoesNotExistException : Exception
     public DalDoesNotExistException(string? message) : base(message) { }
 }
 /// <summary>
-/// "The object already exists" - the exception will be thrown, for example,
+/// "The object already exists" - the exception will be thrown , for example,
 /// when trying to add to the list of objects of any type, an object with an
 /// ID number that already exists
 /// </summary>
