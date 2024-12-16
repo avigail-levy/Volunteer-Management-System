@@ -3,8 +3,6 @@ using DalApi;
 using DO;
 using Accessories;
 using System.Runtime.InteropServices;
-
-
 namespace DalTest
 {
     internal class Program
@@ -14,8 +12,8 @@ namespace DalTest
         //private static ICall? s_dalCall = new CallImplementation(); //stage 1
         //private static IAssignment? s_dalAssignment = new AssignmentImplementation(); //stage 1
         //private static IConfig? s_dalConfig = new ConfigImplementation(); 
-        static readonly IDal s_dal = new DalList(); //stage 2
-
+        //static readonly IDal s_dal = new DalList(); //stage 2
+          static readonly IDal s_dal = new DalXml();//stage 3
 
         /// <summary>
         /// פונקציה המזמנת את הפונקציה ליצירת האוביקט מסוג הפרמטר שהתקבל
@@ -314,7 +312,7 @@ namespace DalTest
         {
             if (idToRead == 0)
             {
-                Console.WriteLine("insert id-entity to delete:");
+                Console.WriteLine("insert id-entity to read:");
                 idToRead = int.TryParse(Console.ReadLine(), out int result) ? result : throw new DalMustValueExeption("insert value");
             }
             switch (entityName)
