@@ -1,7 +1,9 @@
 ﻿namespace Dal;
 using DalApi;
-sealed public class DalList : IDal
+sealed internal class DalList : IDal
 {
+    private DalList() { }
+    public static IDal Instance { get; } = new DalList();
     public IVolunteer Volunteer { get; }= new VolunteerImplementation();
     public ICall Call { get; } = new CallImplementation();
 
@@ -18,5 +20,6 @@ sealed public class DalList : IDal
         Assignment.DeleteAll();	  
         Config.Reset();
     }
+
 }
 

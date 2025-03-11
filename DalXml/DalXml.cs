@@ -1,7 +1,10 @@
 ﻿using DalApi;
+using System.Diagnostics;
 namespace Dal;
-public class DalXml : IDal
+sealed internal class DalXml : IDal
 {
+    private DalXml() { }
+    public static IDal Instance { get; } = new DalXml();
     public IVolunteer Volunteer { get; } = new VolunteerImplementation();
 
     public ICall Call { get; } = new CallImplementation();

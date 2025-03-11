@@ -13,7 +13,9 @@ namespace DalTest
         //private static IAssignment? s_dalAssignment = new AssignmentImplementation(); //stage 1
         //private static IConfig? s_dalConfig = new ConfigImplementation(); 
         //static readonly IDal s_dal = new DalList(); //stage 2
-          static readonly IDal s_dal = new DalXml();//stage 3
+        //static readonly IDal s_dal = new DalList(); //stage 2
+        //static readonly IDal s_dal = new DalXml(); //stage 3
+        static readonly IDal s_dal = Factory.Get; //stage 4
 
         /// <summary>
         /// פונקציה המזמנת את הפונקציה ליצירת האוביקט מסוג הפרמטר שהתקבל
@@ -490,7 +492,8 @@ namespace DalTest
                     case MainMenuOptions.InitializeDatabase:
                         try
                         {
-                            Initialization.Do(s_dal); //stage 2
+                          //Initialization.Do(s_dal); //stage 2
+                            Initialization.Do(); //stage 4
                         }
                         catch (Exception ex)
                         {

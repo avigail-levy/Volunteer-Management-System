@@ -131,10 +131,10 @@ public static class Initialization
         var idleVolunteers = volunteers.Take(volunteers.Count / 5).ToList(); // 20% מהמתנדבים
     }
     //מתודה לאתחול הנתונים
-    public static void Do(IDal dal) //stage 1
-    { 
-        s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); // stage 2
-
+    //public static void Do(IDal dal) //stage 2
+    public static void Do() { //stage 4
+      //s_dal = dal ?? throw new NullReferenceException("DAL object can not be null!"); //stage 2
+        s_dal = DalApi.Factory.Get; //stage 4
         Console.WriteLine("Reset Configuration values and List values...");
         s_dal.ResetDB();//stage 2
         CreateCall();
