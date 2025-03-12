@@ -6,7 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BO
+   
 {
+    /// <summary>
+    /// לכתוב תיעוד לכל התכונות!!!!!!!!!!!!!!!!!!!!!!!!!האירוסין של חנה&זאבי
+    /// </summary>
     public class Volunteer
     {
         public int Id { get; init; }
@@ -18,13 +22,16 @@ namespace BO
         public string? Latitude { get; set; }
         public string? Longitude { get; set; }
         public Role Role { get; set; }
-        public bool Action { get; set; }
+        public bool Active { get; set; }
         public double? MaxDistanceReceiveCalling { get; set; }
         public DistanceType DistanceType { get;set; }
         public int TotalCallsHandled { get;set;}
         public int TotalCallsCanceled { get; set; }
         public int TotalCallsChoseHandleHaveExpired { get; set; }
         public BO.CallInProgress? CallingVolunteerTherapy {  get; set; }
-       
+
+        //public override string ToString() => this.ToStringProperty();
+
+
     }
 }
