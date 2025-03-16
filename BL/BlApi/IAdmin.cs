@@ -8,5 +8,8 @@ namespace BlApi
 {
     public interface IAdmin
     {
+        DateTime GetClock();
+
+
     }
 }
