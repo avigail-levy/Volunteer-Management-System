@@ -9,5 +9,5 @@ public enum VolunteerInListAttributes { Id, Name, Active, TotalCallsHandledByVol
 public enum CallInListAttributes { Id, CallId, CallType, OpeningTime, TotalTimeRemainingFinishCalling, LastVolunteerName, TotalTimeCompleteTreatment, StatusCall, TotalAssignments }
 public enum ClosedCallInListAttributes { Id, CallType, CallAddress, OpeningTime, EntryTimeForTreatment, EndOfTreatmentTime, TypeOfTreatmentTermination }
 public enum OpenCallInListAttributes { Id, CallType, CallDescription, CallAddress, OpeningTime, MaxTimeFinishCall, CallingDistanceFromTreatingVolunteer }
-
+public enum TimeUnit{Minute, Hour, Day,Month,Year };
 

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlApi
+namespace BlImplementation
 {
-    internal interface Interface1
+    internal class Class1
     {
     }
 }
