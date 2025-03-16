@@ -1,6 +1,4 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace BlApi
+﻿namespace BlApi
 {
     public interface IAdmin
     {
@@ -9,26 +7,31 @@ namespace BlApi
         /// </summary>
         /// <returns> the value of the system clock. </returns>
         DateTime GetClock();
+
         /// <summary>
         /// Advance the system clock by the appropriate time unit.
         /// </summary>
         /// <param name="timeUnit">The unit of time for promotion</param>
         void AdvanceClock(BO.TimeUnit timeUnit);
+
         /// <summary>
         /// Return the value of the configuration variable "Risk Range"
         /// </summary>
         /// <returns>The value of the configuration variable "Risk Range"</returns>
         TimeSpan GetRiskRange();
+
         /// <summary>
         /// Updates the value of the configuration variable "Risk Time Range" to the value received as a parameter
         /// </summary>
         /// <param name="newRiskRange">Risk time frame</param>
         void SetRiskRange(TimeSpan newRiskRange);
+
         /// <summary>
         /// Reset all configuration data (reset all configuration data to its initial value)
         /// Clear all entity data(clear all data lists)
         /// </summary>
         void ResetDB();
+
         /// <summary>
         /// Initialize the database.
         /// </summary>

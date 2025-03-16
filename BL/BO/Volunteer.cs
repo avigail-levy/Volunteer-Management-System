@@ -1,12 +1,4 @@
-﻿using DO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BO
-   
+﻿namespace BO   
 {
     /// <summary>
     /// לכתוב תיעוד לכל התכונות!!!!!!!!!!!!!!!!!!!!!!!!!
