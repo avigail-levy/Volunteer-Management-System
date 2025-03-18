@@ -99,7 +99,6 @@ internal class VolunteerImplementation : IVolunteer
 //    public StatusCalling StatusCalling { get; set; }
 //} : null,
             };
-
             return volunteerBO;
 
         }
