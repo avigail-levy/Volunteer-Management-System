@@ -48,27 +48,72 @@ internal class VolunteerImplementation : IVolunteer
         }
         catch (Exception ex)
         {
-            throw new BlCantDeleteException("It is not possible to delete the volunteer",ex);
+            throw new BlCantDeleteException("It is not possible to delete the volunteer", ex);
         }
     }
 
     public IEnumerable<VolunteerInList> GetListVolunteers(bool? active, VolunteerInListAttributes? filterByAttribute)
-        {
-            throw new NotImplementedException();
-        }
+    {
+        throw new NotImplementedException();
+    }
 
-        public Volunteer GetVolunteerDetails(int idVolunteer)
+    public Volunteer GetVolunteerDetails(int idVolunteer)
+    {
+        try
         {
-            throw new NotImplementedException();
-        }
+            var vol = _dal.Volunteer.Read(idVolunteer) ?? throw new Exception($"Volunteer with ID {idVolunteer} is not found in database.");
 
-        public Role Login(string username)
-        {
-        }
+            //var assignment = _dal.Assignment.Read(a => a.VolunteerId == idVolunteer);
+            var volunteerBO = new Volunteer
+            {
+                Id = vol.Id,
+                Name = vol.Name,
+                Phone = vol.Phone,
+                Email = vol.Email,
+                Password = vol.Password,
+                Address = vol.Address,
+                Latitude = vol.Latitude,
+                Longitude = vol.Longitude,
+                Role = (BO.Role)vol.Role,
+                Active = vol.Active,
+                MaxDistanceForCall = vol.MaxDistanceForCall,
+                DistanceType = (BO.DistanceType)vol.DistanceType,
+                TotalCallsHandled = _dal.Assignment.ReadAll()
+                    .Count(a => a.VolunteerId == idVolunteer && a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.Handled),
+                TotalCallsCanceled = _dal.Assignment.ReadAll()
+                    .Count(a => a.VolunteerId == idVolunteer && a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.SelfCancellation),
+                TotalCallsChoseHandleHaveExpired = _dal.Assignment.ReadAll()
+                    .Count(a => a.VolunteerId == idVolunteer && a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.CancellationExpired),
 
-        public void UpdateVolunteerDetails(int idVolunteer, Volunteer volunteer)
-        {
-            throw new NotImplementedException();
+//                CallingVolunteerTherapy = _dal.Assignment.Read(a => a.VolunteerId == idVolunteer) ?? new CallInProgress
+//                {
+//                      Id
+//                      CallId 
+//                      CallType 
+//                      CallDescription//תיאור מילולי של הקריאה
+//                      CallAddress 
+//                      OpeningTime 
+//                      MaxTimeFinishCall 
+//                      EntryTimeForTreatment //maybeeeee init??
+//                      CallingDistanceFromTreatingVolunteer
+//    public StatusCalling StatusCalling { get; set; }
+//} : null,
+            };
+
+            return volunteerBO;
+
         }
+        catch (Exception ex)
+        {
+            throw new Exception("bla", ex);
+        }
+    }
+    public Role Login(string username)
+    {
+        
+    }
+    public void UpdateVolunteerDetails(int idVolunteer, Volunteer volunteer)
+    {
+        throw new NotImplementedException();
     }
 }
