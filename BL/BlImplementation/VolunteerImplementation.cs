@@ -61,9 +61,11 @@ internal class VolunteerImplementation : IVolunteer
     {
         try
         {
-            var vol = _dal.Volunteer.Read(idVolunteer) ?? throw new Exception($"Volunteer with ID {idVolunteer} is not found in database.");
+            var vol = _dal.Volunteer.Read(idVolunteer) ?? throw new BlDoesNotExistException($"Volunteer with ID {idVolunteer} is not found in database.");
 
-            //var assignment = _dal.Assignment.Read(a => a.VolunteerId == idVolunteer);
+            var assignment = _dal.Assignment.Read(a => a.VolunteerId == idVolunteer);
+            var call = _dal.Call.Read(assignment.CallId);
+
             var volunteerBO = new Volunteer
             {
                 Id = vol.Id,
@@ -85,19 +87,19 @@ internal class VolunteerImplementation : IVolunteer
                 TotalCallsChoseHandleHaveExpired = _dal.Assignment.ReadAll()
                     .Count(a => a.VolunteerId == idVolunteer && a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.CancellationExpired),
 
-//                CallingVolunteerTherapy = _dal.Assignment.Read(a => a.VolunteerId == idVolunteer) ?? new CallInProgress
-//                {
-//                      Id
-//                      CallId 
-//                      CallType 
-//                      CallDescription//תיאור מילולי של הקריאה
-//                      CallAddress 
-//                      OpeningTime 
-//                      MaxTimeFinishCall 
-//                      EntryTimeForTreatment //maybeeeee init??
-//                      CallingDistanceFromTreatingVolunteer
-//    public StatusCalling StatusCalling { get; set; }
-//} : null,
+                CallingVolunteerTherapy = assignment!=null ? new CallInProgress
+                {
+                      //Id= 
+                      CallId = assignment.CallId,
+                      CallType = (BO.CallType)call.CallType,
+                      CallDescription=call.CallDescription,
+                      CallAddress = call.CallAddress,
+                      OpeningTime = call.OpeningTime,
+                      MaxTimeFinishCall =call.MaxTimeFinishCall,
+                      EntryTimeForTreatment =assignment.EntryTimeForTreatment, //maybeeeee init??
+                      CallingDistanceFromTreatingVolunteer =
+                      StatusCalling=
+                } : null,
             };
             return volunteerBO;
 
@@ -109,7 +111,7 @@ internal class VolunteerImplementation : IVolunteer
     }
     public Role Login(string username)
     {
-        
+
     }
     public void UpdateVolunteerDetails(int idVolunteer, Volunteer volunteer)
     {

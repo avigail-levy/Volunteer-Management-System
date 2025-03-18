@@ -1,10 +1,10 @@
 ﻿namespace BO;
 
-//[Serializable]
-//public class DalDoesNotExistException : Exception
-//{
-//    public DalDoesNotExistException(string? message) : base(message) { }
-//}
+[Serializable]
+public class BlDoesNotExistException : Exception
+{
+    public BlDoesNotExistException(string? message) : base(message) { }
+}
 
 [Serializable]
 public class BlAlreadyExistsException : Exception
