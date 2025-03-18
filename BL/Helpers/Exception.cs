@@ -20,6 +20,13 @@ public class BlCantDeleteException : Exception
 
 }
 
+[Serializable]
+public class BlInvalidValueException : Exception
+{
+    public BlInvalidValueException(string? message) : base(message) { }
+    public BlInvalidValueException(string? message, Exception ex) : base(message, ex) { }
+
+}
 //[Serializable]
 //public class DalXMLFileLoadCreateException : Exception
 //{
