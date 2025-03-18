@@ -1,4 +1,8 @@
 ﻿
+using BO;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+
 namespace Helpers
 {
     static internal class Tools
@@ -24,6 +28,72 @@ namespace Helpers
         // }
         // return str;
         //}
+        private class OSMGeocodeResponse
+        {
+            public string display_name { get; set; }
+        }
+
+         public static bool IntegrityCheck(BO.Volunteer volunteer)
+        {
+            //Email health check
+            if (!Regex.IsMatch(volunteer.Email, @"^[^\s@]+@[^\s@]+\.[^\s@]+$"))
+            {
+                throw new BlInvalidValueException("Invalid email format");
+            }
+            //Phone check
+            if (!Regex.IsMatch(volunteer.Phone, @"^\d{10}$"))
+            {
+                throw new BlInvalidValueException("Invalid phone number format");
+            }
+            // ID check
+            if (!IsValidIsraeliID(volunteer.Id))
+            {
+                throw new BlInvalidValueException("Invalid Israeli ID number");
+            }
+            //Adress check
+            if (!IsValidAddress(volunteer.Latitude, volunteer.Longitude))
+            {
+                throw new BlInvalidValueException("Address cannot be empty");
+            }
+            return true;
+        }
+        /// <summary>
+        /// Checking if the id is valid
+        /// </summary>
+        /// <param name="id">id to check</param>
+        /// <returns> true if the ID is valid, otherwise false</returns>
+       static public bool IsValidIsraeliID(int id)
+        {
+
+            string idStr = id.ToString().PadLeft(9, '0');
+            int sum = 0;
+            for (int i = 0; i < 9; i++)
+            {
+                int num = (idStr[i] - '0') * ((i % 2) + 1);
+                sum += num > 9 ? num - 9 : num;
+            }
+            return sum % 10 == 0;
+        }
+        /// <summary>
+        /// Checking if the adress is valid
+        /// </summary>
+        /// <param name="lon">Longitude</param>
+        /// <param name="lat">Latitude</param>
+        /// <returns>true if the adress is valid, otherwise false</returns>
+        static public bool IsValidAddress(double? lon, double? lat)
+        {
+            string requestUri = $"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}";
+
+            using HttpClient client = new HttpClient();
+            HttpResponseMessage response = client.Send(new HttpRequestMessage(HttpMethod.Get, requestUri));
+
+            if (!response.IsSuccessStatusCode) return false;
+
+            string jsonResponse = response.Content.ReadAsStringAsync().Result;
+            var result = JsonSerializer.Deserialize<OSMGeocodeResponse>(jsonResponse);
+
+            return !string.IsNullOrWhiteSpace(result?.display_name);
+        }
     }
 
 }
