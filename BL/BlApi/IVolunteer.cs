@@ -30,7 +30,7 @@
         /// </summary>
         /// <param name="idVolunteer">ID of the person requesting the update</param>
         /// <param name="volunteer">An object of the logical entity type "volunteer" for update</param>
-        void UpdateVolunteerDetails(int idVolunteer, BO.Volunteer volunteer);
+        void UpdateVolunteerDetails(int idRequester, BO.Volunteer volunteer);
         /// <summary>
         /// Requesting a request to the data layer to check if the volunteer can be deleted
         ///Attempting to request a deletion of the volunteer from the data layer
@@ -43,10 +43,5 @@
         /// </summary>
         /// <param name="newBoVolunteer">An object of the logical entity type "volunteer"</param>
         void AddVolunteer(BO.Volunteer newBoVolunteer);
-
-
-
-
-
     }
 }

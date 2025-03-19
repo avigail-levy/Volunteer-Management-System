@@ -98,7 +98,7 @@ internal class VolunteerImplementation : IVolunteer
                       MaxTimeFinishCall =call.MaxTimeFinishCall,
                       EntryTimeForTreatment =assignment.EntryTimeForTreatment, //maybeeeee init??
                       CallingDistanceFromTreatingVolunteer =
-                      StatusCalling=
+                      StatusCalling = 
                 } : null,
             };
             return volunteerBO;
@@ -111,10 +111,41 @@ internal class VolunteerImplementation : IVolunteer
     }
     public Role Login(string username)
     {
-
+        var vol = _dal.Volunteer.Read(vol => vol.Name == username ) ??
+        throw new BO.BlDoesNotExistException($"Volunteer with Name ={username} does Not exist");
+        return (BO.Role)vol.Role;
     }
-    public void UpdateVolunteerDetails(int idVolunteer, Volunteer volunteer)
+    public void UpdateVolunteerDetails(int idRequester, Volunteer volunteer)
     {
-        throw new NotImplementedException();
+        try
+        {
+            DO.Volunteer requester = _dal.Volunteer.Read(idRequester);//לבדוק אם מי שמבקש הוא מנהל או שלפחות זה באמת המתנדב בעצמו
+            if (requester.Role != DO.Role.Manager && idRequester != volunteer.Id)
+                throw new Exception("bbbb");
+            {
+                //בדיקות תקינות לעדכון
+                //יש לבקש את הרשומה משכבת הנתונים ולבדוק אילו שדות השתנו מה הכוונה?
+               
+                DO.Volunteer updatedDoVolunteer = new(
+                volunteer.Id,
+                volunteer.Name,
+                volunteer.Phone,
+                volunteer.Email,
+                requester.Role == DO.Role.Manager ? (DO.Role)volunteer.Role : (DO.Role)_dal.Volunteer.Read(volunteer.Id).Role, // רק מנהל יכול לשנות תפקיד
+                volunteer.Active,
+                (DO.DistanceType)volunteer.DistanceType,
+                volunteer.Latitude,//לעדכן קווי אורך ורוחב בהתאם לכתובת פונקציית עזר 
+                volunteer.Longitude,
+                volunteer.Password,
+                volunteer.Address,
+                volunteer.MaxDistanceForCall
+                 );
+                _dal.Volunteer.Update(updatedDoVolunteer);
+            }
+        }
+        catch(Exception e)
+        {
+              throw new Exception($"you are not a manager or it'snt your id{idRequester}",e);
+        }
     }
 }
