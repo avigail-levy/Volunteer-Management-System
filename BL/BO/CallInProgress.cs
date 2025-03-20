@@ -12,7 +12,7 @@
         public DateTime? MaxTimeFinishCall {  get; set; }
         public DateTime EntryTimeForTreatment { get; set; }//maybee init??
         public double CallingDistanceFromTreatingVolunteer { get; set; }
-        public StatusCalling StatusCalling { get; set; }
+        public StatusCallInProgress StatusCalling { get; set; }
 
         //public override string ToString() => this.ToStringProperty();
     }

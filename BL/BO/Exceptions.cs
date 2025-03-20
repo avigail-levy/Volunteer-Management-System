@@ -4,18 +4,29 @@
 public class BlDoesNotExistException : Exception
 {
     public BlDoesNotExistException(string? message) : base(message) { }
+    public BlDoesNotExistException(string message, Exception innerException)
+                : base(message, innerException) { }
+
 }
+//attribute with null value
+[Serializable]
+public class BlNullPropertyException : Exception
+{
+    public BlNullPropertyException(string? message) : base(message) { }
+}
+
+
 
 [Serializable]
 public class BlAlreadyExistsException : Exception
 {
-    public BlAlreadyExistsException(string? message,Exception ex) : base(message, ex) { }
+    public BlAlreadyExistsException(string? message, Exception ex) : base(message, ex) { }
 }
 
 [Serializable]
 public class BlCantDeleteException : Exception
 {
-    public BlCantDeleteException(string? message,Exception ex) : base(message,ex) { }
+    public BlCantDeleteException(string? message, Exception ex) : base(message, ex) { }
     public BlCantDeleteException(string? message) : base(message) { }
 
 }
@@ -32,4 +43,5 @@ public class BlInvalidValueException : Exception
 //{
 //    public DalXMLFileLoadCreateException(string? message) : base(message) { }
 //}
+
 

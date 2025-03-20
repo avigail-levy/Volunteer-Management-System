@@ -61,7 +61,7 @@ internal class VolunteerImplementation : IVolunteer
     {
         try
         {
-            var vol = _dal.Volunteer.Read(idVolunteer) ?? throw new BlDoesNotExistException($"Volunteer with ID {idVolunteer} is not found in database.");
+            DO.Volunteer vol = _dal.Volunteer.Read(idVolunteer) ?? throw new BlDoesNotExistException($"Volunteer with ID {idVolunteer} is not found in database.");
 
             var assignment = _dal.Assignment.Read(a => a.VolunteerId == idVolunteer);
             var call = _dal.Call.Read(assignment.CallId);
@@ -115,13 +115,24 @@ internal class VolunteerImplementation : IVolunteer
         throw new BO.BlDoesNotExistException($"Volunteer with Name ={username} does Not exist");
         return (BO.Role)vol.Role;
     }
-    public void UpdateVolunteerDetails(int idRequester, Volunteer volunteer)
+    public void UpdateVolunteerDetails(int idRequester, BO.Volunteer volunteer)
     {
+        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteer.Id)?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteer.Id} does Not exist");
+        
+        //tryלכאורה מיותר כי אין בכלל זריקה מהדאל בריד אבל למה???
+        //{
+        //    doVolunteer = _dal.Volunteer.Read(volunteer.Id);
+
+        //}
+        //catch (DO.DalDoesNotExistException e)
+        //{
+           
+        //}
         try
         {
             DO.Volunteer requester = _dal.Volunteer.Read(idRequester);//לבדוק אם מי שמבקש הוא מנהל או שלפחות זה באמת המתנדב בעצמו
             if (requester.Role != DO.Role.Manager && idRequester != volunteer.Id)
-                throw new Exception("bbbb");
+                throw new Exception("bbbb");//חריגה מתאימה
             {
                 //בדיקות תקינות לעדכון
                 //יש לבקש את הרשומה משכבת הנתונים ולבדוק אילו שדות השתנו מה הכוונה?
@@ -143,9 +154,9 @@ internal class VolunteerImplementation : IVolunteer
                 _dal.Volunteer.Update(updatedDoVolunteer);
             }
         }
-        catch(Exception e)
+        catch(BO.BlDoesNotExistException e)//לעשות חריגה חדשה  מתאימה
         {
-              throw new Exception($"you are not a manager or it'snt your id{idRequester}",e);
+              throw new BlDoesNotExistException($"you are not a manager or it's not your id{idRequester}",e);
         }
     }
 }
