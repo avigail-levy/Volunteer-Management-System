@@ -117,22 +117,14 @@ internal class VolunteerImplementation : IVolunteer
     }
     public void UpdateVolunteerDetails(int idRequester, BO.Volunteer volunteer)
     {
-        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteer.Id)?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteer.Id} does Not exist");
+        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteer.Id) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteer.Id} does Not exist");
         
-        //tryלכאורה מיותר כי אין בכלל זריקה מהדאל בריד אבל למה???
-        //{
-        //    doVolunteer = _dal.Volunteer.Read(volunteer.Id);
-
-        //}
-        //catch (DO.DalDoesNotExistException e)
-        //{
-           
-        //}
+       
         try
         {
             DO.Volunteer requester = _dal.Volunteer.Read(idRequester);//לבדוק אם מי שמבקש הוא מנהל או שלפחות זה באמת המתנדב בעצמו
             if (requester.Role != DO.Role.Manager && idRequester != volunteer.Id)
-                throw new Exception("bbbb");//חריגה מתאימה
+                throw new BO.BlUnauthorizedException("Only a managar can update the volunteer's Position");
             {
                 //בדיקות תקינות לעדכון
                 //יש לבקש את הרשומה משכבת הנתונים ולבדוק אילו שדות השתנו מה הכוונה?
@@ -156,7 +148,7 @@ internal class VolunteerImplementation : IVolunteer
         }
         catch(BO.BlDoesNotExistException e)//לעשות חריגה חדשה  מתאימה
         {
-              throw new BlDoesNotExistException($"you are not a manager or it's not your id{idRequester}",e);
+              throw new BlDoesNotExistException("Only a managar can update the volunteer's Role");
         }
     }
 }

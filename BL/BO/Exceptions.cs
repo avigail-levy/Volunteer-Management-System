@@ -1,4 +1,6 @@
-﻿namespace BO;
+﻿using System.Runtime.Serialization;
+
+namespace BO;
 
 [Serializable]
 public class BlDoesNotExistException : Exception
@@ -37,6 +39,11 @@ public class BlInvalidValueException : Exception
     public BlInvalidValueException(string? message) : base(message) { }
     public BlInvalidValueException(string? message, Exception ex) : base(message, ex) { }
 
+}
+[Serializable]
+public class BlUnauthorizedException:Exception
+{
+    public BlUnauthorizedException(string? message) { }
 }
 //[Serializable]
 //public class DalXMLFileLoadCreateException : Exception
