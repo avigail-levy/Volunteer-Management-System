@@ -16,22 +16,22 @@ namespace Helpers
             //Email health check
             if (!Regex.IsMatch(volunteer.Email, @"^[^\s@]+@[^\s@]+\.[^\s@]+$"))
             {
-                throw new BlInvalidValueException("Invalid email format");
+                throw new BO.BlInvalidValueException("Invalid email format");
             }
             //Phone check
             if (!Regex.IsMatch(volunteer.Phone, @"^\d{10}$"))
             {
-                throw new BlInvalidValueException("Invalid phone number format");
+                throw new BO.BlInvalidValueException("Invalid phone number format");
             }
             // ID check
             if (!IsValidIsraeliID(volunteer.Id))
             {
-                throw new BlInvalidValueException("Invalid Israeli ID number");
+                throw new BO.BlInvalidValueException("Invalid Israeli ID number");
             }
             //Adress check
             if (!IsValidAddress(volunteer.Latitude, volunteer.Longitude))
             {
-                throw new BlInvalidValueException("Address cannot be empty");
+                throw new BO.BlInvalidValueException("Address cannot be empty");
             }
             return true;
         }

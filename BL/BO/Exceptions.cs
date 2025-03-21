@@ -6,8 +6,7 @@ namespace BO;
 public class BlDoesNotExistException : Exception
 {
     public BlDoesNotExistException(string? message) : base(message) { }
-    public BlDoesNotExistException(string message, Exception innerException)
-                : base(message, innerException) { }
+    public BlDoesNotExistException(string message, Exception ex) : base(message, ex) { }
 
 }
 //attribute with null value
@@ -33,17 +32,18 @@ public class BlCantDeleteException : Exception
 
 }
 
+
+
 [Serializable]
 public class BlInvalidValueException : Exception
 {
     public BlInvalidValueException(string? message) : base(message) { }
     public BlInvalidValueException(string? message, Exception ex) : base(message, ex) { }
-
 }
 [Serializable]
 public class BlUnauthorizedException:Exception
 {
-    public BlUnauthorizedException(string? message) { }
+    public BlUnauthorizedException(string? message):base(message) { }
 }
 //[Serializable]
 //public class DalXMLFileLoadCreateException : Exception

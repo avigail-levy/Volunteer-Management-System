@@ -9,6 +9,6 @@
         public DateTime? EndOfTreatmentTime {  get; set; }
         public TypeOfTreatmentTermination? TypeOfTreatmentTermination {  get; set; }
          
-
     }
 }
+

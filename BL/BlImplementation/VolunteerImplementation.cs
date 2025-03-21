@@ -1,8 +1,5 @@
 ﻿using BlApi;
 using BO;
-using Helpers;
-using System;
-
 namespace BlImplementation;
 
 internal class VolunteerImplementation : IVolunteer
@@ -36,13 +33,13 @@ internal class VolunteerImplementation : IVolunteer
     }
 
     public void DeleteVolunteer(int idVolunteer)
-    {
+    {//מתנדב שהוקצאה לו קריאה אבל הוא עוד לא התחיל לטפל בה גם מפריע למחיקת מתנדב
         try
         {
             var assignments = _dal.Assignment.ReadAll()
                               .Where(a => a.VolunteerId == idVolunteer)
                               .Select(a => a.VolunteerId);
-            if (!assignments.Any())
+            if (assignments.Count()!=0)
                 throw new BlCantDeleteException("It is not possible to delete a volunteer handling calls.");
             _dal.Volunteer.Delete(idVolunteer);
         }
@@ -96,9 +93,9 @@ internal class VolunteerImplementation : IVolunteer
                       CallAddress = call.CallAddress,
                       OpeningTime = call.OpeningTime,
                       MaxTimeFinishCall =call.MaxTimeFinishCall,
-                      EntryTimeForTreatment =assignment.EntryTimeForTreatment, //maybeeeee init??
-                      CallingDistanceFromTreatingVolunteer =
-                      StatusCalling = 
+                      EntryTimeForTreatment =assignment.EntryTimeForTreatment//maybeeeee init??
+                      //CallingDistanceFromTreatingVolunteer =
+                      //StatusCalling = 
                 } : null,
             };
             return volunteerBO;
