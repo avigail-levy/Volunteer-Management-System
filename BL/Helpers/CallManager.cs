@@ -31,7 +31,7 @@ namespace Helpers
                 && a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.Handled).Any()
                 ||!assignmentsCall.Any())
                 return BO.StatusCall.Open;
-            if(assignmentsCall.Where(a=>(a.EntryTimeForTreatment<now&&
+            if(assignmentsCall.Where(a=>(a.EntryTimeForTreatment<now&&n
             )))
             return BO.StatusCall.Open;
         }
