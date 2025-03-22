@@ -1,4 +1,5 @@
 ﻿using DalApi;
+using System.ComponentModel.Design;
 
 namespace Helpers
 {
@@ -20,20 +21,25 @@ namespace Helpers
         }
         internal static BO.StatusCall GetStatusCall(DO.Call call)
         {
-            //רשימת הקצאות
-            // ,InTreatment ,Closed ,Expired ,OpenAtRisk ,InTreatmentAtRisk 
             DateTime now = ClockManager.Now;
             IEnumerable<DO.Assignment> assignmentsCall = s_dal.Assignment.ReadAll(assignment => assignment.CallId == call.Id);
-           
+
             if (!assignmentsCall
                 .Where(a => (a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.CancelAdministrator)
                 || (a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.SelfCancellation)
                 && a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.Handled).Any()
-                ||!assignmentsCall.Any())
-                return BO.StatusCall.Open;
-            if(assignmentsCall.Where(a=>(a.EntryTimeForTreatment<now&&n
-            )))
-            return BO.StatusCall.Open;
+                || !assignmentsCall.Any())
+                if (now.Add(s_dal.Config.RiskRange) > call.MaxTimeFinishCall)
+                    return BO.StatusCall.OpenAtRisk;//OpenAtRisk
+                else return BO.StatusCall.Open;//Open
+            if (!assignmentsCall.Where(a => a.TypeOfTreatmentTermination != null).Any())
+                if (now.Add(s_dal.Config.RiskRange) > call.MaxTimeFinishCall)
+                    return BO.StatusCall.InTreatmentAtRisk;//InTreatmentAtRisk
+                else return BO.StatusCall.InTreatment;//InTreatment
+            if (assignmentsCall.Where(a => a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.Handled).Any())
+                return BO.StatusCall.Closed;//Closed
+            return BO.StatusCall.Expired;//Expired
+
         }
     }
 }

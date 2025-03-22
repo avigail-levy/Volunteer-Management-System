@@ -95,7 +95,7 @@ internal class VolunteerImplementation : IVolunteer
                       MaxTimeFinishCall =call.MaxTimeFinishCall,
                       EntryTimeForTreatment =assignment.EntryTimeForTreatment//maybeeeee init??
                       //CallingDistanceFromTreatingVolunteer =
-                      //StatusCalling = 
+                      //StatusCalling
                 } : null,
             };
             return volunteerBO;
@@ -115,8 +115,6 @@ internal class VolunteerImplementation : IVolunteer
     public void UpdateVolunteerDetails(int idRequester, BO.Volunteer volunteer)
     {
         DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteer.Id) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteer.Id} does Not exist");
-        
-       
         try
         {
             DO.Volunteer requester = _dal.Volunteer.Read(idRequester);//לבדוק אם מי שמבקש הוא מנהל או שלפחות זה באמת המתנדב בעצמו

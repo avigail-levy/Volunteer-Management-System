@@ -1,6 +1,5 @@
 ﻿using BlApi;
-using BO;
-
+using Helpers;
 
 namespace BlImplementation;
 
@@ -8,7 +7,7 @@ internal class CallImplementation : ICall
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
-    public void AddCall(Call newBoCall)
+    public void AddCall(BO.Call newBoCall)
     {
         throw new NotImplementedException();
     }
@@ -18,32 +17,35 @@ internal class CallImplementation : ICall
         throw new NotImplementedException();
     }
 
-    public IEnumerable<ClosedCallInList> ClosedCallsListHandledByVolunteer(int idVolunteer, CallType? filterByAttribute, ClosedCallInListAttributes? sortByAttribute)
+    public IEnumerable<BO.ClosedCallInList> ClosedCallsListHandledByVolunteer(int idVolunteer, BO.CallType? filterByAttribute, BO.ClosedCallInListAttributes? sortByAttribute)
     {
         throw new NotImplementedException();
     }
 
     public void DeleteCall(int idCall)
-    {//לבדוק אם היא בסטטוס פתוחה אם כן מותר למחוק###########################################
+    {
         try
         {
             var callsInAssignment = _dal.Assignment.ReadAll()
                               .Where(a => a.CallId == idCall)
                               .Select(a => a.CallId);
             if (callsInAssignment.Count()!=0)
-                throw new BlCantDeleteException("It is not possible to delete a call handling assignment.");
+                throw new BO.BlCantDeleteException("It is not possible to delete a call handling assignment.");
+            DO.Call call= _dal.Call.Read(idCall);
+            if (CallManager.GetStatusCall(call) != BO.StatusCall.Open)
+                throw new BO.BlCantDeleteException("It is not possible to delete a call that is not open.");
             _dal.Call.Delete(idCall);
         }
         catch (Exception ex)
         {
-            throw new BlCantDeleteException("It is not possible to delete the call", ex);
+            throw new BO.BlCantDeleteException("It is not possible to delete the call", ex);
         }
     }
 
     public BO.Call GetCallDetails(int idCall)
     {//#####################################################################################
-        DO.Call call = _dal.Call.Read(idCall)??throw new BlDoesNotExistException("call does not exist");
-        Call newBOCall = new Call
+        DO.Call call = _dal.Call.Read(idCall) ?? throw new BO.BlDoesNotExistException("call does not exist");
+        BO.Call newBOCall = new BO.Call
         {
             Id = call.Id,
             CallAddress = call.CallAddress,
@@ -53,32 +55,32 @@ internal class CallImplementation : ICall
             Latitude = call.Latitude,
             Longitude = call.Longitude,
             OpeningTime = call.OpeningTime,
-            StatusCall =,
-            AssignmentListForCall = 
+            StatusCall =CallManager.GetStatusCall(call),
+            //AssignmentListForCall = 
             };
         
-        return new BO.Call();
+        return newBOCall;
     }
 
     public int[] GetCallQuantitiesByStatus()
     {
         //######################################################################################
         var calls = _dal.Call.ReadAll();
-        var callsByStatus = calls.GroupBy(call => call.CallAddress);
+        var callsByStatus = calls.GroupBy(call => CallManager.GetStatusCall(call));
         return [];
     }
 
-    public IEnumerable<CallInList> GetCallsList(CallInListAttributes? filterByAttribute, object? filterValue, CallInListAttributes? sortByAttribute)
+    public IEnumerable<BO.CallInList> GetCallsList(BO.CallInListAttributes? filterByAttribute, object? filterValue, BO.CallInListAttributes? sortByAttribute)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<OpenCallInList> OpenCallsListSelectedByVolunteer(int idVolunteer, CallType? filterByAttribute, OpenCallInListAttributes? sortByAttribute)
+    public IEnumerable<BO.OpenCallInList> OpenCallsListSelectedByVolunteer(int idVolunteer, BO.CallType? filterByAttribute, BO.OpenCallInListAttributes? sortByAttribute)
     {
         throw new NotImplementedException();
     }
 
-    public void UpdateCallDetails(Call call)
+    public void UpdateCallDetails(BO.Call call)
     {
         throw new NotImplementedException();
     }
