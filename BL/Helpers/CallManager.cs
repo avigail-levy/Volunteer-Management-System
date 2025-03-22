@@ -1,10 +1,4 @@
-﻿using BO;
-using DalApi;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DalApi;
 
 namespace Helpers
 {
@@ -23,6 +17,23 @@ namespace Helpers
                     //s_dal.Call.Update(doCall with { StatusCall = (StatusCall)OpenAtRisk });
                 }
             }
+        }
+        internal static BO.StatusCall GetStatusCall(DO.Call call)
+        {
+            //רשימת הקצאות
+            // ,InTreatment ,Closed ,Expired ,OpenAtRisk ,InTreatmentAtRisk 
+            DateTime now = ClockManager.Now;
+            IEnumerable<DO.Assignment> assignmentsCall = s_dal.Assignment.ReadAll(assignment => assignment.CallId == call.Id);
+           
+            if (!assignmentsCall
+                .Where(a => (a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.CancelAdministrator)
+                || (a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.SelfCancellation)
+                && a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.Handled).Any()
+                ||!assignmentsCall.Any())
+                return BO.StatusCall.Open;
+            if(assignmentsCall.Where(a=>(a.EntryTimeForTreatment<now&&
+            )))
+            return BO.StatusCall.Open;
         }
     }
 }
