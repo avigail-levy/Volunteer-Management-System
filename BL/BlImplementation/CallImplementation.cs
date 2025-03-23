@@ -2,7 +2,9 @@
 using BO;
 using DO;
 using Helpers;
+using System.ComponentModel.Design;
 using System.Net.Security;
+using System.Reflection;
 
 namespace BlImplementation;
 
@@ -123,10 +125,31 @@ internal class CallImplementation : ICall
     public IEnumerable<BO.CallInList> GetCallsList(BO.CallInListAttributes? filterByAttribute = null, object? filterValue = null, BO.CallInListAttributes? sortByAttribute = null)
     {
         IEnumerable<DO.Call> calls= _dal.Call.ReadAll();
-        var propertyValue = call.GetType().GetProperty(propertyName)?.GetValue(call);
-        throw new NotImplementedException();
-    }
+        var propertyNameFilter = filterByAttribute?.ToString();
 
+        calls = propertyNameFilter == null ? calls :
+               calls.Where(call => call.GetType().GetProperty(propertyNameFilter)?.GetValue(call)?.Equals(filterValue) == true);//עד כאן סינון
+
+        var propertyNameSort = sortByAttribute?.ToString();
+            calls = calls.OrderBy(call =>call.GetType().GetProperty(propertyNameSort)?.GetValue(call) ?? call.Id);
+
+        return calls.Select(c => new BO.CallInList
+        {
+            //Id = _dal.Assignment.Read(a => a.CallId == c.Id).Id,
+            //CallId = _dal.Assignment.Read(a => a.CallId == c.Id).CallId,
+            //CallType = (BO.CallType)c.CallType,
+            //OpeningTime = c.OpeningTime,
+            //TotalTimeRemainingFinishCalling = c.MaxTimeFinishCall - ClockManager.Now,
+            //LastVolunteerName = _dal.Volunteer.Read(v => v.Id ==
+            //                                    _dal.Assignment.ReadAll(a => a.CallId == c.Id)
+            //                                    .OrderByDescending(a => a.EntryTimeForTreatment)
+            //                                    .Select(a => a.VolunteerId)
+            //                                    .FirstOrDefault()).Name,
+            //TotalTimeCompleteTreatment = _dal.Assignment.Read(a => a.CallId == c.Id).EndOfTreatmentTime == null ? null : _dal.Assignment.Read(a => a.CallId == c.Id).EndOfTreatmentTime - c.OpeningTime,
+            //StatusCall = CallManager.GetStatusCall(c),
+            //TotalAssignments = _dal.Assignment.ReadAll().Count(a => a.CallId == _dal.Assignment.Read(a => a.CallId == c.Id).Id),
+        });
+    }
     public IEnumerable<BO.OpenCallInList> OpenCallsListSelectedByVolunteer(int idVolunteer, BO.CallType? filterByAttribute, BO.OpenCallInListAttributes? sortByAttribute)
     {
         throw new NotImplementedException();
