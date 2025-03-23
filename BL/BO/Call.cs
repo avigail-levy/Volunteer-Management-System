@@ -5,7 +5,7 @@
         public int Id { get; init; }
         public CallType CallType { get; set; }
         public string? CallDescription { get; set; }//תיאור מילולי של הקריאה
-        public string? CallAddress { get; set; }
+        public string CallAddress { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public DateTime OpeningTime { get; init; }

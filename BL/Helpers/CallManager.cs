@@ -41,5 +41,10 @@ namespace Helpers
             return BO.StatusCall.Expired;//Expired
 
         }
+
+        internal static bool validCall(BO.Call call)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
