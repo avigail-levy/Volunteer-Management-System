@@ -11,7 +11,7 @@
         public DateTime OpeningTime { get; init; }
         public DateTime? MaxTimeFinishCall {  get; set; }
         public StatusCall StatusCall { get; set; }
-        public List<BO.CallAssignInList>? AssignmentListForCall { get; set; }//כאשר אין ברשימה הקצאות לבדוק לפני כן שלא NULL
+        public List<BO.CallAssignInList>? CallAssignInList { get; set; }//כאשר אין ברשימה הקצאות לבדוק לפני כן שלא NULL
         // כי לא בקשו לאתחל לרשימה ריקה אלא NULL
 
         //public override string ToString() => this.ToStringProperty();

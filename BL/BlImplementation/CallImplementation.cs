@@ -84,73 +84,82 @@ internal class CallImplementation : ICall
             Longitude = call.Longitude,
             OpeningTime = call.OpeningTime,
             StatusCall = CallManager.GetStatusCall(call),
-            //AssignmentListForCall = 
+            CallAssignInList = _dal.Assignment.ReadAll(a => a.CallId == idCall)
+                                                               .Select(a => new BO.CallAssignInList
+                                                               {
+                                                                   VolunteerId = a.VolunteerId,
+                                                                   Name = _dal.Volunteer.Read(v => v.Id == a.VolunteerId).Name,
+                                                                   EntryTimeForTreatment = a.EntryTimeForTreatment,
+                                                                   EndOfTreatmentTime = a.EndOfTreatmentTime,
+                                                                   TypeOfTreatmentTermination = (BO.TypeOfTreatmentTermination)a.TypeOfTreatmentTermination
+                                                               }).ToList()
         };
-
         return newBOCall;
     }
-    /// <summary>
-    /// In each cell in the array at index i, the number of calls whose status value is equal to i will be counted.
-    /// </summary>
-    /// <returns>Returns an array of quantities according to the call status</returns>
-    public int[] GetCallQuantitiesByStatus()
-    {
-        int[] callCounts = new int[Enum.GetValues(typeof(BO.StatusCall)).Length];//size of array sach as num of option 
-        var calls = _dal.Call.ReadAll();
-        var callsByStatus = calls.GroupBy(call => CallManager.GetStatusCall(call))
-            .ToDictionary(group => (int)group.Key, group => group.Count());
-        foreach (var group in callsByStatus)
-        {
-            callCounts[group.Key] = group.Value;
-        }
-        return callCounts;
-    }
 
-    public IEnumerable<BO.CallInList> GetCallsList(BO.CallInListAttributes? filterByAttribute, object? filterValue, BO.CallInListAttributes? sortByAttribute)
+/// <summary>
+/// In each cell in the array at index i, the number of calls whose status value is equal to i will be counted.
+/// </summary>
+/// <returns>Returns an array of quantities according to the call status</returns>
+public int[] GetCallQuantitiesByStatus()
+{
+    int[] callCounts = new int[Enum.GetValues(typeof(BO.StatusCall)).Length];//size of array sach as num of option 
+    var calls = _dal.Call.ReadAll();
+    var callsByStatus = calls.GroupBy(call => CallManager.GetStatusCall(call))
+        .ToDictionary(group => (int)group.Key, group => group.Count());
+    foreach (var group in callsByStatus)
     {
+        callCounts[group.Key] = group.Value;
+    }
+    return callCounts;
+}
+
+public IEnumerable<BO.CallInList> GetCallsList(BO.CallInListAttributes? filterByAttribute=null, object? filterValue=null, BO.CallInListAttributes? sortByAttribute=null)
+{
         throw new NotImplementedException();
+
     }
 
     public IEnumerable<BO.OpenCallInList> OpenCallsListSelectedByVolunteer(int idVolunteer, BO.CallType? filterByAttribute, BO.OpenCallInListAttributes? sortByAttribute)
-    {
-        throw new NotImplementedException();
-    }
+{
+    throw new NotImplementedException();
+}
 
-    public void UpdateCallDetails(BO.Call call)
-    {/////////////////////////////########################בדיקות תקינות
-        try
+public void UpdateCallDetails(BO.Call call)
+{/////////////////////////////########################בדיקות תקינות
+    try
+    {
+        if (!CallManager.validCall(call))
         {
-            if (!CallManager.validCall(call))
-            {
-                throw new BlInvalidValueException("invalid values");
-            }
-            DO.Call doCall =
-             new(call.Id,
-                 (DO.CallType)call.CallType,
-                 call.CallAddress,
-                 call.Latitude,
-                 call.Longitude,
-                 call.OpeningTime,
-                 call.CallDescription,
-                 call.MaxTimeFinishCall
-                 );
-
-            _dal.Call.Update(doCall);
+            throw new BlInvalidValueException("invalid values");
         }
-        catch (DO.DalDoesNotExistException ex)
-        {
-            throw new BO.BlDoesNotExistException($"Call with ID={call.Id} is not exists", ex);
-        }
+        DO.Call doCall =
+         new(call.Id,
+             (DO.CallType)call.CallType,
+             call.CallAddress,
+             call.Latitude,
+             call.Longitude,
+             call.OpeningTime,
+             call.CallDescription,
+             call.MaxTimeFinishCall
+             );
 
+        _dal.Call.Update(doCall);
     }
-
-    public void UpdateCancelTreatmentOnCall(int id, int idCallAssign)
+    catch (DO.DalDoesNotExistException ex)
     {
-        throw new NotImplementedException();
+        throw new BO.BlDoesNotExistException($"Call with ID={call.Id} is not exists", ex);
     }
 
-    public void UpdateEndTreatmentOnCall(int idVolunteer, int idCallAssign)
-    {
-        throw new NotImplementedException();
-    }
+}
+
+public void UpdateCancelTreatmentOnCall(int id, int idCallAssign)
+{
+    throw new NotImplementedException();
+}
+
+public void UpdateEndTreatmentOnCall(int idVolunteer, int idCallAssign)
+{
+    throw new NotImplementedException();
+}
 }
