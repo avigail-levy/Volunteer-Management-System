@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using BO;
+using DO;
 using Helpers;
 using System.Net.Security;
 
@@ -69,9 +70,14 @@ internal class CallImplementation : ICall
             throw new BO.BlCantDeleteException("It is not possible to delete the call", ex);
         }
     }
-
+    /// <summary>
+    /// Requests the data layer to get details about the call and its allocation list.
+    /// </summary>
+    /// <param name="idCall">id call</param>
+    /// <returns>List of logical entities of type "List Read Assignment"</returns>
+    /// <exception cref="BO.BlDoesNotExistException">call does not exist</exception>
     public BO.Call GetCallDetails(int idCall)
-    {//#####################################################################################
+    {
         DO.Call call = _dal.Call.Read(idCall) ?? throw new BO.BlDoesNotExistException("call does not exist");
         BO.Call newBOCall = new BO.Call
         {
@@ -97,69 +103,70 @@ internal class CallImplementation : ICall
         return newBOCall;
     }
 
-/// <summary>
-/// In each cell in the array at index i, the number of calls whose status value is equal to i will be counted.
-/// </summary>
-/// <returns>Returns an array of quantities according to the call status</returns>
-public int[] GetCallQuantitiesByStatus()
-{
-    int[] callCounts = new int[Enum.GetValues(typeof(BO.StatusCall)).Length];//size of array sach as num of option 
-    var calls = _dal.Call.ReadAll();
-    var callsByStatus = calls.GroupBy(call => CallManager.GetStatusCall(call))
-        .ToDictionary(group => (int)group.Key, group => group.Count());
-    foreach (var group in callsByStatus)
+    /// <summary>
+    /// In each cell in the array at index i, the number of calls whose status value is equal to i will be counted.
+    /// </summary>
+    /// <returns>Returns an array of quantities according to the call status</returns>
+    public int[] GetCallQuantitiesByStatus()
     {
-        callCounts[group.Key] = group.Value;
+        int[] callCounts = new int[Enum.GetValues(typeof(BO.StatusCall)).Length];//size of array sach as num of option 
+        var calls = _dal.Call.ReadAll();
+        var callsByStatus = calls.GroupBy(call => CallManager.GetStatusCall(call))
+            .ToDictionary(group => (int)group.Key, group => group.Count());
+        foreach (var group in callsByStatus)
+        {
+            callCounts[group.Key] = group.Value;
+        }
+        return callCounts;
     }
-    return callCounts;
-}
-
-public IEnumerable<BO.CallInList> GetCallsList(BO.CallInListAttributes? filterByAttribute=null, object? filterValue=null, BO.CallInListAttributes? sortByAttribute=null)
-{
+    
+    public IEnumerable<BO.CallInList> GetCallsList(BO.CallInListAttributes? filterByAttribute = null, object? filterValue = null, BO.CallInListAttributes? sortByAttribute = null)
+    {
+        IEnumerable<DO.Call> calls= _dal.Call.ReadAll();
+        var propertyValue = call.GetType().GetProperty(propertyName)?.GetValue(call);
         throw new NotImplementedException();
-
     }
 
     public IEnumerable<BO.OpenCallInList> OpenCallsListSelectedByVolunteer(int idVolunteer, BO.CallType? filterByAttribute, BO.OpenCallInListAttributes? sortByAttribute)
-{
-    throw new NotImplementedException();
-}
-
-public void UpdateCallDetails(BO.Call call)
-{/////////////////////////////########################בדיקות תקינות
-    try
     {
-        if (!CallManager.validCall(call))
+        throw new NotImplementedException();
+    }
+
+    public void UpdateCallDetails(BO.Call call)
+    {/////////////////////////////########################בדיקות תקינות
+        try
         {
-            throw new BlInvalidValueException("invalid values");
+            if (!CallManager.validCall(call))
+            {
+                throw new BlInvalidValueException("invalid values");
+            }
+            DO.Call doCall =
+             new(call.Id,
+                 (DO.CallType)call.CallType,
+                 call.CallAddress,
+                 call.Latitude,
+                 call.Longitude,
+                 call.OpeningTime,
+                 call.CallDescription,
+                 call.MaxTimeFinishCall
+                 );
+
+            _dal.Call.Update(doCall);
         }
-        DO.Call doCall =
-         new(call.Id,
-             (DO.CallType)call.CallType,
-             call.CallAddress,
-             call.Latitude,
-             call.Longitude,
-             call.OpeningTime,
-             call.CallDescription,
-             call.MaxTimeFinishCall
-             );
+        catch (DO.DalDoesNotExistException ex)
+        {
+            throw new BO.BlDoesNotExistException($"Call with ID={call.Id} is not exists", ex);
+        }
 
-        _dal.Call.Update(doCall);
     }
-    catch (DO.DalDoesNotExistException ex)
+
+    public void UpdateCancelTreatmentOnCall(int id, int idCallAssign)
     {
-        throw new BO.BlDoesNotExistException($"Call with ID={call.Id} is not exists", ex);
+        throw new NotImplementedException();
     }
 
-}
-
-public void UpdateCancelTreatmentOnCall(int id, int idCallAssign)
-{
-    throw new NotImplementedException();
-}
-
-public void UpdateEndTreatmentOnCall(int idVolunteer, int idCallAssign)
-{
-    throw new NotImplementedException();
-}
+    public void UpdateEndTreatmentOnCall(int idVolunteer, int idCallAssign)
+    {
+        throw new NotImplementedException();
+    }
 }
