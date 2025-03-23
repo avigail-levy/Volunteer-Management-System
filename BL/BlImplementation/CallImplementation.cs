@@ -65,8 +65,9 @@ internal class CallImplementation : ICall
     public int[] GetCallQuantitiesByStatus()
     {
         //######################################################################################
+        int[] callsByStatusArray = new int[Enum.GetValues(typeof(BO.StatusCall)).Length];//size of array sach as num of option 
         var calls = _dal.Call.ReadAll();
-        var callsByStatus = calls.GroupBy(call => CallManager.GetStatusCall(call));
+        var callsByStatus = calls.GroupBy(call=>CallManager.GetStatusCall(call));
         return [];
     }
 
