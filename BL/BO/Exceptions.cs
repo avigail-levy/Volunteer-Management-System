@@ -31,6 +31,13 @@ public class BlCantDeleteException : Exception
     public BlCantDeleteException(string? message) : base(message) { }
 
 }
+[Serializable]
+public class BlCantUpdateEception : Exception
+{
+    public BlCantUpdateEception(string? message, Exception ex) : base(message, ex) { }
+    public BlCantUpdateEception(string? message) : base(message) { }
+
+}
 
 
 

@@ -1,10 +1,6 @@
 ﻿using BlApi;
 using BO;
-using DO;
 using Helpers;
-using System.ComponentModel.Design;
-using System.Net.Security;
-using System.Reflection;
 
 namespace BlImplementation;
 
@@ -181,23 +177,36 @@ internal class CallImplementation : ICall
         }
 
     }
-
+    /// <summary>
+    /// "Cancel Handling" update method on read
+    /// </summary>
+    /// <param name="id">ID of the person requesting the cancellation request</param>
+    /// <param name="idCallAssign">assignment id</param>
+    /// <exception cref="BlUnauthorizedException">No permission to update cancellation</exception>
+    /// <exception cref="BlCantUpdateEception">Error during update</exception>
     public void UpdateCancelTreatmentOnCall(int id, int idCallAssign)
-    {//////////////////////////////////////////////////###################################
+    {
         try
         {
-            var assignment = _dal.Assignment.Read(idCallAssign);
-            var call = _dal.Call.Read(assignment!.CallId);
+            DO.Assignment assignment = _dal.Assignment.Read(idCallAssign);
+            DO.Call call = _dal.Call.Read(assignment!.CallId);
             if (!(CallManager.GetStatusCall(call)==StatusCall.Open))
-                throw new BlCantDeleteException("the call is not open");
+                throw new BlCantUpdateEception("the call is not open");
             if(_dal.Volunteer.Read(id)!.Role!=DO.Role.Manager)
                 if (assignment.VolunteerId != id)
                     throw new BlUnauthorizedException("You are not allowed to delete the call.");
-
+            DO.Assignment newAssignment = new(assignment.Id,
+                assignment.CallId,
+                assignment.VolunteerId,
+                assignment.EntryTimeForTreatment,
+                assignment.VolunteerId != id ? DO.TypeOfTreatmentTermination.SelfCancellation
+                : DO.TypeOfTreatmentTermination.CancelAdministrator,
+                ClockManager.Now);
+            _dal.Assignment.Update(newAssignment);
         }
-        catch
+        catch(Exception ex)
         {
-            throw new NotImplementedException();
+            throw new BlCantUpdateEception("Unable to update the allocation",ex);
         }
     }
 
