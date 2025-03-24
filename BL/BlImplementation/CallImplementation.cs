@@ -190,11 +190,11 @@ internal class CallImplementation : ICall
         {
             DO.Assignment assignment = _dal.Assignment.Read(idCallAssign);
             DO.Call call = _dal.Call.Read(assignment!.CallId);
-            if (!(CallManager.GetStatusCall(call)==StatusCall.Open))
+            if (!(CallManager.GetStatusCall(call) == StatusCall.Open))
                 throw new BlCantUpdateEception("the call is not open");
-            if(_dal.Volunteer.Read(id)!.Role!=DO.Role.Manager)
+            if (_dal.Volunteer.Read(id)!.Role != DO.Role.Manager)
                 if (assignment.VolunteerId != id)
-                    throw new BlUnauthorizedException("You are not allowed to delete the call.");
+                    throw new BlUnauthorizedException("You are not allowed to update the call.");
             DO.Assignment newAssignment = new(assignment.Id,
                 assignment.CallId,
                 assignment.VolunteerId,
@@ -204,14 +204,40 @@ internal class CallImplementation : ICall
                 ClockManager.Now);
             _dal.Assignment.Update(newAssignment);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            throw new BlCantUpdateEception("Unable to update the allocation",ex);
+            throw new BlCantUpdateEception("Unable to update the allocation", ex);
         }
     }
-
+    /// <summary>
+    /// "EndTreatment" update method on read
+    /// </summary>
+    /// <param name="id">ID of the person requesting the cancellation request</param>
+    /// <param name="idCallAssign">assignment id</param>
+    /// <exception cref="BlUnauthorizedException">No permission to update cancellation</exception>
+    /// <exception cref="BlCantUpdateEception">Error during update</exception>
     public void UpdateEndTreatmentOnCall(int idVolunteer, int idCallAssign)
     {
-        throw new NotImplementedException();
+
+        try
+        {
+            DO.Assignment assignment = _dal.Assignment.Read(idCallAssign);
+            DO.Call call = _dal.Call.Read(assignment!.CallId);
+            if (!(CallManager.GetStatusCall(call) == StatusCall.Open))
+                throw new BlCantUpdateEception("the call is not open");
+            if (assignment.VolunteerId != idVolunteer)
+                throw new BlUnauthorizedException("You are not allowed to update the call.");
+            DO.Assignment newAssignment = new(assignment.Id,
+                assignment.CallId,
+                assignment.VolunteerId,
+                assignment.EntryTimeForTreatment,
+                DO.TypeOfTreatmentTermination.Handled,
+                ClockManager.Now);
+            _dal.Assignment.Update(newAssignment);
+        }
+        catch (Exception ex)
+        {
+            throw new BlCantUpdateEception("Unable to update the allocation", ex);
+        }
     }
 }
