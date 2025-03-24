@@ -11,7 +11,6 @@ namespace BlImplementation;
 internal class CallImplementation : ICall
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
-    //###########################################בדיקות תקינות
     public void AddCall(BO.Call newBoCall)
     {
         try
@@ -121,17 +120,17 @@ internal class CallImplementation : ICall
         }
         return callCounts;
     }
-    
+
     public IEnumerable<BO.CallInList> GetCallsList(BO.CallInListAttributes? filterByAttribute = null, object? filterValue = null, BO.CallInListAttributes? sortByAttribute = null)
     {
-        IEnumerable<DO.Call> calls= _dal.Call.ReadAll();
+        IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
         var propertyNameFilter = filterByAttribute?.ToString();
 
         calls = propertyNameFilter == null ? calls :
                calls.Where(call => call.GetType().GetProperty(propertyNameFilter)?.GetValue(call)?.Equals(filterValue) == true);//עד כאן סינון
 
         var propertyNameSort = sortByAttribute?.ToString();
-            calls = calls.OrderBy(call =>call.GetType().GetProperty(propertyNameSort)?.GetValue(call) ?? call.Id);
+        calls = calls.OrderBy(call => call.GetType().GetProperty(propertyNameSort)?.GetValue(call) ?? call.Id);
 
         return calls.Select(c => new BO.CallInList
         {
@@ -156,7 +155,7 @@ internal class CallImplementation : ICall
     }
 
     public void UpdateCallDetails(BO.Call call)
-    {/////////////////////////////########################בדיקות תקינות
+    {
         try
         {
             if (!CallManager.validCall(call))
@@ -184,8 +183,22 @@ internal class CallImplementation : ICall
     }
 
     public void UpdateCancelTreatmentOnCall(int id, int idCallAssign)
-    {
-        throw new NotImplementedException();
+    {//////////////////////////////////////////////////###################################
+        try
+        {
+            var assignment = _dal.Assignment.Read(idCallAssign);
+            var call = _dal.Call.Read(assignment!.CallId);
+            if (!(CallManager.GetStatusCall(call)==StatusCall.Open))
+                throw new BlCantDeleteException("the call is not open");
+            if(_dal.Volunteer.Read(id)!.Role!=DO.Role.Manager)
+                if (assignment.VolunteerId != id)
+                    throw new BlUnauthorizedException("You are not allowed to delete the call.");
+
+        }
+        catch
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public void UpdateEndTreatmentOnCall(int idVolunteer, int idCallAssign)
