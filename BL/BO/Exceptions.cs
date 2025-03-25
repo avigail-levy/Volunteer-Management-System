@@ -15,9 +15,6 @@ public class BlNullPropertyException : Exception
 {
     public BlNullPropertyException(string? message) : base(message) { }
 }
-
-
-
 [Serializable]
 public class BlAlreadyExistsException : Exception
 {
@@ -32,11 +29,10 @@ public class BlCantDeleteException : Exception
 
 }
 [Serializable]
-public class BlCantUpdateEception : Exception
+public class BlCantUpdateException : Exception
 {
-    public BlCantUpdateEception(string? message, Exception ex) : base(message, ex) { }
-    public BlCantUpdateEception(string? message) : base(message) { }
-
+    public BlCantUpdateException(string? message, Exception ex) : base(message, ex) { }
+    public BlCantUpdateException(string? message) : base(message) { }
 }
 
 
@@ -51,6 +47,12 @@ public class BlInvalidValueException : Exception
 public class BlUnauthorizedException:Exception
 {
     public BlUnauthorizedException(string? message):base(message) { }
+}
+public class BlInvalidRequestException : Exception
+{
+    public BlInvalidRequestException(string? message) : base(message) { }
+    public BlInvalidRequestException(string? message, Exception ex) : base(message, ex) { }
+
 }
 //[Serializable]
 //public class DalXMLFileLoadCreateException : Exception

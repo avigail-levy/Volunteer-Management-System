@@ -1,5 +1,4 @@
 ﻿using BlApi;
-using BO;
 using Helpers;
 
 namespace BlImplementation;
@@ -13,7 +12,7 @@ internal class CallImplementation : ICall
         {
             if (!CallManager.validCall(newBoCall))
             {
-                throw new BlInvalidValueException("invalid values");
+                throw new BO.BlInvalidValueException("invalid values");
             }
             DO.Call doCall =
              new(newBoCall.Id,
@@ -30,13 +29,36 @@ internal class CallImplementation : ICall
         }
         catch (DO.DalAlreadyExistsException ex)
         {
-            throw new BlAlreadyExistsException($"Call with ID={newBoCall.Id} already exists", ex);
+            throw new BO.BlAlreadyExistsException($"Call with ID={newBoCall.Id} already exists", ex);
         }
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="idVolunteer"></param>
+    /// <param name="idCall"></param>
+    /// <exception cref="BO.BlDoesNotExistException"></exception>
+    /// <exception cref="BO.BlInvalidRequestException"></exception>
     public void ChooseTreatmentCall(int idVolunteer, int idCall)
     {
-        throw new NotImplementedException();
+        var call = _dal.Call.Read(idCall) ?? throw new BO.BlDoesNotExistException($"the call with id{idCall} does not exist");
+        if (CallManager.GetStatusCall(call) != BO.StatusCall.Open)
+            throw new BO.BlInvalidRequestException($"The call with id{idCall} cannot be taken, The call status is not open");
+        try
+        {
+            DO.Assignment newAssignment = new(
+                 1,
+                 idCall,
+                 idVolunteer,
+                 ClockManager.Now
+                );
+            _dal.Assignment.Create(newAssignment);
+        }
+        catch(DO.DalAlreadyExistsException ex) 
+        {
+            throw new BO.BlInvalidRequestException($"The call with id{idCall} cannot be taken", ex);
+
+        }
     }
 
     public IEnumerable<BO.ClosedCallInList> ClosedCallsListHandledByVolunteer(int idVolunteer, BO.CallType? filterByAttribute, BO.ClosedCallInListAttributes? sortByAttribute)
@@ -77,17 +99,17 @@ internal class CallImplementation : ICall
     {
         DO.Call call = _dal.Call.Read(idCall) ?? throw new BO.BlDoesNotExistException("call does not exist");
         BO.Call newBOCall = new BO.Call
-        {
-            Id = call.Id,
-            CallAddress = call.CallAddress,
-            CallDescription = call.CallDescription,
-            CallType = (BO.CallType)call.CallType,
-            MaxTimeFinishCall = call.MaxTimeFinishCall,
-            Latitude = call.Latitude,
-            Longitude = call.Longitude,
-            OpeningTime = call.OpeningTime,
-            StatusCall = CallManager.GetStatusCall(call),
-            CallAssignInList = _dal.Assignment.ReadAll(a => a.CallId == idCall)
+        (
+            call.Id,
+            call.CallAddress,
+            call.CallDescription,
+            (BO.CallType)call.CallType,
+            call.MaxTimeFinishCall,
+            call.Latitude,
+            call.Longitude,
+            call.OpeningTime,
+            CallManager.GetStatusCall(call),
+            _dal.Assignment.ReadAll(a => a.CallId == idCall)
                                                                .Select(a => new BO.CallAssignInList
                                                                {
                                                                    VolunteerId = a.VolunteerId,
@@ -96,7 +118,7 @@ internal class CallImplementation : ICall
                                                                    EndOfTreatmentTime = a.EndOfTreatmentTime,
                                                                    TypeOfTreatmentTermination = (BO.TypeOfTreatmentTermination)a.TypeOfTreatmentTermination
                                                                }).ToList()
-        };
+        );
         return newBOCall;
     }
 
@@ -106,7 +128,7 @@ internal class CallImplementation : ICall
     /// <returns>Returns an array of quantities according to the call status</returns>
     public int[] GetCallQuantitiesByStatus()
     {
-        int[] callCounts = new int[Enum.GetValues(typeof(BO.StatusCall)).Length];//size of array sach as num of option 
+        int[] callCounts = new int[Enum.GetValues(typeof(BO.StatusCall)).Length];//size of array sach as num of option
         var calls = _dal.Call.ReadAll();
         var callsByStatus = calls.GroupBy(call => CallManager.GetStatusCall(call))
             .ToDictionary(group => (int)group.Key, group => group.Count());
@@ -156,10 +178,11 @@ internal class CallImplementation : ICall
         {
             if (!CallManager.validCall(call))
             {
-                throw new BlInvalidValueException("invalid values");
+                throw new BO.BlInvalidValueException("invalid values");
             }
             DO.Call doCall =
-             new(call.Id,
+             new(
+                 call.Id,
                  (DO.CallType)call.CallType,
                  call.CallAddress,
                  call.Latitude,
@@ -190,12 +213,13 @@ internal class CallImplementation : ICall
         {
             DO.Assignment assignment = _dal.Assignment.Read(idCallAssign);
             DO.Call call = _dal.Call.Read(assignment!.CallId);
-            if (!(CallManager.GetStatusCall(call) == StatusCall.Open))
-                throw new BlCantUpdateEception("the call is not open");
+            if (!(CallManager.GetStatusCall(call) == BO.StatusCall.Open))
+                throw new BO.BlCantUpdateException("the call is not open");
             if (_dal.Volunteer.Read(id)!.Role != DO.Role.Manager)
                 if (assignment.VolunteerId != id)
-                    throw new BlUnauthorizedException("You are not allowed to update the call.");
-            DO.Assignment newAssignment = new(assignment.Id,
+                    throw new BO.BlUnauthorizedException("You are not allowed to update the call.");
+            DO.Assignment newAssignment = new(
+                assignment.Id,
                 assignment.CallId,
                 assignment.VolunteerId,
                 assignment.EntryTimeForTreatment,
@@ -206,7 +230,7 @@ internal class CallImplementation : ICall
         }
         catch (Exception ex)
         {
-            throw new BlCantUpdateEception("Unable to update the allocation", ex);
+            throw new BO.BlCantUpdateException("Unable to update the allocation", ex);
         }
     }
     /// <summary>
@@ -218,16 +242,16 @@ internal class CallImplementation : ICall
     /// <exception cref="BlCantUpdateEception">Error during update</exception>
     public void UpdateEndTreatmentOnCall(int idVolunteer, int idCallAssign)
     {
-
         try
         {
             DO.Assignment assignment = _dal.Assignment.Read(idCallAssign);
-            DO.Call call = _dal.Call.Read(assignment!.CallId);
-            if (!(CallManager.GetStatusCall(call) == StatusCall.Open))
-                throw new BlCantUpdateEception("the call is not open");
+            DO.Call call = _dal.Call.Read(assignment.CallId);
+            if (!(CallManager.GetStatusCall(call) == BO.StatusCall.Open))
+                throw new BO.BlCantUpdateException("the call is not open");
             if (assignment.VolunteerId != idVolunteer)
-                throw new BlUnauthorizedException("You are not allowed to update the call.");
-            DO.Assignment newAssignment = new(assignment.Id,
+                throw new BO.BlUnauthorizedException("You are not allowed to update the call.");
+            DO.Assignment newAssignment = new(
+                assignment.Id,
                 assignment.CallId,
                 assignment.VolunteerId,
                 assignment.EntryTimeForTreatment,
@@ -237,7 +261,7 @@ internal class CallImplementation : ICall
         }
         catch (Exception ex)
         {
-            throw new BlCantUpdateEception("Unable to update the allocation", ex);
+            throw new BO.BlCantUpdateException("Unable to update the allocation", ex);
         }
     }
 }

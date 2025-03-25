@@ -2,6 +2,22 @@
 {
     public class Call
     {
+        private List<CallAssignInList> callAssignInLists;
+
+        public Call(int id, string callAddress, string? callDescription, CallType callType, DateTime? maxTimeFinishCall, double latitude, double longitude, DateTime openingTime, StatusCall statusCall, List<CallAssignInList> callAssignInLists)
+        {
+            Id = id;
+            CallAddress = callAddress;
+            CallDescription = callDescription;
+            CallType = callType;
+            MaxTimeFinishCall = maxTimeFinishCall;
+            Latitude = latitude;
+            Longitude = longitude;
+            OpeningTime = openingTime;
+            StatusCall = statusCall;
+            this.callAssignInLists = callAssignInLists;
+        }
+
         public int Id { get; init; }
         public CallType CallType { get; set; }
         public string? CallDescription { get; set; }//תיאור מילולי של הקריאה
