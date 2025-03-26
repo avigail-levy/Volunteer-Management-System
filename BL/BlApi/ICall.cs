@@ -65,7 +65,7 @@
         /// </summary>
         /// <param name="idVolunteer">Volunteer ID</param>
         /// <param name="idCallAssign">The assignment number of the call on which he wants to report the end of treatment</param>
-        void UpdateEndTreatmentOnCall(int idVolunteer, int idCallAssign);
+        void UpdateEndTreatmentOnCall(int idVolunteer, int idAssign);
         /// <summary>
         /// Makes requests to the data layer to fetch the data the method needs
         ///Checks for cancellation permission
@@ -75,7 +75,7 @@
         /// </summary>
         /// <param name="id">ID of the person requesting the cancellation request</param>
         /// <param name="idCallAssign">The allocation number of the currently processing call that he wants to cancel.</param>
-        void UpdateCancelTreatmentOnCall(int id, int idCallAssign);
+        void UpdateCancelTreatmentOnCall(int id, int idAssign);
         /// <summary>
         /// Makes requests to the data layer to fetch the data the method needs
         ///Checks that the request is valid

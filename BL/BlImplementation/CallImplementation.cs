@@ -198,6 +198,13 @@ internal class CallImplementation : ICall
             //TotalAssignments = _dal.Assignment.ReadAll().Count(a => a.CallId == _dal.Assignment.Read(a => a.CallId == c.Id).Id),
         });
     }
+    /// <summary>
+    /// The collection will include - all readings with the status "open" or "open at risk"
+    /// </summary>
+    /// <param name="idVolunteer">Volunteer ID - for whom the list of open calls for selection and their distance from their current distance is returned</param>
+    /// <param name="filterByAttribute">The ENUM value of the call type by which the list will be filtered.</param>
+    /// <param name="sortByAttribute">A parameter that is an ENUM value of a field in the "Open Read in List" entity, by which the list is sorted.</param>
+    /// <returns>A sorted collection of a logical data entity "Open Reads in List" that includes the distance of each read from the volunteer</returns>
     public IEnumerable<BO.OpenCallInList> OpenCallsListSelectedByVolunteer(int idVolunteer, BO.CallType? filterByAttribute, BO.OpenCallInListAttributes? sortByAttribute)
     {//#############################################
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
@@ -205,13 +212,13 @@ internal class CallImplementation : ICall
         var openCalls = from c in calls
                         where CallManager.GetStatusCall(c) == BO.StatusCall.Open || CallManager.GetStatusCall(c) == BO.StatusCall.OpenAtRisk
                         select c;
+
         openCalls = filterByAttribute != null ?
                     from c in calls
                     where c.CallType == (DO.CallType)filterByAttribute
                     select c
                     :
                     openCalls;
-
 
         openCalls = sortByAttribute != null ?
                   from c in calls
@@ -221,7 +228,8 @@ internal class CallImplementation : ICall
                   from c in calls
                   orderby c.Id
                   select c;
-
+        var vol = _dal.Volunteer.Read(idVolunteer) ??
+            throw new BO.BlDoesNotExistException($"The volunteer with id:{idVolunteer} does not exist");
         return openCalls.Select(c => new BO.OpenCallInList
         {
             Id = c.Id,
@@ -230,12 +238,17 @@ internal class CallImplementation : ICall
             CallAddress = c.CallAddress,
             OpeningTime = c.OpeningTime,
             MaxTimeFinishCall = c.MaxTimeFinishCall,
-            CallingDistanceFromTreatingVolunteer = 12
-            /////////////////////////////////////////////////////////////////////////////merchak
+            CallingDistanceFromTreatingVolunteer =CallManager.CalcDistance(c.Latitude, c.Longitude, vol.Latitude,vol.Longitude)
+            /////////////////////////////////////////////////////////////////////////////מרחק!!!!!!!!!!!!!!!!!!!!
 
         });
     }
-
+    /// <summary>
+    /// update call details
+    /// </summary>
+    /// <param name="call">Object of the logical entity type "Call" BO.Call</param>
+    /// <exception cref="BO.BlInvalidValueException">Invalid value exception</exception>
+    /// <exception cref="BO.BlDoesNotExistException">Call does not exist exception</exception>
     public void UpdateCallDetails(BO.Call call)
     {
         try
@@ -244,8 +257,8 @@ internal class CallImplementation : ICall
             {
                 throw new BO.BlInvalidValueException("invalid values");
             }
-            DO.Call doCall =
-             new(
+            DO.Call doCall =new(
+             
                  call.Id,
                  (DO.CallType)call.CallType,
                  call.CallAddress,
@@ -271,11 +284,11 @@ internal class CallImplementation : ICall
     /// <param name="idCallAssign">assignment id</param>
     /// <exception cref="BlUnauthorizedException">No permission to update cancellation</exception>
     /// <exception cref="BlCantUpdateEception">Error during update</exception>
-    public void UpdateCancelTreatmentOnCall(int id, int idCallAssign)
+    public void UpdateCancelTreatmentOnCall(int id, int idAssign)
     {
         try
         {
-            DO.Assignment assignment = _dal.Assignment.Read(idCallAssign);
+            DO.Assignment assignment = _dal.Assignment.Read(idAssign) ?? throw new BO.BlDoesNotExistException($"Assignment with id:{idAssign} does not exist");
             DO.Call call = _dal.Call.Read(assignment!.CallId);
             if (!(CallManager.GetStatusCall(call) == BO.StatusCall.Open))
                 throw new BO.BlCantUpdateException("the call is not open");
@@ -292,9 +305,9 @@ internal class CallImplementation : ICall
                 ClockManager.Now);
             _dal.Assignment.Update(newAssignment);
         }
-        catch (Exception ex)
+        catch (DO.DalDoesNotExistException ex)
         {
-            throw new BO.BlCantUpdateException("Unable to update the allocation", ex);
+            throw new BO.BlCantUpdateException("Unable to update the assignment", ex);
         }
     }
     /// <summary>
@@ -304,11 +317,11 @@ internal class CallImplementation : ICall
     /// <param name="idCallAssign">assignment id</param>
     /// <exception cref="BlUnauthorizedException">No permission to update cancellation</exception>
     /// <exception cref="BlCantUpdateEception">Error during update</exception>
-    public void UpdateEndTreatmentOnCall(int idVolunteer, int idCallAssign)
+    public void UpdateEndTreatmentOnCall(int idVolunteer, int idAssign)
     {
         try
         {
-            DO.Assignment assignment = _dal.Assignment.Read(idCallAssign);
+            DO.Assignment assignment = _dal.Assignment.Read(idAssign) ?? throw new BO.BlDoesNotExistException($"Assignment with id:{idAssign} does not exist");
             DO.Call call = _dal.Call.Read(assignment.CallId);
             if (!(CallManager.GetStatusCall(call) == BO.StatusCall.Open))
                 throw new BO.BlCantUpdateException("the call is not open");
@@ -323,9 +336,9 @@ internal class CallImplementation : ICall
                 ClockManager.Now);
             _dal.Assignment.Update(newAssignment);
         }
-        catch (Exception ex)
+        catch (DO.DalDoesNotExistException ex)
         {
-            throw new BO.BlCantUpdateException("Unable to update the allocation", ex);
+            throw new BO.BlCantUpdateException("Unable to update the assignment", ex);
         }
     }
 }
