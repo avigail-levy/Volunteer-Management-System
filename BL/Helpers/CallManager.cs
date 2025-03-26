@@ -42,24 +42,34 @@ namespace Helpers
 
         }
 
-        internal static bool validCall(BO.Call call)
+        internal static void validCall(BO.Call call)
         {
-            throw new NotImplementedException();
+
+            if (call.MaxTimeFinishCall < call.OpeningTime)
+            {
+                throw new BO.BlInvalidValueException("the finish-time cant be earlier than the opening time");
+            }
+            if (!Tools.IsValidAddress(call.Longitude, call.Latitude))
+            {
+                throw new BO.BlInvalidValueException("Address not exist");
+            };
+
         }
 
-        static double CalcDistance(double lat1, double lon1, double lat2, double lon2)
+        internal static double CalcDistance(double lat1, double lon1, double? volLat2, double? volLon2)
         {
+            if(volLat2 == null || volLon2 == null) return 0;
             const double R = 6371; // רדיוס כדור הארץ בק"מ
-            double dLat = DegreesToRadians(lat2 - lat1);
-            double dLon = DegreesToRadians(lon2 - lon1);
+            double dLat = DegreesToRadians((double)volLat2 - lat1);
+            double dLon = DegreesToRadians((double)volLon2 - lon1);
             double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-                       Math.Cos(DegreesToRadians(lat1)) * Math.Cos(DegreesToRadians(lat2)) *
+                       Math.Cos(DegreesToRadians(lat1)) * Math.Cos(DegreesToRadians((double)volLat2)) *
                        Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
             double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             return R * c; // המרחק בקילומטרים
         }
 
-        static double DegreesToRadians(double degrees)
+       internal static double DegreesToRadians(double degrees)
         {
             return degrees * Math.PI / 180;
         }

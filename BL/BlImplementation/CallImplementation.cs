@@ -8,12 +8,11 @@ internal class CallImplementation : ICall
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
     public void AddCall(BO.Call newBoCall)
     {
+        CallManager.validCall(newBoCall);
         try
         {
-            if (!CallManager.validCall(newBoCall))
-            {
-                throw new BO.BlInvalidValueException("invalid values");
-            }
+           
+            
             DO.Call doCall =
              new(newBoCall.Id,
                  (DO.CallType)newBoCall.CallType,
@@ -87,13 +86,13 @@ internal class CallImplementation : ICall
 
         return volCalls.Select(c => new BO.ClosedCallInList
         {
-            Id=c.Id,
-           CallType=(BO.CallType) c.CallType,
-           CallAddress= c.CallAddress,
-           OpeningTime= c.OpeningTime,
-           EntryTimeForTreatment= _dal.Assignment.Read(c.Id).EntryTimeForTreatment,
-           EndOfTreatmentTime= _dal.Assignment.Read(c.Id).EndOfTreatmentTime,
-           TypeOfTreatmentTermination=(BO.TypeOfTreatmentTermination) _dal.Assignment.Read(c.Id).TypeOfTreatmentTermination
+            Id = c.Id,
+            CallType = (BO.CallType)c.CallType,
+            CallAddress = c.CallAddress,
+            OpeningTime = c.OpeningTime,
+            EntryTimeForTreatment = _dal.Assignment.Read(c.Id).EntryTimeForTreatment,
+            EndOfTreatmentTime = _dal.Assignment.Read(c.Id).EndOfTreatmentTime,
+            TypeOfTreatmentTermination = (BO.TypeOfTreatmentTermination)_dal.Assignment.Read(c.Id).TypeOfTreatmentTermination
         });
     }
     /// <summary>
@@ -169,7 +168,13 @@ internal class CallImplementation : ICall
         }
         return callCounts;
     }
-
+    /// <summary>
+    /// Returns a sorted and filtered collection of entities "call  in a list"
+    /// </summary>
+    /// <param name="filterByAttribute">A field in the "callInList" entity by which the list will be filtered</param>
+    /// <param name="filterValue">Value to filter</param>
+    /// <param name="sortByAttribute">a field in the "List Read" entity, by which the list is sorted</param>
+    /// <returns></returns>
     public IEnumerable<BO.CallInList> GetCallsList(BO.CallInListAttributes? filterByAttribute = null, object? filterValue = null, BO.CallInListAttributes? sortByAttribute = null)
     {
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
@@ -180,33 +185,36 @@ internal class CallImplementation : ICall
 
         var propertyNameSort = sortByAttribute?.ToString();
         calls = calls.OrderBy(call => call.GetType().GetProperty(propertyNameSort)?.GetValue(call) ?? call.Id);
-
-        return calls.Select(c => new BO.CallInList
+        return calls.Select(c =>
         {
-            //Id = _dal.Assignment.Read(a => a.CallId == c.Id).Id,
-            //CallId = _dal.Assignment.Read(a => a.CallId == c.Id).CallId,
-            //CallType = (BO.CallType)c.CallType,
-            //OpeningTime = c.OpeningTime,
-            //TotalTimeRemainingFinishCalling = c.MaxTimeFinishCall - ClockManager.Now,
-            //LastVolunteerName = _dal.Volunteer.Read(v => v.Id ==
-            //                                    _dal.Assignment.ReadAll(a => a.CallId == c.Id)
-            //                                    .OrderByDescending(a => a.EntryTimeForTreatment)
-            //                                    .Select(a => a.VolunteerId)
-            //                                    .FirstOrDefault()).Name,
-            //TotalTimeCompleteTreatment = _dal.Assignment.Read(a => a.CallId == c.Id).EndOfTreatmentTime == null ? null : _dal.Assignment.Read(a => a.CallId == c.Id).EndOfTreatmentTime - c.OpeningTime,
-            //StatusCall = CallManager.GetStatusCall(c),
-            //TotalAssignments = _dal.Assignment.ReadAll().Count(a => a.CallId == _dal.Assignment.Read(a => a.CallId == c.Id).Id),
-        });
+            var allAssign = _dal.Assignment.ReadAll(a => a.CallId == c.Id);
+            return new BO.CallInList
+            {
+                Id = 1,
+                CallId = c.Id,
+                CallType = (BO.CallType)c.CallType,
+                OpeningTime = c.OpeningTime,
+                TotalTimeRemainingFinishCalling = c.MaxTimeFinishCall - ClockManager.Now,
+                LastVolunteerName = _dal.Volunteer.Read(allAssign.FirstOrDefault()?.VolunteerId??0)!.Name,
+                TotalTimeCompleteTreatment = allAssign.FirstOrDefault()?.TypeOfTreatmentTermination
+            == DO.TypeOfTreatmentTermination.Handled ? allAssign.FirstOrDefault()?.EndOfTreatmentTime - c.OpeningTime : null,
+                StatusCall = CallManager.GetStatusCall(c),
+                TotalAssignments = allAssign.Count()
+            };
+           });
     }
     /// <summary>
     /// The collection will include - all readings with the status "open" or "open at risk"
     /// </summary>
-    /// <param name="idVolunteer">Volunteer ID - for whom the list of open calls for selection and their distance from their current distance is returned</param>
+    /// <param name="idVolunteer">Volunteer ID - for whom the list of open calls for selection and 
+    /// their distance from their current distance is returned</param>
     /// <param name="filterByAttribute">The ENUM value of the call type by which the list will be filtered.</param>
-    /// <param name="sortByAttribute">A parameter that is an ENUM value of a field in the "Open Read in List" entity, by which the list is sorted.</param>
-    /// <returns>A sorted collection of a logical data entity "Open Reads in List" that includes the distance of each read from the volunteer</returns>
+    /// <param name="sortByAttribute">A parameter that is an ENUM value of a field in the "Open Read in List" 
+    /// entity, by which the list is sorted.</param>
+    /// <returns>A sorted collection of a logical data entity "Open Reads in List" that includes the distance
+    /// of each read from the volunteer</returns>
     public IEnumerable<BO.OpenCallInList> OpenCallsListSelectedByVolunteer(int idVolunteer, BO.CallType? filterByAttribute, BO.OpenCallInListAttributes? sortByAttribute)
-    {//#############################################
+    {
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
 
         var openCalls = from c in calls
@@ -238,8 +246,7 @@ internal class CallImplementation : ICall
             CallAddress = c.CallAddress,
             OpeningTime = c.OpeningTime,
             MaxTimeFinishCall = c.MaxTimeFinishCall,
-            CallingDistanceFromTreatingVolunteer =CallManager.CalcDistance(c.Latitude, c.Longitude, vol.Latitude,vol.Longitude)
-            /////////////////////////////////////////////////////////////////////////////מרחק!!!!!!!!!!!!!!!!!!!!
+            CallingDistanceFromTreatingVolunteer = CallManager.CalcDistance(c.Latitude, c.Longitude, vol.Latitude, vol.Longitude)
 
         });
     }
@@ -251,14 +258,12 @@ internal class CallImplementation : ICall
     /// <exception cref="BO.BlDoesNotExistException">Call does not exist exception</exception>
     public void UpdateCallDetails(BO.Call call)
     {
+        CallManager.validCall(call);
         try
         {
-            if (!CallManager.validCall(call))
-            {
-                throw new BO.BlInvalidValueException("invalid values");
-            }
-            DO.Call doCall =new(
-             
+           
+            DO.Call doCall = new(
+
                  call.Id,
                  (DO.CallType)call.CallType,
                  call.CallAddress,
