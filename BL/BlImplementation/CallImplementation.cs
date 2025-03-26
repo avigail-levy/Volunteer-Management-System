@@ -54,16 +54,47 @@ internal class CallImplementation : ICall
                 );
             _dal.Assignment.Create(newAssignment);
         }
-        catch(DO.DalAlreadyExistsException ex) 
+        catch (DO.DalAlreadyExistsException ex)
         {
             throw new BO.BlInvalidRequestException($"The call with id{idCall} cannot be taken", ex);
 
         }
     }
+    public IEnumerable<BO.ClosedCallInList> ClosedCallsListHandledByVolunteer(int idVolunteer, BO.CallType? filterByAttribute = null, BO.ClosedCallInListAttributes? sortByAttribute = null)
+    {//###################################################
+        IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
+        var assignments = _dal.Assignment.ReadAll();
+        //הקריאות של אותו מתנדב
+        var volCalls = from c in calls
+                       from a in assignments
+                       where c.Id == a.CallId && a.VolunteerId == idVolunteer
+                       select c;
 
-    public IEnumerable<BO.ClosedCallInList> ClosedCallsListHandledByVolunteer(int idVolunteer, BO.CallType? filterByAttribute, BO.ClosedCallInListAttributes? sortByAttribute)
-    {
-        throw new NotImplementedException();
+        volCalls = (filterByAttribute != null) ?
+                   from c in volCalls
+                   where c.CallType == (DO.CallType)filterByAttribute
+                   select c
+                   : volCalls;
+
+        volCalls = sortByAttribute != null ?
+                  from c in calls
+                  orderby sortByAttribute
+                  select c
+                  :
+                  from c in calls
+                  orderby c.Id
+                  select c;
+
+        return volCalls.Select(c => new BO.ClosedCallInList
+        {
+            Id=c.Id,
+           CallType=(BO.CallType) c.CallType,
+           CallAddress= c.CallAddress,
+           OpeningTime= c.OpeningTime,
+           EntryTimeForTreatment= _dal.Assignment.Read(c.Id).EntryTimeForTreatment,
+           EndOfTreatmentTime= _dal.Assignment.Read(c.Id).EndOfTreatmentTime,
+           TypeOfTreatmentTermination=(BO.TypeOfTreatmentTermination) _dal.Assignment.Read(c.Id).TypeOfTreatmentTermination
+        });
     }
     /// <summary>
     /// delete call
@@ -99,26 +130,26 @@ internal class CallImplementation : ICall
     {
         DO.Call call = _dal.Call.Read(idCall) ?? throw new BO.BlDoesNotExistException("call does not exist");
         BO.Call newBOCall = new BO.Call
-        (
-            call.Id,
-            call.CallAddress,
-            call.CallDescription,
-            (BO.CallType)call.CallType,
-            call.MaxTimeFinishCall,
-            call.Latitude,
-            call.Longitude,
-            call.OpeningTime,
-            CallManager.GetStatusCall(call),
-            _dal.Assignment.ReadAll(a => a.CallId == idCall)
-                                                               .Select(a => new BO.CallAssignInList
-                                                               {
-                                                                   VolunteerId = a.VolunteerId,
-                                                                   Name = _dal.Volunteer.Read(v => v.Id == a.VolunteerId).Name,
-                                                                   EntryTimeForTreatment = a.EntryTimeForTreatment,
-                                                                   EndOfTreatmentTime = a.EndOfTreatmentTime,
-                                                                   TypeOfTreatmentTermination = (BO.TypeOfTreatmentTermination)a.TypeOfTreatmentTermination
-                                                               }).ToList()
-        );
+        {
+            Id = call.Id,
+            CallAddress = call.CallAddress,
+            CallDescription = call.CallDescription,
+            CallType = (BO.CallType)call.CallType,
+            MaxTimeFinishCall = call.MaxTimeFinishCall,
+            Latitude = call.Latitude,
+            Longitude = call.Longitude,
+            OpeningTime = call.OpeningTime,
+            StatusCall = CallManager.GetStatusCall(call),
+            CallAssignInList = _dal.Assignment.ReadAll(a => a.CallId == idCall)
+                                                        .Select(a => new BO.CallAssignInList
+                                                        {
+                                                            VolunteerId = a.VolunteerId,
+                                                            Name = _dal.Volunteer.Read(v => v.Id == a.VolunteerId).Name,
+                                                            EntryTimeForTreatment = a.EntryTimeForTreatment,
+                                                            EndOfTreatmentTime = a.EndOfTreatmentTime,
+                                                            TypeOfTreatmentTermination = (BO.TypeOfTreatmentTermination)a.TypeOfTreatmentTermination
+                                                        }).ToList()
+        };
         return newBOCall;
     }
 
@@ -168,8 +199,41 @@ internal class CallImplementation : ICall
         });
     }
     public IEnumerable<BO.OpenCallInList> OpenCallsListSelectedByVolunteer(int idVolunteer, BO.CallType? filterByAttribute, BO.OpenCallInListAttributes? sortByAttribute)
-    {
-        throw new NotImplementedException();
+    {//#############################################
+        IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
+
+        var openCalls = from c in calls
+                        where CallManager.GetStatusCall(c) == BO.StatusCall.Open || CallManager.GetStatusCall(c) == BO.StatusCall.OpenAtRisk
+                        select c;
+        openCalls = filterByAttribute != null ?
+                    from c in calls
+                    where c.CallType == (DO.CallType)filterByAttribute
+                    select c
+                    :
+                    openCalls;
+
+
+        openCalls = sortByAttribute != null ?
+                  from c in calls
+                  orderby sortByAttribute
+                  select c
+                  :
+                  from c in calls
+                  orderby c.Id
+                  select c;
+
+        return openCalls.Select(c => new BO.OpenCallInList
+        {
+            Id = c.Id,
+            CallType = (BO.CallType)c.CallType,
+            CallDescription = c.CallDescription,
+            CallAddress = c.CallAddress,
+            OpeningTime = c.OpeningTime,
+            MaxTimeFinishCall = c.MaxTimeFinishCall,
+            CallingDistanceFromTreatingVolunteer = 12
+            /////////////////////////////////////////////////////////////////////////////merchak
+
+        });
     }
 
     public void UpdateCallDetails(BO.Call call)
