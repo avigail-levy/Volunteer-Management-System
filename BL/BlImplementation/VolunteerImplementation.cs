@@ -1,12 +1,11 @@
 ﻿using BlApi;
-using BO;
 namespace BlImplementation;
 
 internal class VolunteerImplementation : IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
-    public void AddVolunteer(Volunteer newBoVolunteer)
+    public void AddVolunteer(BO.Volunteer newBoVolunteer)
     {
         DO.Volunteer doVolunteer =
          new(newBoVolunteer.Id,
@@ -28,7 +27,7 @@ internal class VolunteerImplementation : IVolunteer
         }
         catch (DO.DalAlreadyExistsException ex)
         {
-            throw new BlAlreadyExistsException($"Volunteer with ID={newBoVolunteer.Id} already exists", ex);
+            throw new BO.BlAlreadyExistsException($"Volunteer with ID={newBoVolunteer.Id} already exists", ex);
         }
     }
 
@@ -39,31 +38,73 @@ internal class VolunteerImplementation : IVolunteer
             var assignments = _dal.Assignment.ReadAll()
                               .Where(a => a.VolunteerId == idVolunteer)
                               .Select(a => a.VolunteerId);
-            if (assignments.Count()!=0)
-                throw new BlCantDeleteException("It is not possible to delete a volunteer handling calls.");
+            if (assignments.Count() != 0)
+                throw new BO.BlCantDeleteException("It is not possible to delete a volunteer handling calls.");
             _dal.Volunteer.Delete(idVolunteer);
         }
         catch (Exception ex)
         {
-            throw new BlCantDeleteException("It is not possible to delete the volunteer", ex);
+            throw new BO.BlCantDeleteException("It is not possible to delete the volunteer", ex);
         }
     }
 
-    public IEnumerable<VolunteerInList> GetListVolunteers(bool? active, VolunteerInListAttributes? filterByAttribute)
+    public IEnumerable<BO.VolunteerInList> GetListVolunteers(bool? active, BO.VolunteerInListAttributes? sortByAttribute)
     {
-        throw new NotImplementedException();
+        //        אם בפרמטר הראשון הועבר ערך סטטוס null, מחזירה רשימה מלאה
+        //אחרת, מחזירה רשימה מסוננת לפי מתנדבים פעילים ולא פעילים
+
+        var vols = _dal.Volunteer.ReadAll();
+        vols = active != null ?
+               from v in vols
+               where active == true ? v.Active == true : v.Active == false//אמור להיות שגיאה?? ולמה?
+               select v
+               : vols;
+        var propertySort = typeof(DO.Volunteer).GetProperty(sortByAttribute.ToString());
+
+        vols = propertySort != null ?
+              from v in vols
+              orderby propertySort.GetValue(v, null)
+              select v
+              :
+              from v in vols
+              orderby v.Id
+              select v;
+        return vols.Select(v =>
+        {
+            var assignVol = _dal.Assignment.ReadAll(a => a.VolunteerId == v.Id);
+            new BO.VolunteerInList
+            {
+
+                Id = v.Id,
+                Name = v.Name,
+                Active = v.Active,
+                TotalCallsHandledByVolunteer = (from a in assignVol
+                                                where a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.Handled
+                                                select a).Count(),
+                TotalCallsCanceledByVolunteer = (from a in assignVol
+                                                 where a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.SelfCancellation
+                                                 select a).Count(),
+                TotalExpiredCallingsByVolunteer = (from a in assignVol
+                                                   where a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.CancellationExpired
+                                                   select a).Count(),
+
+                IDCallInHisCare = assignVol.FirstOrDefault(a => a.EndOfTreatmentTime == null && a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.CancellationExpired)?.CallId
+                CallType=
+
+            }; 
+        });
     }
 
-    public Volunteer GetVolunteerDetails(int idVolunteer)
+    public BO.Volunteer GetVolunteerDetails(int idVolunteer)
     {
         try
         {
-            DO.Volunteer vol = _dal.Volunteer.Read(idVolunteer) ?? throw new BlDoesNotExistException($"Volunteer with ID {idVolunteer} is not found in database.");
+            DO.Volunteer vol = _dal.Volunteer.Read(idVolunteer) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID {idVolunteer} is not found in database.");
 
             var assignment = _dal.Assignment.Read(a => a.VolunteerId == idVolunteer);
             var call = _dal.Call.Read(assignment.CallId);
 
-            var volunteerBO = new Volunteer
+            var volunteerBO = new BO.Volunteer
             {
                 Id = vol.Id,
                 Name = vol.Name,
@@ -84,18 +125,18 @@ internal class VolunteerImplementation : IVolunteer
                 TotalCallsChoseHandleHaveExpired = _dal.Assignment.ReadAll()
                     .Count(a => a.VolunteerId == idVolunteer && a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.CancellationExpired),
 
-                CallingVolunteerTherapy = assignment!=null ? new CallInProgress
+                CallingVolunteerTherapy = assignment != null ? new BO.CallInProgress
                 {
-                      //Id= 
-                      CallId = assignment.CallId,
-                      CallType = (BO.CallType)call.CallType,
-                      CallDescription=call.CallDescription,
-                      CallAddress = call.CallAddress,
-                      OpeningTime = call.OpeningTime,
-                      MaxTimeFinishCall =call.MaxTimeFinishCall,
-                      EntryTimeForTreatment =assignment.EntryTimeForTreatment//maybeeeee init??
-                      //CallingDistanceFromTreatingVolunteer =
-                      //StatusCalling
+                    //Id= 
+                    CallId = assignment.CallId,
+                    CallType = (BO.CallType)call.CallType,
+                    CallDescription = call.CallDescription,
+                    CallAddress = call.CallAddress,
+                    OpeningTime = call.OpeningTime,
+                    MaxTimeFinishCall = call.MaxTimeFinishCall,
+                    EntryTimeForTreatment = assignment.EntryTimeForTreatment//maybeeeee init??
+                                                                            //CallingDistanceFromTreatingVolunteer =
+                                                                            //StatusCalling
                 } : null,
             };
             return volunteerBO;
@@ -106,9 +147,9 @@ internal class VolunteerImplementation : IVolunteer
             throw new Exception("bla", ex);
         }
     }
-    public Role Login(string username)
+    public BO.Role Login(string username)
     {
-        var vol = _dal.Volunteer.Read(vol => vol.Name == username ) ??
+        var vol = _dal.Volunteer.Read(vol => vol.Name == username) ??
         throw new BO.BlDoesNotExistException($"Volunteer with Name ={username} does Not exist");
         return (BO.Role)vol.Role;
     }
@@ -123,7 +164,7 @@ internal class VolunteerImplementation : IVolunteer
             {
                 //בדיקות תקינות לעדכון
                 //יש לבקש את הרשומה משכבת הנתונים ולבדוק אילו שדות השתנו מה הכוונה?
-               
+
                 DO.Volunteer updatedDoVolunteer = new(
                 volunteer.Id,
                 volunteer.Name,
@@ -141,9 +182,9 @@ internal class VolunteerImplementation : IVolunteer
                 _dal.Volunteer.Update(updatedDoVolunteer);
             }
         }
-        catch(BO.BlDoesNotExistException e)//לעשות חריגה חדשה  מתאימה
+        catch (BO.BlDoesNotExistException e)//לעשות חריגה חדשה  מתאימה
         {
-              throw new BlDoesNotExistException("Only a managar can update the volunteer's Role");
+            throw new BO.BlDoesNotExistException("Only a managar can update the volunteer's Role");
         }
     }
 }

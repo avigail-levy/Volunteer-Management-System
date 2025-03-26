@@ -11,10 +11,8 @@ internal class CallImplementation : ICall
         CallManager.validCall(newBoCall);
         try
         {
-           
-            
-            DO.Call doCall =
-             new(newBoCall.Id,
+            DO.Call doCall = new(
+                 newBoCall.Id,
                  (DO.CallType)newBoCall.CallType,
                  newBoCall.CallAddress,
                  newBoCall.Latitude,
@@ -63,10 +61,10 @@ internal class CallImplementation : ICall
     {//###################################################
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
         var assignments = _dal.Assignment.ReadAll();
-        //הקריאות של אותו מתנדב
+        //הקריאות הסגורות של אותו מתנדב
         var volCalls = from c in calls
                        from a in assignments
-                       where c.Id == a.CallId && a.VolunteerId == idVolunteer
+                       where c.Id == a.CallId && a.VolunteerId == idVolunteer && CallManager.GetStatusCall(c) == BO.StatusCall.Closed
                        select c;
 
         volCalls = (filterByAttribute != null) ?
@@ -177,31 +175,60 @@ internal class CallImplementation : ICall
     /// <returns></returns>
     public IEnumerable<BO.CallInList> GetCallsList(BO.CallInListAttributes? filterByAttribute = null, object? filterValue = null, BO.CallInListAttributes? sortByAttribute = null)
     {
+        //IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
+        //var propertyNameFilter = filterByAttribute?.ToString();
+
+        //calls = propertyNameFilter == null ? calls :
+        //       calls.Where(call => call.GetType().GetProperty(propertyNameFilter)?.GetValue(call)?.Equals(filterValue) == true);//עד כאן סינון
+
+        //var propertyNameSort = sortByAttribute?.ToString();
+        //calls = calls.OrderBy(call => call.GetType().GetProperty(propertyNameSort)?.GetValue(call) ?? call.Id);
+        //return calls.Select(c =>
+        //{
+        //var allAssign = _dal.Assignment.ReadAll(a => a.CallId == c.Id);
+
+
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
-        var propertyNameFilter = filterByAttribute?.ToString();
+        var propertyFilter = typeof(DO.Call).GetProperty(filterByAttribute.ToString());
 
-        calls = propertyNameFilter == null ? calls :
-               calls.Where(call => call.GetType().GetProperty(propertyNameFilter)?.GetValue(call)?.Equals(filterValue) == true);//עד כאן סינון
+        calls = propertyFilter != null ?
+                from c in calls
+                where propertyFilter.GetValue(c, null) == filterValue
+                select c
+                :
+                from item in calls
+                select item;
 
-        var propertyNameSort = sortByAttribute?.ToString();
-        calls = calls.OrderBy(call => call.GetType().GetProperty(propertyNameSort)?.GetValue(call) ?? call.Id);
+
+        var propertySort = typeof(DO.Call).GetProperty(sortByAttribute.ToString());
+
+        calls = sortByAttribute != null ?
+                from c in calls
+                orderby propertySort.GetValue(c, null)
+                select c
+                :
+                from c in calls
+                orderby c.Id
+                select c;
+
         return calls.Select(c =>
         {
             var allAssign = _dal.Assignment.ReadAll(a => a.CallId == c.Id);
             return new BO.CallInList
             {
+
                 Id = 1,
                 CallId = c.Id,
                 CallType = (BO.CallType)c.CallType,
                 OpeningTime = c.OpeningTime,
                 TotalTimeRemainingFinishCalling = c.MaxTimeFinishCall - ClockManager.Now,
-                LastVolunteerName = _dal.Volunteer.Read(allAssign.FirstOrDefault()?.VolunteerId??0)!.Name,
-                TotalTimeCompleteTreatment = allAssign.FirstOrDefault()?.TypeOfTreatmentTermination
-            == DO.TypeOfTreatmentTermination.Handled ? allAssign.FirstOrDefault()?.EndOfTreatmentTime - c.OpeningTime : null,
+                LastVolunteerName = _dal.Volunteer.Read(allAssign.LastOrDefault()?.VolunteerId ?? 0)!.Name,
+                TotalTimeCompleteTreatment = allAssign.LastOrDefault()?.TypeOfTreatmentTermination
+            == DO.TypeOfTreatmentTermination.Handled ? allAssign.LastOrDefault()?.EndOfTreatmentTime - c.OpeningTime : null,
                 StatusCall = CallManager.GetStatusCall(c),
                 TotalAssignments = allAssign.Count()
             };
-           });
+        });
     }
     /// <summary>
     /// The collection will include - all readings with the status "open" or "open at risk"
@@ -236,6 +263,7 @@ internal class CallImplementation : ICall
                   from c in calls
                   orderby c.Id
                   select c;
+
         var vol = _dal.Volunteer.Read(idVolunteer) ??
             throw new BO.BlDoesNotExistException($"The volunteer with id:{idVolunteer} does not exist");
         return openCalls.Select(c => new BO.OpenCallInList
@@ -261,7 +289,7 @@ internal class CallImplementation : ICall
         CallManager.validCall(call);
         try
         {
-           
+
             DO.Call doCall = new(
 
                  call.Id,

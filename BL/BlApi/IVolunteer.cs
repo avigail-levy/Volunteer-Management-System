@@ -14,7 +14,7 @@
         /// <param name="active">A Boolean value that will filter the list by active and inactive volunteers.</param>
         /// <param name="filterByAttribute">ENUM value of a field in the "Volunteer in List" entity, by which the list is sorted</param>
         /// <returns>Returns a sorted and filtered collection of the logical data entity "Volunteer in List"</returns>
-        IEnumerable<BO.VolunteerInList> GetListVolunteers(bool? active , BO.VolunteerInListAttributes? filterByAttribute);// במימוש לכתוב בכותרת =נאל ע"פ הדרישות
+        IEnumerable<BO.VolunteerInList> GetListVolunteers(bool? active , BO.VolunteerInListAttributes? sortByAttribute);// במימוש לכתוב בכותרת =נאל ע"פ הדרישות
         /// <summary>
         /// Requests the data layer (Read) to obtain details about the volunteer and the call in his care (if any)
         ///From the details received, creates an object of the logical entity type "Volunteer" 
