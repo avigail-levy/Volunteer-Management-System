@@ -274,7 +274,7 @@ internal class CallImplementation : ICall
             CallAddress = c.CallAddress,
             OpeningTime = c.OpeningTime,
             MaxTimeFinishCall = c.MaxTimeFinishCall,
-            CallingDistanceFromTreatingVolunteer = CallManager.CalcDistance(c.Latitude, c.Longitude, vol.Latitude, vol.Longitude)
+            CallingDistanceFromTreatingVolunteer = Tools.CalcDistance(c.Latitude, c.Longitude, vol.Latitude, vol.Longitude)
 
         });
     }
