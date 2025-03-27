@@ -1,9 +1,9 @@
-﻿using BlImplementation;
+﻿//using BlImplementation;
 using BO;
 namespace Helpers;
 
 /// <summary>
-/// 
+///
 /// </summary>
 internal static class ClockManager //stage 4
 {
@@ -16,8 +16,8 @@ internal static class ClockManager //stage 4
     internal static void UpdateClock(DateTime newClock) //stage 4-7
     {
         //if (STAGE < 7) //XXX ???
-            //stage 4-6
-            updateClock(newClock);
+        //stage 4-6
+        updateClock(newClock);
         //else
         //    //stage 7
         //    new Thread(() => updateClock(newClock)).Start();
@@ -34,12 +34,12 @@ internal static class ClockManager //stage 4
         //for example, Periodic students' updates:
         //Go through all students to update properties that are affected by the clock update
         //(students becomes not active after 5 years etc.)
-        
-        ClockManager.per(oldClock, newClock); //stage 4
+
+        // StudentManager.PeriodicStudentsUpdates(oldClock, newClock); //stage 4
         //etc ...
 
         //Calling all the observers of clock update
-        ClockUpdatedObservers?.Invoke(); //prepared for stage 5
+        // ClockUpdatedObservers?.Invoke(); //prepared for stage 5
     }
     #endregion Stage 4
 

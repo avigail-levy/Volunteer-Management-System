@@ -1,6 +1,4 @@
 ﻿using DalApi;
-using System.ComponentModel.Design;
-
 namespace Helpers
 {
     internal static class CallManager
@@ -56,10 +54,9 @@ namespace Helpers
 
         }
 
-       
 
-       
+
+
     }
 
 }
-
