@@ -1,6 +1,5 @@
 ﻿using BlApi;
 using Helpers;
-
 namespace BlImplementation;
 
 internal class CallImplementation : ICall
@@ -216,7 +215,6 @@ internal class CallImplementation : ICall
             var allAssign = _dal.Assignment.ReadAll(a => a.CallId == c.Id);
             return new BO.CallInList
             {
-
                 Id = 1,
                 CallId = c.Id,
                 CallType = (BO.CallType)c.CallType,
@@ -333,9 +331,10 @@ internal class CallImplementation : ICall
                 assignment.CallId,
                 assignment.VolunteerId,
                 assignment.EntryTimeForTreatment,
-                assignment.VolunteerId != id ? DO.TypeOfTreatmentTermination.SelfCancellation
+                assignment.VolunteerId == id ? DO.TypeOfTreatmentTermination.SelfCancellation
                 : DO.TypeOfTreatmentTermination.CancelAdministrator,
-                ClockManager.Now);
+                ClockManager.Now
+                );
             _dal.Assignment.Update(newAssignment);
         }
         catch (DO.DalDoesNotExistException ex)

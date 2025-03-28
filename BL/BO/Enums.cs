@@ -10,4 +10,7 @@ public enum CallInListAttributes { Id, CallId, CallType, OpeningTime, TotalTimeR
 public enum ClosedCallInListAttributes { Id, CallType, CallAddress, OpeningTime, EntryTimeForTreatment, EndOfTreatmentTime, TypeOfTreatmentTermination }
 public enum OpenCallInListAttributes { Id, CallType, CallDescription, CallAddress, OpeningTime, MaxTimeFinishCall, CallingDistanceFromTreatingVolunteer }
 public enum TimeUnit{Minute, Hour, Day,Month,Year };
-
+public enum MainMenuOptions { Exit, VolunteerMenu, AssignmentMenu, CallMenu, AdminMenu }
+public enum CrudMenuOptions { Exit, Create, Read, Update, Delete,GetList }
+public enum AdminMenuOptions { Exit, AdvanceClock, ViewCurrentClock,ViewConfigValue,NewConfigValue ,InitializeDatabase, ResetDatabase  }
+public enum CallMenu { ClosedCallsListHandledByVolunteer, GetCallQuantitiesByStatus, GetCallsList, OpenCallsListSelectedByVolunteer, ChooseTreatmentCall,AddCall }

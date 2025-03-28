@@ -54,7 +54,7 @@ internal class VolunteerImplementation : IVolunteer
     /// <param name="active">A Boolean value that will filter the list by active and inactive volunteers.</param>
     /// <param name="sortByAttribute">A field in the "Volunteer on List" entity, by which the list is sorted</param>
     /// <returns>Sorted and filtered threshold of logical data entity "Volunteer in list"</returns>
-    public IEnumerable<BO.VolunteerInList> GetListVolunteers(bool? active, BO.VolunteerInListAttributes? sortByAttribute)
+    public IEnumerable<BO.VolunteerInList> GetListVolunteers(bool? active=null, BO.VolunteerInListAttributes? sortByAttribute=null)
     {
         var vols = _dal.Volunteer.ReadAll();
         vols = active != null ?
@@ -107,7 +107,6 @@ internal class VolunteerImplementation : IVolunteer
     /// <exception cref="BO.BlDoesNotExistException"> the volunteer not exist</exception>
     public BO.Volunteer GetVolunteerDetails(int idVolunteer)
     {
-
         DO.Volunteer vol = _dal.Volunteer.Read(idVolunteer) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID {idVolunteer} is not found in database.");
         var assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == idVolunteer);
         DO.Assignment? assignInTreatment = VolunteerManager.GetCallInTreatment(idVolunteer);

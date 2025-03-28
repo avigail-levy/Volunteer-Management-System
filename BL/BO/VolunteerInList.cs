@@ -11,6 +11,6 @@ public class VolunteerInList
     public int? IDCallInHisCare { get; set; }
     public CallType CallType { get; set; } = CallType.None;//?
 
-    //public override string ToString() => this.ToStringProperty();
+    public override string ToString() => this.ToStringProperty();
 
 }

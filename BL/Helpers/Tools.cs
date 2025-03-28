@@ -92,7 +92,8 @@ namespace Helpers
             double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             return R * c; // המרחק בקילומטרים
         }
-        public static string ToStringProperty<T>(this T t)
+
+            public static string ToStringProperty<T>(this T t)
         {
             string str = "";
             foreach (PropertyInfo item in typeof(T).GetProperties())
@@ -111,7 +112,8 @@ namespace Helpers
                     str += value?.ToString() + '\n';
             }
             return str;
-        }
+            }
+            
         public static DO.Call GetCallByAssignment(DO.Assignment assignment)
         {
             return s_dal.Call.Read(assignment.CallId);

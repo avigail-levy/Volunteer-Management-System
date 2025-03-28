@@ -10,7 +10,7 @@
         public DateTime? MaxTimeFinishCall { get; set; }
         public double CallingDistanceFromTreatingVolunteer { get; set; }
 
-        //public override string ToString() => this.ToStringProperty();
+        public override string ToString() => this.ToStringProperty();
 
     }
 }
