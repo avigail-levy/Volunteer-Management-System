@@ -33,7 +33,7 @@ internal class VolunteerImplementation : IVolunteer
     }
 
     public void DeleteVolunteer(int idVolunteer)
-    {//מתנדב שהוקצאה לו קריאה אבל הוא עוד לא התחיל לטפל בה גם מפריע למחיקת מתנדב
+    {
         try
         {
             var assignments = _dal.Assignment.ReadAll()
@@ -162,7 +162,7 @@ internal class VolunteerImplementation : IVolunteer
     }
     public void UpdateVolunteerDetails(int idRequester, BO.Volunteer volunteer)
     {
-        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteer.Id) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteer.Id} does Not exist");
+        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteer.Id) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteer.Id} does Not exist");//מיותר?כי הרי כשמזמנים את הפעולה הזאת שולחים מתנדב מוכן וכבר מה בודקים אם קיים או לא
         try
         {
             DO.Volunteer requester = _dal.Volunteer.Read(idRequester);//לבדוק אם מי שמבקש הוא מנהל או שלפחות זה באמת המתנדב בעצמו
@@ -170,14 +170,12 @@ internal class VolunteerImplementation : IVolunteer
                 throw new BO.BlUnauthorizedException("Only a managar can update the volunteer's Position");
             {
                 //בדיקות תקינות לעדכון
-                //יש לבקש את הרשומה משכבת הנתונים ולבדוק אילו שדות השתנו מה הכוונה?
-
                 DO.Volunteer updatedDoVolunteer = new(
                 volunteer.Id,
                 volunteer.Name,
                 volunteer.Phone,
                 volunteer.Email,
-                requester.Role == DO.Role.Manager ? (DO.Role)volunteer.Role : (DO.Role)_dal.Volunteer.Read(volunteer.Id).Role, // רק מנהל יכול לשנות תפקיד
+                requester.Role == DO.Role.Manager ? (DO.Role)volunteer.Role : (DO.Role)_dal.Volunteer.Read(volunteer.Id).Role,
                 volunteer.Active,
                 (DO.DistanceType)volunteer.DistanceType,
                 volunteer.Latitude,//לעדכן קווי אורך ורוחב בהתאם לכתובת פונקציית עזר 
@@ -189,9 +187,9 @@ internal class VolunteerImplementation : IVolunteer
                 _dal.Volunteer.Update(updatedDoVolunteer);
             }
         }
-        catch (DO.DalDoesNotExistException e)//לעשות חריגה חדשה  מתאימה
+        catch (DO.DalDoesNotExistException e)
         {
-            throw new BO.BlCantUpdateException("Only a manager can update the volunteer's Role", e);
+            throw new BO.BlCantUpdateException($"volunteer with ID={volunteer.Id} is not exists", e);
         }
     }
 }

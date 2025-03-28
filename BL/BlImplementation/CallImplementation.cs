@@ -111,7 +111,7 @@ internal class CallImplementation : ICall
                 throw new BO.BlCantDeleteException("It is not possible to delete a call that is not open.");
             _dal.Call.Delete(idCall);
         }
-        catch (Exception ex)
+        catch (DO.DalDoesNotExistException ex)
         {
             throw new BO.BlCantDeleteException("It is not possible to delete the call", ex);
         }
@@ -174,19 +174,6 @@ internal class CallImplementation : ICall
     /// <returns></returns>
     public IEnumerable<BO.CallInList> GetCallsList(BO.CallInListAttributes? filterByAttribute = null, object? filterValue = null, BO.CallInListAttributes? sortByAttribute = null)
     {
-        //IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
-        //var propertyNameFilter = filterByAttribute?.ToString();
-
-        //calls = propertyNameFilter == null ? calls :
-        //       calls.Where(call => call.GetType().GetProperty(propertyNameFilter)?.GetValue(call)?.Equals(filterValue) == true);//עד כאן סינון
-
-        //var propertyNameSort = sortByAttribute?.ToString();
-        //calls = calls.OrderBy(call => call.GetType().GetProperty(propertyNameSort)?.GetValue(call) ?? call.Id);
-        //return calls.Select(c =>
-        //{
-        //var allAssign = _dal.Assignment.ReadAll(a => a.CallId == c.Id);
-
-
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
         var propertyFilter = typeof(DO.Call).GetProperty(filterByAttribute.ToString());
 
@@ -315,7 +302,7 @@ internal class CallImplementation : ICall
     /// <param name="idCallAssign">assignment id</param>
     /// <exception cref="BlUnauthorizedException">No permission to update cancellation</exception>
     /// <exception cref="BlCantUpdateEception">Error during update</exception>
-    public void UpdateCancelTreatmentOnCall(int id, int idAssign)
+    public void UpdateCancelTreatmentOnCall(int idRequest, int idAssign)
     {
         try
         {
@@ -323,15 +310,15 @@ internal class CallImplementation : ICall
             DO.Call call = _dal.Call.Read(assignment!.CallId);
             if (!(CallManager.GetStatusCall(call) == BO.StatusCall.Open))
                 throw new BO.BlCantUpdateException("the call is not open");
-            if (_dal.Volunteer.Read(id)!.Role != DO.Role.Manager)
-                if (assignment.VolunteerId != id)
+            if (_dal.Volunteer.Read(idRequest)!.Role != DO.Role.Manager)
+                if (assignment.VolunteerId != idRequest)
                     throw new BO.BlUnauthorizedException("You are not allowed to update the call.");
             DO.Assignment newAssignment = new(
                 assignment.Id,
                 assignment.CallId,
                 assignment.VolunteerId,
                 assignment.EntryTimeForTreatment,
-                assignment.VolunteerId == id ? DO.TypeOfTreatmentTermination.SelfCancellation
+                assignment.VolunteerId == idRequest ? DO.TypeOfTreatmentTermination.SelfCancellation
                 : DO.TypeOfTreatmentTermination.CancelAdministrator,
                 ClockManager.Now
                 );

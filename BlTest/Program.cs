@@ -1,4 +1,5 @@
 ﻿using Accessories;
+using BO;
 namespace BlTest
 {
     internal class Program
@@ -36,7 +37,10 @@ namespace BlTest
                 Address = ReadHelper.ReadString("insert address: "),
                 MaxDistanceForCall = ReadHelper.ReadDouble("insert max distance for call: ")
             };
-            try { s_bl.Volunteer.AddVolunteer(volunteer); }
+            try
+            {
+                s_bl.Volunteer.AddVolunteer(volunteer);
+            }
             catch (BO.BlAlreadyExistsException ex)
             {
                 Console.WriteLine($"BlAlreadyExistsException ,{ex},מידע על חריגה פנימית!!!!");
@@ -55,7 +59,10 @@ namespace BlTest
                 CallDescription = ReadHelper.ReadString("insert call description: "),
                 MaxTimeFinishCall = ReadHelper.ReadDate("insert max time finish call:")
             };
-            try { s_bl.Call.AddCall(call); }
+            try
+            {
+                s_bl.Call.AddCall(call);
+            }
             catch (BO.BlAlreadyExistsException ex)
             {
                 Console.WriteLine($"BlAlreadyExistsException {ex}");
@@ -63,15 +70,18 @@ namespace BlTest
         }
         private static void CreateAssignment()
         {
-            int idVlunteer = ReadHelper.ReadInt("insert idVlunteer");
-            int idCall = ReadHelper.ReadInt("insert idCall");
+            int idVlunteer = ReadHelper.ReadInt("insert id Vlunteer");
+            int idCall = ReadHelper.ReadInt("insert id Call");
 
-            try { s_bl.Call.ChooseTreatmentCall(idVlunteer, idCall); }
+            try
+            {
+                s_bl.Call.ChooseTreatmentCall(idVlunteer, idCall);
+            }
             catch (BO.BlInvalidRequestException ex)
             {
                 Console.WriteLine($"BlInvalidRequestException,{ex}");
             }
-            catch(BO.BlDoesNotExistException ex)
+            catch (BO.BlDoesNotExistException ex)
             {
                 Console.WriteLine($"BlDoesNotExistException,{ex}");
             }
@@ -82,35 +92,55 @@ namespace BlTest
         /// <param name="entityName">סוג היישות למחיקה</param>
         private static void Delete(string entityName)
         {
-            int idToDelete;
             Console.WriteLine("insert id-entity to delete:");
-            idToDelete = int.TryParse(Console.ReadLine(), out int result) ? result : throw new BO.BlInvalidValueException("insert value");
-            try
+            int idToDelete = ReadHelper.ReadInt("insert id to delete");
+            switch (entityName)
             {
-                switch (entityName)
-                {
-                    case "Volunteer":
-                        s_bl.Volunteer.DeleteVolunteer(idToDelete);
-                        break;
-
-                    case "Call":
-                        s_bl.Call.DeleteCall(idToDelete);
-                        break;
-                    case "Assignment":
+                case "Volunteer":
+                    {
+                        try
                         {
-                            int id = ReadHelper.ReadInt("insert id:");
-                            s_bl.Call.UpdateCancelTreatmentOnCall(id, idToDelete);
-                            break;
+                            s_bl.Volunteer.DeleteVolunteer(idToDelete);
                         }
-
-                    default:
-                        Console.WriteLine("Unsupported type: " + entityName);
+                        catch (BO.BlCantDeleteException ex)
+                        {
+                            Console.WriteLine($"BlCantDeleteException{ex.Message}{ex}");
+                        }
                         break;
-                }
-            }
-            catch (BO.BlCantDeleteException ex)
-            {
-                Console.WriteLine("An error occurred: " + ex.Message);
+                    }
+                case "Call":
+                    {
+                        try { s_bl.Call.DeleteCall(idToDelete); }
+                        catch (BO.BlCantDeleteException ex)
+                        {
+                            Console.WriteLine($"BlCantDeleteException{ex}");
+                        }
+                        break;
+                    }
+                case "Assignment":
+                    {
+                        try
+                        {
+                            int idRequest = ReadHelper.ReadInt("inserty your id:");
+                            s_bl.Call.UpdateCancelTreatmentOnCall(idRequest, idToDelete);
+                        }
+                        catch (BO.BlDoesNotExistException ex)
+                        {
+                            Console.WriteLine($"BlDoesNotExistException{ex}");
+                        }
+                        catch (BO.BlCantUpdateException ex)
+                        {
+                            Console.WriteLine($"BlCantUpdateException{ex}");
+                        }
+                        catch (BO.BlUnauthorizedException ex)
+                        {
+                            Console.WriteLine($"BlUnauthorizedException{ex}");
+                        }
+                        break;
+                    }
+                default:
+                    Console.WriteLine("Unsupported type: " + entityName);
+                    break;
             }
         }
         /// <summary>
@@ -119,7 +149,7 @@ namespace BlTest
         private static void UpdateCall()
         {
             Console.WriteLine("insert id-entity to update:");
-            int idToUpdate = int.TryParse(Console.ReadLine(), out int result) ? result : throw new BO.BlInvalidValueException("insert value");
+            int idToUpdate = ReadHelper.ReadInt("insert id of call to update");
             try
             {
                 BO.Call? oldCall = s_bl.Call.GetCallDetails(idToUpdate);
@@ -142,6 +172,11 @@ namespace BlTest
             {
                 Console.WriteLine($" BlCantUpdateException:{ex}, {ex.Message}");
             }
+            catch (BO.BlDoesNotExistException ex)
+            {
+                Console.WriteLine($" BlDoesNotExistException:{ex}, {ex.Message}");
+            }
+
         }
 
         /// <summary>
@@ -150,32 +185,41 @@ namespace BlTest
         /// // פונקציה לבדיקת המחרוזת והחזרת ערך ברירת המחדל במקרה שהיא ריקה
         private static void UpdateVolunteer()
         {
-            Console.WriteLine("insert id-entity to update:");
-            int idToUpdate = int.TryParse(Console.ReadLine(), out int result) ? result : throw new BO.BlInvalidValueException("insert value");
-            BO.Volunteer? oldVolunteer = s_bl.Volunteer.GetVolunteerDetails(idToUpdate);
-            Console.WriteLine("Enter the data of:  full name, phone, email, role, active, distance type,latitude,longitude,password, address, max distance for call");
-            BO.Volunteer newVolunteer = new BO.Volunteer()
+            try
             {
-                Id = oldVolunteer!.Id,
-                Name = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Name),
-                Phone = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Phone),
-                Email = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Email),
-                Role = int.TryParse(Console.ReadLine(), out int role) ? (BO.Role)role : oldVolunteer.Role,
-                Active = bool.TryParse(Console.ReadLine(), out bool active) ? active : oldVolunteer.Active,
-                DistanceType = int.TryParse(Console.ReadLine(), out int distanceType) ? (BO.DistanceType)distanceType : oldVolunteer.DistanceType,
-                Latitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : oldVolunteer.Latitude,
-                Longitude = double.TryParse(Console.ReadLine(), out double longitude) ? longitude : oldVolunteer.Longitude,
-                Password = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Password!),
-                Address = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Address!),
-                MaxDistanceForCall = double.TryParse(Console.ReadLine(), out double maxDistanceForCall) ? maxDistanceForCall : oldVolunteer.MaxDistanceForCall,
-            };
-            try {
+                int idToUpdate = ReadHelper.ReadInt("insert id volunteer to update:");
+                BO.Volunteer? oldVolunteer = s_bl.Volunteer.GetVolunteerDetails(idToUpdate);
+                Console.WriteLine("Enter the data of:  full name, phone, email, role, active, distance type,latitude,longitude,password, address, max distance for call");
+                BO.Volunteer newVolunteer = new BO.Volunteer()
+                {
+                    Id = oldVolunteer!.Id,
+                    Name = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Name),
+                    Phone = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Phone),
+                    Email = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Email),
+                    Role = int.TryParse(Console.ReadLine(), out int role) ? (BO.Role)role : oldVolunteer.Role,
+                    Active = bool.TryParse(Console.ReadLine(), out bool active) ? active : oldVolunteer.Active,
+                    DistanceType = int.TryParse(Console.ReadLine(), out int distanceType) ? (BO.DistanceType)distanceType : oldVolunteer.DistanceType,
+                    Latitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : oldVolunteer.Latitude,
+                    Longitude = double.TryParse(Console.ReadLine(), out double longitude) ? longitude : oldVolunteer.Longitude,
+                    Password = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Password!),
+                    Address = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Address!),
+                    MaxDistanceForCall = double.TryParse(Console.ReadLine(), out double maxDistanceForCall) ? maxDistanceForCall : oldVolunteer.MaxDistanceForCall,
+                };
+
                 int idRequester = ReadHelper.ReadInt("insert your id:");
-                s_bl.Volunteer.UpdateVolunteerDetails(3245, newVolunteer); 
-                }
+                s_bl.Volunteer.UpdateVolunteerDetails(idRequester, newVolunteer);
+            }
+            catch (BO.BlDoesNotExistException ex)
+            {
+                Console.WriteLine($"BlDoesNotExistException:{ex} {ex.Message}");
+            }
             catch (BO.BlCantUpdateException ex)
             {
                 Console.WriteLine($"BlCantUpdateException:{ex} {ex.Message}");
+            }
+            catch (BO.BlUnauthorizedException ex)
+            {
+                Console.WriteLine($"BlUnauthorizedException:{ex} {ex.Message}");
             }
         }
         /// <summary>
@@ -207,11 +251,15 @@ namespace BlTest
         /// <param name="idToRead">אי.די של המתנדב להדפסה</param>
         private static void ReadVolunteer(int idToRead)
         {
-            if (s_bl.Volunteer.GetVolunteerDetails(idToRead) != null)
+            try
             {
-                BO.Volunteer volunteer = s_bl.Volunteer.GetVolunteerDetails(idToRead) ?? throw new BO.BlDoesNotExistException("the volunteer does not exist");
+                BO.Volunteer volunteer = s_bl.Volunteer.GetVolunteerDetails(idToRead);
                 Console.WriteLine("Volunteer Details:");
                 Console.WriteLine(volunteer);
+            }
+            catch (BO.BlDoesNotExistException ex)
+            {
+                Console.WriteLine($"BlDoesNotExistException{ex}");
             }
         }
         /// <summary>
@@ -220,14 +268,18 @@ namespace BlTest
         /// <param name="idToRead">אי.די של הקיראה להדפסה</param>
         private static void ReadCall(int idToRead)
         {
-            if (s_bl.Call.GetCallDetails(idToRead) != null)
+            try
             {
-                BO.Call call = s_bl.Call.GetCallDetails(idToRead) ?? throw new BO.BlDoesNotExistException("the call does not exist");
-                Console.WriteLine("Call Details:");
+                BO.Call call = s_bl.Call.GetCallDetails(idToRead);
+                Console.WriteLine("call Details:");
                 Console.WriteLine(call);
             }
+            catch (BO.BlDoesNotExistException ex)
+            {
+                Console.WriteLine($"BlDoesNotExistException{ex}");
+            }
         }
-        
+
         /// <summary>
         /// פונקציה להדפסת פרטי אוביקט
         /// </summary>
@@ -238,7 +290,7 @@ namespace BlTest
             if (idToRead == 0)
             {
                 Console.WriteLine("insert id-entity to read:");
-                idToRead = int.TryParse(Console.ReadLine(), out int result) ? result : throw new BO.BlInvalidValueException("insert value");
+                idToRead = ReadHelper.ReadInt("insert id entity to read");
             }
             switch (entityName)
             {
@@ -411,7 +463,6 @@ namespace BlTest
                     break;
             }
         }
-
         private static void CallOperations()
         {
             string choose = ReadHelper.ReadString("insert your choise:");
@@ -436,14 +487,20 @@ namespace BlTest
         private static void OpenCallsListSelected()
         {
             int idVolunteer = ReadHelper.ReadInt("insert a idVolunteer:");
-             BO.CallType filterByAttribute= ReadHelper.ReadEnum<BO.CallType>("insert filter By Attribute: ");
+            BO.CallType filterByAttribute = ReadHelper.ReadEnum<BO.CallType>("insert filter By Attribute: ");
             BO.OpenCallInListAttributes sortByAttribute = ReadHelper.ReadEnum<BO.OpenCallInListAttributes>("insert sort By Attribute: ");
-            var listcalls = s_bl.Call.OpenCallsListSelectedByVolunteer(idVolunteer, filterByAttribute, sortByAttribute);
-            foreach (var c in listcalls)
+            try
             {
-                Console.WriteLine(c);
+                var listcalls = s_bl.Call.OpenCallsListSelectedByVolunteer(idVolunteer, filterByAttribute, sortByAttribute);
+                foreach (var c in listcalls)
+                {
+                    Console.WriteLine(c);
+                }
             }
-
+            catch (BO.BlDoesNotExistException ex)
+            {
+                Console.WriteLine($"BlDoesNotExistException{ex}");
+            }
         }
 
         private static void ClosedCallsListHandled()
@@ -451,11 +508,16 @@ namespace BlTest
             int idVolunteer = ReadHelper.ReadInt("insert a idVolunteer:");
             BO.CallType filterByAttribute = ReadHelper.ReadEnum<BO.CallType>("insert filter By Attribute: ");
             BO.ClosedCallInListAttributes sortByAttribute = ReadHelper.ReadEnum<BO.ClosedCallInListAttributes>("insert sort By Attribute: ");
-            var listcalls = s_bl.Call.ClosedCallsListHandledByVolunteer(idVolunteer, filterByAttribute, sortByAttribute);
-            foreach(var c in listcalls )
+            try
             {
-                Console.WriteLine(c); 
-            }    
+                var listcalls = s_bl.Call.ClosedCallsListHandledByVolunteer(idVolunteer, filterByAttribute, sortByAttribute);
+                foreach (var c in listcalls)
+                {
+                    Console.WriteLine(c);
+                }
+            }
+            catch (BO.BlDoesNotExistException ex)
+            { Console.WriteLine($"BlDoesNotExistException{ex.Message}"); }
         }
         //##################################
         private static void CallQuantitiesByStatus()
@@ -472,9 +534,9 @@ namespace BlTest
             int idCall = ReadHelper.ReadInt("insert a idCall:");
             BO.CallInListAttributes filterByAttribute = ReadHelper.ReadEnum<BO.CallInListAttributes>("insert filter By Attribute: ");
             object filterValue = Console.ReadLine();
-            BO.CallInListAttributes? sortByAttribute= ReadHelper.ReadEnum<BO.CallInListAttributes>("insert sort By Attribute: ");
-            var listcalls = s_bl.Call.GetCallsList(filterByAttribute,filterValue,sortByAttribute);
-            foreach(var c in listcalls)
+            BO.CallInListAttributes? sortByAttribute = ReadHelper.ReadEnum<BO.CallInListAttributes>("insert sort By Attribute: ");
+            var listcalls = s_bl.Call.GetCallsList(filterByAttribute, filterValue, sortByAttribute);
+            foreach (var c in listcalls)
             {
                 Console.WriteLine(c);
             }
@@ -485,12 +547,12 @@ namespace BlTest
         {
             bool active = ReadHelper.ReadBool("insert if active");
             BO.VolunteerInListAttributes sortByAttribute = ReadHelper.ReadEnum<BO.VolunteerInListAttributes>("insert sort By Attribute: ");
-                var listVols = s_bl.Volunteer.GetListVolunteers(active, sortByAttribute);
+            var listVols = s_bl.Volunteer.GetListVolunteers(active, sortByAttribute);
 
-                foreach (var v in listVols)
-                {
-                  Console.WriteLine(v);
-                }
+            foreach (var v in listVols)
+            {
+                Console.WriteLine(v);
+            }
         }
     }
 }

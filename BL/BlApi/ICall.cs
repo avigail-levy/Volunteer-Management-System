@@ -75,7 +75,7 @@
         /// </summary>
         /// <param name="id">ID of the person requesting the cancellation request</param>
         /// <param name="idCallAssign">The allocation number of the currently processing call that he wants to cancel.</param>
-        void UpdateCancelTreatmentOnCall(int id, int idAssign);
+        void UpdateCancelTreatmentOnCall(int idRequest, int idAssign);
         /// <summary>
         /// Makes requests to the data layer to fetch the data the method needs
         ///Checks that the request is valid
