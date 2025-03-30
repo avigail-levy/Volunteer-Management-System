@@ -43,7 +43,7 @@ namespace Helpers
             {
                 throw new BO.BlInvalidValueException("the finish-time cant be earlier than the opening time");
             }
-            if (!VolunteerManager.IsValidAddress(call.Longitude, call.Latitude))
+            if (!VolunteerManager.IsValidAddress(call.CallAddress))
             {
                 throw new BO.BlInvalidValueException("Address not exist");
             };
@@ -53,17 +53,16 @@ namespace Helpers
         {
             validCall(call);
 
-            DO.Call doCall = new DO.Call()
-            {
-                Id = call.Id,
-                CallType = (DO.CallType)call.CallType,
-                CallAddress = call.CallAddress,
-                Latitude = call.Latitude,
-                Longitude = call.Longitude,
-                OpeningTime = call.OpeningTime,
-                CallDescription = call.CallDescription,
-                MaxTimeFinishCall = call.MaxTimeFinishCall
-            };
+            DO.Call doCall = new(
+                call.Id,
+                (DO.CallType)call.CallType,
+                call.CallAddress,
+                VolunteerManager.CalcCoordinates(call.CallAddress)[0],
+                VolunteerManager.CalcCoordinates(call.CallAddress)[1],
+                call.OpeningTime,
+                call.CallDescription,
+                call.MaxTimeFinishCall
+            );
             return doCall;
         }
 

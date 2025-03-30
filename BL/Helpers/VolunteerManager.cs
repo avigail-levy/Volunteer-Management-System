@@ -1,4 +1,5 @@
 ﻿using DalApi;
+using System.Net;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 namespace Helpers
@@ -31,7 +32,7 @@ namespace Helpers
                 throw new BO.BlInvalidValueException("Invalid Israeli ID number");
             }
             //Address check
-            if (!IsValidAddress(volunteer.Latitude, volunteer.Longitude))
+            if (!IsValidAddress(volunteer.Address))
             {
                 throw new BO.BlInvalidValueException("Address cannot be empty");
             }
@@ -61,9 +62,10 @@ namespace Helpers
         /// <param name="lat">Latitude</param>
         /// <returns>true if the address is valid, otherwise false</returns>
 
-        public static bool IsValidAddress(double? lon, double? lat)
+        public static bool IsValidAddress(string? address)
         {
-            string requestUri = $"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}";
+           double [] latlon = CalcCoordinates(address);
+            string requestUri = $"https://nominatim.openstreetmap.org/reverse?format=json&lat={latlon[0]}&lon={latlon[1]}";
 
             using HttpClient client = new HttpClient();
             HttpResponseMessage response = client.Send(new HttpRequestMessage(HttpMethod.Get, requestUri));
@@ -79,14 +81,60 @@ namespace Helpers
         {
             return degrees * Math.PI / 180;
         }
-        internal static double CalcDistance(double lat1, double lon1, double? volLat2, double? volLon2)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        /// <exception cref="BO.BlInvalidValueException"></exception>
+        public static double[]? CalcCoordinates(string address)
         {
-            if (volLat2 == null || volLon2 == null) return 0;
+            if (string.IsNullOrWhiteSpace(address))
+            {
+                return null;
+            }
+            string link = $"https://geocode.maps.co/search?q={Uri.EscapeDataString(address)}&api_key=679a8da6c01a6853187846vomb04142";
+            Console.WriteLine(link);
+
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    string response = client.DownloadString(link);
+                    Console.WriteLine(response);
+                    var result = JsonSerializer.Deserialize<GeocodeResponse[]>(response);
+                    if (result == null || result.Length == 0)
+                    {
+                        throw new BO.BlInvalidValueException("Invalid address.");
+                    }
+                    double latitude = double.Parse(result[0].latitude);
+                    double longitude = double.Parse(result[0].longitude);
+                    Console.WriteLine($"Latitude: {result[0].latitude}, Longitude: {result[0].longitude}");
+                    return [latitude, longitude];
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null;
+            }
+        }
+        public class GeocodeResponse
+        {
+            public string latitude { get; set; }
+            public string longitude { get; set; }
+        }
+
+        internal static double CalcDistance(string addressVol,string addressCall)
+        {  
+            double [] volunteerLonLat = CalcCoordinates(addressVol);
+            double[] callLonLat = CalcCoordinates(addressCall);
+            if (volunteerLonLat[0] == null || volunteerLonLat[1] == null) return 0;
             const double R = 6371; // רדיוס כדור הארץ בק"מ
-            double dLat = DegreesToRadians((double)volLat2 - lat1);
-            double dLon = DegreesToRadians((double)volLon2 - lon1);
+            double dLat = DegreesToRadians(volunteerLonLat[0] - callLonLat[0]);
+            double dLon = DegreesToRadians(volunteerLonLat[1] - callLonLat[1]);
             double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-                       Math.Cos(DegreesToRadians(lat1)) * Math.Cos(DegreesToRadians((double)volLat2)) *
+                       Math.Cos(DegreesToRadians(callLonLat[0])) * Math.Cos(DegreesToRadians(volunteerLonLat[0])) *
                        Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
             double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             return R * c; // המרחק בקילומטרים
@@ -126,8 +174,8 @@ namespace Helpers
                 role == null ? (DO.Role)volunteer.Role : (DO.Role)role,
                 volunteer.Active,
                 (DO.DistanceType)volunteer.DistanceType,
-                volunteer.Latitude,//לעדכן קווי אורך ורוחב בהתאם לכתובת פונקציית עזר
-                volunteer.Longitude,
+                CalcCoordinates(volunteer.Address)[0],
+                CalcCoordinates(volunteer.Address)[1],
                 volunteer.Password,
                 volunteer.Address,
                 volunteer.MaxDistanceForCall

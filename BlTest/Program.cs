@@ -30,8 +30,6 @@ namespace BlTest
                 Role = ReadHelper.ReadEnum<BO.Role>("insert role: "),
                 Active = ReadHelper.ReadBool("insert is active: "),
                 DistanceType = ReadHelper.ReadEnum<BO.DistanceType>("insert distance type "),
-                Latitude = ReadHelper.ReadDouble("insert latitude: "),
-                Longitude = ReadHelper.ReadDouble("insert longitude: "),
                 Password = ReadHelper.ReadString("insert password: "),
                 Address = ReadHelper.ReadString("insert address: "),
                 MaxDistanceForCall = ReadHelper.ReadDouble("insert max distance for call: ")
@@ -52,8 +50,6 @@ namespace BlTest
             {
                 CallType = ReadHelper.ReadEnum<BO.CallType>("insert call type: "),
                 CallAddress = ReadHelper.ReadString("insert call address: "),
-                Latitude = ReadHelper.ReadDouble("insert a latitude:"),
-                Longitude = ReadHelper.ReadDouble("insert a longitude:"),
                 OpeningTime = ReadHelper.ReadDate("insert opening time for call: "),
                 CallDescription = ReadHelper.ReadString("insert call description: "),
                 MaxTimeFinishCall = ReadHelper.ReadDate("insert max time finish call:")
@@ -153,13 +149,11 @@ namespace BlTest
             {
                 BO.Call? oldCall = s_bl.Call.GetCallDetails(idToUpdate);
                 Console.WriteLine("Enter the data to create a new object of type call:");
-                Console.WriteLine("Enter the data of: type of call, full address, latitude, longitude, opening time, maximum time of finish call, description");
+                Console.WriteLine("Enter the data of: type of call, full address,opening time, maximum time of finish call, description");
                 BO.Call newCall = new BO.Call()
                 {
                     CallType = int.TryParse(Console.ReadLine(), out int typeOfCall) ? (BO.CallType)typeOfCall : oldCall!.CallType,
                     CallAddress = ReadHelper.ReadOrDefault(Console.ReadLine(), oldCall!.CallAddress),
-                    Latitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : oldCall.Latitude,
-                    Longitude = double.TryParse(Console.ReadLine(), out double Longitude) ? Longitude : oldCall.Longitude,
                     OpeningTime = oldCall.OpeningTime,
                     MaxTimeFinishCall = DateTime.TryParse(Console.ReadLine(), out DateTime MaximumTimeFinishCall) ? MaximumTimeFinishCall : oldCall.MaxTimeFinishCall,
                     CallDescription = ReadHelper.ReadOrDefault(Console.ReadLine(), oldCall.CallDescription!),
@@ -188,7 +182,7 @@ namespace BlTest
             {
                 int idToUpdate = ReadHelper.ReadInt("insert id volunteer to update:");
                 BO.Volunteer? oldVolunteer = s_bl.Volunteer.GetVolunteerDetails(idToUpdate);
-                Console.WriteLine("Enter the data of:  full name, phone, email, role, active, distance type,latitude,longitude,password, address, max distance for call");
+                Console.WriteLine("Enter the data of:  full name, phone, email, role, active, distance type,password, address, max distance for call");
                 BO.Volunteer newVolunteer = new BO.Volunteer()
                 {
                     Id = oldVolunteer!.Id,
@@ -198,8 +192,6 @@ namespace BlTest
                     Role = int.TryParse(Console.ReadLine(), out int role) ? (BO.Role)role : oldVolunteer.Role,
                     Active = bool.TryParse(Console.ReadLine(), out bool active) ? active : oldVolunteer.Active,
                     DistanceType = int.TryParse(Console.ReadLine(), out int distanceType) ? (BO.DistanceType)distanceType : oldVolunteer.DistanceType,
-                    Latitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : oldVolunteer.Latitude,
-                    Longitude = double.TryParse(Console.ReadLine(), out double longitude) ? longitude : oldVolunteer.Longitude,
                     Password = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Password!),
                     Address = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Address!),
                     MaxDistanceForCall = double.TryParse(Console.ReadLine(), out double maxDistanceForCall) ? maxDistanceForCall : oldVolunteer.MaxDistanceForCall,

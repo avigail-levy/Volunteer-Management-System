@@ -1,5 +1,4 @@
-﻿
-using BlApi;
+﻿using BlApi;
 using Helpers;
 namespace BlImplementation;
 
@@ -110,7 +109,7 @@ internal class CallImplementation : ICall
             CallAddress = c.CallAddress,
             OpeningTime = c.OpeningTime,
             MaxTimeFinishCall = c.MaxTimeFinishCall,
-            CallingDistanceFromTreatingVolunteer = VolunteerManager.CalcDistance(c.Latitude, c.Longitude, vol.Latitude, vol.Longitude)
+            CallingDistanceFromTreatingVolunteer = VolunteerManager.CalcDistance(vol.Address,c.CallAddress)
         });
     }
 
@@ -176,12 +175,12 @@ internal class CallImplementation : ICall
         BO.Call newBOCall = new BO.Call
         {
             Id = call.Id,
-            CallAddress = call.CallAddress,// לבדוק תקינות כתובת
+            CallAddress = call.CallAddress,
             CallDescription = call.CallDescription,
             CallType = (BO.CallType)call.CallType,
             MaxTimeFinishCall = call.MaxTimeFinishCall,
-            Latitude = call.Latitude,//פונקציית חישוב
-            Longitude = call.Longitude,//כנ"ל
+            Latitude = call.Latitude,
+            Longitude = call.Longitude,
             OpeningTime = call.OpeningTime,
             StatusCall = CallManager.GetStatusCall(call),
             CallAssignInList = _dal.Assignment.ReadAll(a => a.CallId == idCall)
@@ -264,8 +263,6 @@ internal class CallImplementation : ICall
             };
         });
     }
-
-
 
     /// <summary>
     /// "Cancel Handling" update method on read

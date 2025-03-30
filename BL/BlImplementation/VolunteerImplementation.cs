@@ -135,7 +135,7 @@ internal class VolunteerImplementation : IVolunteer
                 OpeningTime = call.OpeningTime,
                 MaxTimeFinishCall = call.MaxTimeFinishCall,
                 EntryTimeForTreatment = assignInTreatment.EntryTimeForTreatment,
-                CallingDistanceFromTreatingVolunteer = VolunteerManager.CalcDistance(call.Latitude, call.Longitude, vol.Latitude, vol.Longitude),
+                CallingDistanceFromTreatingVolunteer = VolunteerManager.CalcDistance(vol.Address,call.CallAddress),
                 StatusCalling = VolunteerManager.GetCallInProgress(call),
             } : null,
         };
