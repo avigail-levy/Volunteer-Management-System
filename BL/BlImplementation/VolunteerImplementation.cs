@@ -79,7 +79,7 @@ internal class VolunteerImplementation : IVolunteer
         {
             var assignVol = _dal.Assignment.ReadAll(a => a.VolunteerId == v.Id);
             DO.Assignment? assignInTreatment = VolunteerManager.GetCallInTreatment(v.Id);
-            DO.Call call = Tools.GetCallByAssignment(assignInTreatment);
+            DO.Call? call = Tools.GetCallByAssignment(assignInTreatment);
             return new BO.VolunteerInList
             {
 

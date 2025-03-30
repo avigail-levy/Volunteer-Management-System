@@ -31,11 +31,7 @@ namespace Helpers
             {
                 throw new BO.BlInvalidValueException("Invalid Israeli ID number");
             }
-            //Address check
-            if (!IsValidAddress(volunteer.Address))
-            {
-                throw new BO.BlInvalidValueException("Address cannot be empty");
-            }
+
             return true;
         }
         /// <summary>
@@ -62,21 +58,22 @@ namespace Helpers
         /// <param name="lat">Latitude</param>
         /// <returns>true if the address is valid, otherwise false</returns>
 
-        public static bool IsValidAddress(string? address)
-        {
-           double [] latlon = CalcCoordinates(address);
-            string requestUri = $"https://nominatim.openstreetmap.org/reverse?format=json&lat={latlon[0]}&lon={latlon[1]}";
+        //public static double[]? IsValidAddress(string? address)
+        //{
+        //   //double []? latlon = CalcCoordinates(address);
+        //    //string requestUri = $"https://nominatim.openstreetmap.org/reverse?format=json&lat={latlon[0]}&lon={latlon[1]}";
 
-            using HttpClient client = new HttpClient();
-            HttpResponseMessage response = client.Send(new HttpRequestMessage(HttpMethod.Get, requestUri));
+        //    // using HttpClient client = new HttpClient();
+        //    // HttpResponseMessage response = client.Send(new HttpRequestMessage(HttpMethod.Get, requestUri));
 
-            if (!response.IsSuccessStatusCode) return false;
+        //    // if (!response.IsSuccessStatusCode) return false;
 
-            string jsonResponse = response.Content.ReadAsStringAsync().Result;
-            var result = JsonSerializer.Deserialize<OSMGeocodeResponse>(jsonResponse);
+        //    // string jsonResponse = response.Content.ReadAsStringAsync().Result;
+        //    // var result = JsonSerializer.Deserialize<OSMGeocodeResponse>(jsonResponse);
 
-            return !string.IsNullOrWhiteSpace(result?.display_name);
-        }
+        //    // return !string.IsNullOrWhiteSpace(result?.display_name);
+        //    //return latlon;
+        //}
         internal static double DegreesToRadians(double degrees)
         {
             return degrees * Math.PI / 180;
@@ -94,35 +91,31 @@ namespace Helpers
                 return null;
             }
             string link = $"https://geocode.maps.co/search?q={Uri.EscapeDataString(address)}&api_key=679a8da6c01a6853187846vomb04142";
-            Console.WriteLine(link);
 
             try
             {
                 using (WebClient client = new WebClient())
                 {
                     string response = client.DownloadString(link);
-                    Console.WriteLine(response);
                     var result = JsonSerializer.Deserialize<GeocodeResponse[]>(response);
                     if (result == null || result.Length == 0)
                     {
                         throw new BO.BlInvalidValueException("Invalid address.");
                     }
-                    double latitude = double.Parse(result[0].latitude);
-                    double longitude = double.Parse(result[0].longitude);
-                    Console.WriteLine($"Latitude: {result[0].latitude}, Longitude: {result[0].longitude}");
+                    double latitude = double.Parse(result[0].lat);
+                    double longitude = double.Parse(result[0].lon);
                     return [latitude, longitude];
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
                 return null;
             }
         }
         public class GeocodeResponse
         {
-            public string latitude { get; set; }
-            public string longitude { get; set; }
+            public string lat { get; set; }
+            public string lon { get; set; }
         }
 
         internal static double CalcDistance(string addressVol,string addressCall)
@@ -165,6 +158,7 @@ namespace Helpers
         }
         internal static DO.Volunteer CreateDoVolunteer(BO.Volunteer volunteer, DO.Role? role = null)
         {
+            double[]? latlon = CalcCoordinates(volunteer.Address ?? null);
             IntegrityCheck(volunteer);
             DO.Volunteer doVolunteer = new(
                 volunteer.Id,
@@ -174,10 +168,10 @@ namespace Helpers
                 role == null ? (DO.Role)volunteer.Role : (DO.Role)role,
                 volunteer.Active,
                 (DO.DistanceType)volunteer.DistanceType,
-                CalcCoordinates(volunteer.Address)[0],
-                CalcCoordinates(volunteer.Address)[1],
+                latlon?[0],
+                latlon?[1],
                 volunteer.Password,
-                volunteer.Address,
+                latlon==null?null: volunteer.Address,
                 volunteer.MaxDistanceForCall
                  );
             return doVolunteer;

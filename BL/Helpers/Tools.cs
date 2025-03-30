@@ -33,9 +33,9 @@ namespace Helpers
             return str;
         }
 
-        public static DO.Call GetCallByAssignment(DO.Assignment assignment)
+        public static DO.Call? GetCallByAssignment(DO.Assignment? assignment)
         {
-            return s_dal.Call.Read(assignment.CallId);
+            return assignment==null?null: s_dal.Call.Read(assignment.CallId);
         }
     }
 

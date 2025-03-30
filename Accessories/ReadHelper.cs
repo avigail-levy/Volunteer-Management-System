@@ -71,6 +71,42 @@ namespace Accessories
             return data;
 
         }
+        public static bool? ReadBoolNull(string message) 
+        {
+            Console.WriteLine(message);
+
+            string? dataInput = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(dataInput))
+                return null;
+            bool data;
+            while (!bool.TryParse(dataInput, out data)&&dataInput!="")
+            {
+                Console.WriteLine("The value you entered is invalid. Please enter it again!");
+                dataInput = Console.ReadLine();
+            }
+            return data;
+
+        }
+
+
+        public static T? ReadEnumNull<T>(string message) where T : struct, Enum
+        {
+            Console.WriteLine(message);
+            string? enumInput = Console.ReadLine();
+
+            // אם הקלט ריק, נחזיר null מיד
+            if (string.IsNullOrWhiteSpace(enumInput))
+                return null;
+            object? data;
+            while (!Enum.TryParse(typeof(T), enumInput, out data)&& enumInput!="")
+            {
+                Console.WriteLine("The value you entered is invalid. Please enter it again!");
+                enumInput = Console.ReadLine();
+            }
+            return (T)data;
+
+        }
+
 
         public static T ReadEnum<T>(string message)
         {

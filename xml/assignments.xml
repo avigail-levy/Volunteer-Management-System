@@ -312,4 +312,12 @@
     <TypeOfTreatmentTermination>SelfCancellation</TypeOfTreatmentTermination>
     <EndOfTreatmentTime>2025-03-25T08:53:54</EndOfTreatmentTime>
   </Assignment>
+  <Assignment>
+    <Id>40</Id>
+    <CallId>35</CallId>
+    <VolunteerId>373299582</VolunteerId>
+    <EntryTimeForTreatment>2025-03-30T21:55:54</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination xsi:nil="true" />
+    <EndOfTreatmentTime xsi:nil="true" />
+  </Assignment>
 </ArrayOfAssignment>

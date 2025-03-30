@@ -43,10 +43,7 @@ namespace Helpers
             {
                 throw new BO.BlInvalidValueException("the finish-time cant be earlier than the opening time");
             }
-            if (!VolunteerManager.IsValidAddress(call.CallAddress))
-            {
-                throw new BO.BlInvalidValueException("Address not exist");
-            };
+ 
 
         }
         internal static DO.Call CreateDoCall(BO.Call call)

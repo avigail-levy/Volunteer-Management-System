@@ -42,6 +42,10 @@ namespace BlTest
             {
                 Console.WriteLine($"BlAlreadyExistsException ,{ex},מידע על חריגה פנימית!!!!");
             }
+            catch (BO.BlInvalidValueException ex)
+            {
+                Console.WriteLine($"BlInvalidValueException ,{ex},מידע על חריגה פנימית!!!!");
+            }
 
         }
         private static void CreateCall()
@@ -50,7 +54,6 @@ namespace BlTest
             {
                 CallType = ReadHelper.ReadEnum<BO.CallType>("insert call type: "),
                 CallAddress = ReadHelper.ReadString("insert call address: "),
-                OpeningTime = ReadHelper.ReadDate("insert opening time for call: "),
                 CallDescription = ReadHelper.ReadString("insert call description: "),
                 MaxTimeFinishCall = ReadHelper.ReadDate("insert max time finish call:")
             };
@@ -566,8 +569,8 @@ namespace BlTest
 
         private static void ListVolunteers()
         {
-            bool active = ReadHelper.ReadBool("insert if active");
-            BO.VolunteerInListAttributes sortByAttribute = ReadHelper.ReadEnum<BO.VolunteerInListAttributes>("insert sort By Attribute: ");
+            bool? active = ReadHelper.ReadBoolNull("insert if active");
+            BO.VolunteerInListAttributes? sortByAttribute = ReadHelper.ReadEnumNull<BO.VolunteerInListAttributes>("insert sort By Attribute: ");
             var listVols = s_bl.Volunteer.GetListVolunteers(active, sortByAttribute);
             foreach (var v in listVols)
             {
