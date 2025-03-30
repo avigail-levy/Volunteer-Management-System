@@ -5,6 +5,11 @@ namespace BlImplementation;
 internal class CallImplementation : ICall
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
+    /// <summary>
+    /// From the logical object details, creates a new object of the data entity type DO.Call
+    ///Attempts to request the addition of the new call to the data layer
+    /// </summary>
+    /// <param name="newBoCall">Object of the logical entity type "Call" BO.Call</param>
     public void AddCall(BO.Call newBoCall)
     {
         CallManager.validCall(newBoCall);
@@ -40,6 +45,8 @@ internal class CallImplementation : ICall
         var call = _dal.Call.Read(idCall) ?? throw new BO.BlDoesNotExistException($"the call with id{idCall} does not exist");
         if (CallManager.GetStatusCall(call) != BO.StatusCall.Open)
             throw new BO.BlInvalidRequestException($"The call with id{idCall} cannot be taken, The call status is not open");
+        if (_dal.Volunteer.Read(idVolunteer).Active == false)
+            throw new BO.BlUnauthorizedException("you are not active, you can not take a call");
         try
         {
             DO.Assignment newAssignment = new(
@@ -57,7 +64,7 @@ internal class CallImplementation : ICall
         }
     }
     public IEnumerable<BO.ClosedCallInList> ClosedCallsListHandledByVolunteer(int idVolunteer, BO.CallType? filterByAttribute = null, BO.ClosedCallInListAttributes? sortByAttribute = null)
-    {//###################################################
+    {
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
         var assignments = _dal.Assignment.ReadAll();
         //הקריאות הסגורות של אותו מתנדב
@@ -157,12 +164,13 @@ internal class CallImplementation : ICall
     {
         int[] callCounts = new int[Enum.GetValues(typeof(BO.StatusCall)).Length];//size of array sach as num of option
         var calls = _dal.Call.ReadAll();
-        var callsByStatus = calls.GroupBy(call => CallManager.GetStatusCall(call))
+        var callsByStatus = calls.GroupBy(CallManager.GetStatusCall)
             .ToDictionary(group => (int)group.Key, group => group.Count());
-        foreach (var group in callsByStatus)
-        {
-            callCounts[group.Key] = group.Value;
-        }
+
+        callCounts = callCounts
+    .Select((value, index) => callsByStatus.ContainsKey(index) ? callsByStatus[index] : value)
+    .ToArray();
+
         return callCounts;
     }
     /// <summary>
@@ -259,7 +267,7 @@ internal class CallImplementation : ICall
             CallAddress = c.CallAddress,
             OpeningTime = c.OpeningTime,
             MaxTimeFinishCall = c.MaxTimeFinishCall,
-            CallingDistanceFromTreatingVolunteer = Tools.CalcDistance(c.Latitude, c.Longitude, vol.Latitude, vol.Longitude)
+            CallingDistanceFromTreatingVolunteer = VolunteerManager.CalcDistance(c.Latitude, c.Longitude, vol.Latitude, vol.Longitude)
 
         });
     }

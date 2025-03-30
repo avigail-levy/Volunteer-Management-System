@@ -1,5 +1,4 @@
 ﻿using Accessories;
-using BO;
 namespace BlTest
 {
     internal class Program
@@ -463,6 +462,33 @@ namespace BlTest
                     break;
             }
         }
+        private static void EndTreatmentOnCall()
+        {
+            Console.WriteLine("insert id volunteer");
+            int idVolunteer= int.TryParse(Console.ReadLine(), out int result) ? result : throw new BO.BlInvalidValueException("insert value"); 
+            Console.WriteLine("insert id assignment");
+            int idAssignment = int.Parse(Console.ReadLine());
+            try
+            {
+                s_bl.Call.UpdateEndTreatmentOnCall(idVolunteer, idAssignment);
+            }
+            catch (BO.BlDoesNotExistException ex)
+            {
+                Console.WriteLine($"BlDoesNotExist {ex}");
+            }
+            catch (BO.BlCantUpdateException ex)
+            {
+                Console.WriteLine($"BlCantUpdate {ex}");
+            }
+            catch (BO.BlUnauthorizedException ex)
+            {
+                Console.WriteLine($"BlUnauthorized {ex}");
+            }
+            catch (BO.BlInvalidValueException ex)
+            {
+                Console.WriteLine($"BlInvalidValue {ex}");
+            }
+        }
         private static void CallOperations()
         {
             string choose = ReadHelper.ReadString("insert your choise:");
@@ -480,6 +506,9 @@ namespace BlTest
                     break;
                 case BO.CallMenu.OpenCallsListSelectedByVolunteer:
                     OpenCallsListSelected();
+                    break;
+                case BO.CallMenu.UpdateEndTreatment:
+                    EndTreatmentOnCall();
                     break;
             }
         }
@@ -548,7 +577,6 @@ namespace BlTest
             bool active = ReadHelper.ReadBool("insert if active");
             BO.VolunteerInListAttributes sortByAttribute = ReadHelper.ReadEnum<BO.VolunteerInListAttributes>("insert sort By Attribute: ");
             var listVols = s_bl.Volunteer.GetListVolunteers(active, sortByAttribute);
-
             foreach (var v in listVols)
             {
                 Console.WriteLine(v);

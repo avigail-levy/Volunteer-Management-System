@@ -21,23 +21,17 @@ namespace Helpers
         {
             DateTime now = ClockManager.Now;
             IEnumerable<DO.Assignment> assignmentsCall = s_dal.Assignment.ReadAll(assignment => assignment.CallId == call.Id);
-
-            if (!assignmentsCall
-                .Where(a => (a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.CancelAdministrator)
-                || (a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.SelfCancellation)
-                && a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.Handled).Any()
-                || !assignmentsCall.Any())
-                if (now.Add(s_dal.Config.RiskRange) > call.MaxTimeFinishCall)
-                    return BO.StatusCall.OpenAtRisk;//OpenAtRisk
-                else return BO.StatusCall.Open;//Open
-            if (!assignmentsCall.Where(a => a.TypeOfTreatmentTermination != null).Any())
+            if (ClockManager.Now > call.MaxTimeFinishCall && assignmentsCall.Any(a => a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.Handled))
+                return BO.StatusCall.Expired;//Expired
+            if (assignmentsCall.Any(a => a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.Handled))
+                return BO.StatusCall.Closed;//Closed
+            if (assignmentsCall.Where(a => a.TypeOfTreatmentTermination == null).Any())
                 if (now.Add(s_dal.Config.RiskRange) > call.MaxTimeFinishCall)
                     return BO.StatusCall.InTreatmentAtRisk;//InTreatmentAtRisk
                 else return BO.StatusCall.InTreatment;//InTreatment
-            if (assignmentsCall.Where(a => a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.Handled).Any())
-                return BO.StatusCall.Closed;//Closed
-            return BO.StatusCall.Expired;//Expired
-
+            if (now.Add(s_dal.Config.RiskRange) > call.MaxTimeFinishCall)
+                return BO.StatusCall.OpenAtRisk;//OpenAtRisk
+            else return BO.StatusCall.Open;//Open
         }
 
         internal static void validCall(BO.Call call)
@@ -47,7 +41,7 @@ namespace Helpers
             {
                 throw new BO.BlInvalidValueException("the finish-time cant be earlier than the opening time");
             }
-            if (!Tools.IsValidAddress(call.Longitude, call.Latitude))
+            if (!VolunteerManager.IsValidAddress(call.Longitude, call.Latitude))
             {
                 throw new BO.BlInvalidValueException("Address not exist");
             };

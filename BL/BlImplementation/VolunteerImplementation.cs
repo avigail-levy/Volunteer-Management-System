@@ -1,11 +1,16 @@
 ﻿using BlApi;
 using Helpers;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 namespace BlImplementation;
 
 internal class VolunteerImplementation : IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
 
+    
+
+    
     public void AddVolunteer(BO.Volunteer newBoVolunteer)
     {
         DO.Volunteer doVolunteer =
@@ -83,16 +88,10 @@ internal class VolunteerImplementation : IVolunteer
                 Id = v.Id,
                 Name = v.Name,
                 Active = v.Active,
-                TotalCallsHandledByVolunteer = (from a in assignVol
-                                                where a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.Handled
-                                                select a).Count(),
-                TotalCallsCanceledByVolunteer = (from a in assignVol
-                                                 where a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.SelfCancellation
-                                                 select a).Count(),
-                TotalExpiredCallingsByVolunteer = (from a in assignVol
-                                                   where a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.CancellationExpired
-                                                   select a).Count(),
-
+                TotalCallsHandledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.Handled,assignVol),
+                TotalCallsCanceledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.SelfCancellation, assignVol)
+                + VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancelAdministrator, assignVol),
+                TotalExpiredCallingsByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancellationExpired, assignVol),
                 IDCallInHisCare = call?.Id,
                 CallType = (BO.CallType?)call?.CallType ?? BO.CallType.None
             };
@@ -125,13 +124,9 @@ internal class VolunteerImplementation : IVolunteer
             Active = vol.Active,
             MaxDistanceForCall = vol.MaxDistanceForCall,
             DistanceType = (BO.DistanceType)vol.DistanceType,
-            TotalCallsHandled = _dal.Assignment.ReadAll(a => a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.Handled)
-                .Count(),
-            TotalCallsCanceled = _dal.Assignment.ReadAll(a => a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.SelfCancellation)
-                .Count(),
-            TotalCallsChoseHandleHaveExpired = _dal.Assignment.ReadAll(a => a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.CancellationExpired)
-                .Count(),
-
+            TotalCallsHandled = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.Handled, assignments),
+            TotalCallsCanceled = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.SelfCancellation, assignments),
+            TotalCallsChoseHandleHaveExpired = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancellationExpired, assignments),
             CallingVolunteerTherapy = assignInTreatment != null ? new BO.CallInProgress
             {
                 Id = assignInTreatment.Id,
@@ -142,7 +137,7 @@ internal class VolunteerImplementation : IVolunteer
                 OpeningTime = call.OpeningTime,
                 MaxTimeFinishCall = call.MaxTimeFinishCall,
                 EntryTimeForTreatment = assignInTreatment.EntryTimeForTreatment,
-                CallingDistanceFromTreatingVolunteer = Tools.CalcDistance(call.Latitude, call.Longitude, vol.Latitude, vol.Longitude),
+                CallingDistanceFromTreatingVolunteer = VolunteerManager.CalcDistance(call.Latitude, call.Longitude, vol.Latitude, vol.Longitude),
                 StatusCalling = VolunteerManager.GetCallInProgress(call),
             } : null,
         };
@@ -167,7 +162,7 @@ internal class VolunteerImplementation : IVolunteer
         {
             DO.Volunteer requester = _dal.Volunteer.Read(idRequester);//לבדוק אם מי שמבקש הוא מנהל או שלפחות זה באמת המתנדב בעצמו
             if (requester.Role != DO.Role.Manager && idRequester != volunteer.Id)
-                throw new BO.BlUnauthorizedException("Only a managar can update the volunteer's Position");
+                throw new BO.BlUnauthorizedException("Only a manager can update the volunteer's role");
             {
                 //בדיקות תקינות לעדכון
                 DO.Volunteer updatedDoVolunteer = new(
