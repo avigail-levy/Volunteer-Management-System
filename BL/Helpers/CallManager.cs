@@ -1,4 +1,6 @@
-﻿using DalApi;
+﻿
+using DalApi;
+
 namespace Helpers
 {
     internal static class CallManager
@@ -47,10 +49,60 @@ namespace Helpers
             };
 
         }
+        internal static DO.Call CreateDoCall(BO.Call call)
+        {
+            validCall(call);
 
+            DO.Call doCall = new DO.Call()
+            {
+                Id = call.Id,
+                CallType = (DO.CallType)call.CallType,
+                CallAddress = call.CallAddress,
+                Latitude = call.Latitude,
+                Longitude = call.Longitude,
+                OpeningTime = call.OpeningTime,
+                CallDescription = call.CallDescription,
+                MaxTimeFinishCall = call.MaxTimeFinishCall
+            };
+            return doCall;
+        }
 
+        internal static IEnumerable<DO.Call> FilterAndSortCalls(IEnumerable<DO.Call> calls, BO.CallType? filterByAttribute,
+                                                                object? sortByAttributeObj)
+        {
+            calls = filterByAttribute != null ?
+                  from c in calls
+                  where c.CallType == (DO.CallType)filterByAttribute
+                  select c
+                  :
+                  calls;
 
+            if (sortByAttributeObj != null)
+            {
+                var propertySort = typeof(DO.Call).GetProperty(sortByAttributeObj.ToString());
+                calls = propertySort != null ?
+                    from c in calls
+                    orderby propertySort.GetValue(c, null)
+                    select c
+                    :
+                    from c in calls
+                    orderby c.Id
+                    select c;
 
+            }
+            return calls;
+        }
+
+        internal static DO.Assignment CreateDoAssignment(DO.Assignment assignment, DO.TypeOfTreatmentTermination type)
+        {
+            return new(
+                assignment.Id,
+                assignment.CallId,
+                assignment.VolunteerId,
+                assignment.EntryTimeForTreatment,
+                type,
+                ClockManager.Now
+                );
+        }
     }
-
 }

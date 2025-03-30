@@ -7,26 +7,9 @@ namespace BlImplementation;
 internal class VolunteerImplementation : IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
-
-    
-
-    
     public void AddVolunteer(BO.Volunteer newBoVolunteer)
     {
-        DO.Volunteer doVolunteer =
-         new(newBoVolunteer.Id,
-             newBoVolunteer.Name,
-             newBoVolunteer.Phone,
-             newBoVolunteer.Email,
-             (DO.Role)newBoVolunteer.Role,
-             newBoVolunteer.Active,
-             (DO.DistanceType)newBoVolunteer.DistanceType,
-             newBoVolunteer.Latitude,
-             newBoVolunteer.Longitude,
-             newBoVolunteer.Password,
-             newBoVolunteer.Address,
-             newBoVolunteer.MaxDistanceForCall
-             );
+        DO.Volunteer doVolunteer = VolunteerManager.CreateDoVolunteer(newBoVolunteer);
         try
         {
             _dal.Volunteer.Create(doVolunteer);
@@ -37,15 +20,30 @@ internal class VolunteerImplementation : IVolunteer
         }
     }
 
-    public void DeleteVolunteer(int idVolunteer)
+    public void UpdateVolunteerDetails(int idRequester, BO.Volunteer volunteer)
     {
+        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteer.Id) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteer.Id} does Not exist");//מיותר?כי הרי כשמזמנים את הפעולה הזאת שולחים מתנדב מוכן וכבר מה בודקים אם קיים או לא
+        DO.Volunteer requester = _dal.Volunteer.Read(idRequester);
+        if (requester.Role != DO.Role.Manager && idRequester != volunteer.Id)
+            throw new BO.BlUnauthorizedException("Only a manager can update the volunteer's role");
+        DO.Volunteer updatedDoVolunteer = VolunteerManager.CreateDoVolunteer(volunteer,
+            requester.Role == DO.Role.Manager ? (DO.Role)volunteer.Role : null);
         try
         {
-            var assignments = _dal.Assignment.ReadAll()
-                              .Where(a => a.VolunteerId == idVolunteer)
-                              .Select(a => a.VolunteerId);
-            if (assignments.Count() != 0)
-                throw new BO.BlCantDeleteException("It is not possible to delete a volunteer handling calls.");
+            _dal.Volunteer.Update(updatedDoVolunteer);
+        }
+        catch (DO.DalDoesNotExistException ex)
+        {
+            throw new BO.BlCantUpdateException($"volunteer with ID={volunteer.Id} is not exists", ex);
+        }
+    }
+    public void DeleteVolunteer(int idVolunteer)
+    {
+        var assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == idVolunteer);
+        if (assignments.Any(a => a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.Handled || a.TypeOfTreatmentTermination == null))
+            throw new BO.BlCantDeleteException("It is not possible to delete a volunteer handling calls or handled in past.");
+        try
+        {
             _dal.Volunteer.Delete(idVolunteer);
         }
         catch (DO.DalDoesNotExistException ex)
@@ -59,7 +57,7 @@ internal class VolunteerImplementation : IVolunteer
     /// <param name="active">A Boolean value that will filter the list by active and inactive volunteers.</param>
     /// <param name="sortByAttribute">A field in the "Volunteer on List" entity, by which the list is sorted</param>
     /// <returns>Sorted and filtered threshold of logical data entity "Volunteer in list"</returns>
-    public IEnumerable<BO.VolunteerInList> GetListVolunteers(bool? active=null, BO.VolunteerInListAttributes? sortByAttribute=null)
+    public IEnumerable<BO.VolunteerInList> GetListVolunteers(bool? active = null, BO.VolunteerInListAttributes? sortByAttribute = null)
     {
         var vols = _dal.Volunteer.ReadAll();
         vols = active != null ?
@@ -88,7 +86,7 @@ internal class VolunteerImplementation : IVolunteer
                 Id = v.Id,
                 Name = v.Name,
                 Active = v.Active,
-                TotalCallsHandledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.Handled,assignVol),
+                TotalCallsHandledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.Handled, assignVol),
                 TotalCallsCanceledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.SelfCancellation, assignVol)
                 + VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancelAdministrator, assignVol),
                 TotalExpiredCallingsByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancellationExpired, assignVol),
@@ -155,36 +153,5 @@ internal class VolunteerImplementation : IVolunteer
         throw new BO.BlDoesNotExistException($"Volunteer with Name ={username} does Not exist");
         return (BO.Role)vol.Role;
     }
-    public void UpdateVolunteerDetails(int idRequester, BO.Volunteer volunteer)
-    {
-        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteer.Id) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteer.Id} does Not exist");//מיותר?כי הרי כשמזמנים את הפעולה הזאת שולחים מתנדב מוכן וכבר מה בודקים אם קיים או לא
-        try
-        {
-            DO.Volunteer requester = _dal.Volunteer.Read(idRequester);//לבדוק אם מי שמבקש הוא מנהל או שלפחות זה באמת המתנדב בעצמו
-            if (requester.Role != DO.Role.Manager && idRequester != volunteer.Id)
-                throw new BO.BlUnauthorizedException("Only a manager can update the volunteer's role");
-            {
-                //בדיקות תקינות לעדכון
-                DO.Volunteer updatedDoVolunteer = new(
-                volunteer.Id,
-                volunteer.Name,
-                volunteer.Phone,
-                volunteer.Email,
-                requester.Role == DO.Role.Manager ? (DO.Role)volunteer.Role : (DO.Role)_dal.Volunteer.Read(volunteer.Id).Role,
-                volunteer.Active,
-                (DO.DistanceType)volunteer.DistanceType,
-                volunteer.Latitude,//לעדכן קווי אורך ורוחב בהתאם לכתובת פונקציית עזר 
-                volunteer.Longitude,
-                volunteer.Password,
-                volunteer.Address,
-                volunteer.MaxDistanceForCall
-                 );
-                _dal.Volunteer.Update(updatedDoVolunteer);
-            }
-        }
-        catch (DO.DalDoesNotExistException e)
-        {
-            throw new BO.BlCantUpdateException($"volunteer with ID={volunteer.Id} is not exists", e);
-        }
-    }
+
 }

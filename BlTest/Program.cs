@@ -69,12 +69,12 @@ namespace BlTest
         }
         private static void CreateAssignment()
         {
-            int idVlunteer = ReadHelper.ReadInt("insert id Vlunteer");
+            int idVolunteer = ReadHelper.ReadInt("insert id Volunteer");
             int idCall = ReadHelper.ReadInt("insert id Call");
 
             try
             {
-                s_bl.Call.ChooseTreatmentCall(idVlunteer, idCall);
+                s_bl.Call.ChooseTreatmentCall(idVolunteer, idCall);
             }
             catch (BO.BlInvalidRequestException ex)
             {
@@ -120,7 +120,7 @@ namespace BlTest
                     {
                         try
                         {
-                            int idRequest = ReadHelper.ReadInt("inserty your id:");
+                            int idRequest = ReadHelper.ReadInt("insert your id:");
                             s_bl.Call.UpdateCancelTreatmentOnCall(idRequest, idToDelete);
                         }
                         catch (BO.BlDoesNotExistException ex)
@@ -160,7 +160,7 @@ namespace BlTest
                     CallAddress = ReadHelper.ReadOrDefault(Console.ReadLine(), oldCall!.CallAddress),
                     Latitude = double.TryParse(Console.ReadLine(), out double latitude) ? latitude : oldCall.Latitude,
                     Longitude = double.TryParse(Console.ReadLine(), out double Longitude) ? Longitude : oldCall.Longitude,
-                    OpeningTime = DateTime.TryParse(Console.ReadLine(), out DateTime OpeningTime) ? OpeningTime : oldCall.OpeningTime,
+                    OpeningTime = oldCall.OpeningTime,
                     MaxTimeFinishCall = DateTime.TryParse(Console.ReadLine(), out DateTime MaximumTimeFinishCall) ? MaximumTimeFinishCall : oldCall.MaxTimeFinishCall,
                     CallDescription = ReadHelper.ReadOrDefault(Console.ReadLine(), oldCall.CallDescription!),
 
@@ -338,11 +338,10 @@ namespace BlTest
                     Console.WriteLine(s_bl.Admin.GetClock());
                     break;
                 case BO.AdminMenuOptions.NewConfigValue:
-                    //s_dal.Config.Clock = s_dal.Config.Clock.AddMinutes(3);
-                    //s_bl.Admin.SetRiskRange();
+                    s_bl.Admin.SetRiskRange(TimeSpan.MinValue);
                     break;
                 case BO.AdminMenuOptions.ViewConfigValue:
-                    Console.WriteLine($"the risk range is: {s_bl.Admin.GetRiskRange()}");//איך מדפיסים ריסקרינג?
+                    Console.WriteLine($"the risk range is: {s_bl.Admin.GetRiskRange()}");
                     break;
                 case BO.AdminMenuOptions.InitializeDatabase:
                     s_bl.Admin.InitializeDB();
@@ -465,7 +464,7 @@ namespace BlTest
         private static void EndTreatmentOnCall()
         {
             Console.WriteLine("insert id volunteer");
-            int idVolunteer= int.TryParse(Console.ReadLine(), out int result) ? result : throw new BO.BlInvalidValueException("insert value"); 
+            int idVolunteer = int.TryParse(Console.ReadLine(), out int result) ? result : throw new BO.BlInvalidValueException("insert value");
             Console.WriteLine("insert id assignment");
             int idAssignment = int.Parse(Console.ReadLine());
             try
@@ -548,13 +547,14 @@ namespace BlTest
             catch (BO.BlDoesNotExistException ex)
             { Console.WriteLine($"BlDoesNotExistException{ex.Message}"); }
         }
-        //##################################
         private static void CallQuantitiesByStatus()
         {
             int[] callCounts = s_bl.Call.GetCallQuantitiesByStatus();
-            foreach (int c in callCounts)
+            var statuses = Enum.GetValues(typeof(BO.StatusCall)).Cast<BO.StatusCall>();
+
+            foreach (var status in statuses)
             {
-                Console.WriteLine(c);
+                Console.WriteLine($"{status}: {callCounts[(int)status]}");
             }
         }
 

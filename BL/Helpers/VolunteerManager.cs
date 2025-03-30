@@ -1,12 +1,11 @@
 ﻿using DalApi;
-using DO;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 namespace Helpers
 {
     internal static class VolunteerManager
     {
-        
+
         private class OSMGeocodeResponse
         {
             public string display_name { get; set; }
@@ -14,10 +13,12 @@ namespace Helpers
         private static IDal s_dal = Factory.Get; //stage 4
         public static bool IntegrityCheck(BO.Volunteer volunteer)
         {
+            if (volunteer.MaxDistanceForCall < 0)
+                throw new BO.BlInvalidValueException("max distance for call must be positive");
             //Email health check
             if (!Regex.IsMatch(volunteer.Email, @"^[^\s@]+@[^\s@]+\.[^\s@]+$"))
             {
-                throw new BO.BlInvalidValueException("Invalid email format");
+
             }
             //Phone check
             if (!Regex.IsMatch(volunteer.Phone, @"^\d{10}$"))
@@ -59,7 +60,7 @@ namespace Helpers
         /// <param name="lon">Longitude</param>
         /// <param name="lat">Latitude</param>
         /// <returns>true if the address is valid, otherwise false</returns>
-       
+
         public static bool IsValidAddress(double? lon, double? lat)
         {
             string requestUri = $"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}";
@@ -107,12 +108,31 @@ namespace Helpers
                 BO.StatusCallInProgress.InTreatment : BO.StatusCallInProgress.InRiskTreatment;
         }
 
-        internal static int CountTypeOfTreatmentTermination(TypeOfTreatmentTermination type, IEnumerable<Assignment> assignVol)
+        internal static int CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination type, IEnumerable<DO.Assignment> assignVol)
         {
 
             return (from a in assignVol
                     where a.TypeOfTreatmentTermination == type
                     select a).Count();
+        }
+        internal static DO.Volunteer CreateDoVolunteer(BO.Volunteer volunteer, DO.Role? role = null)
+        {
+            IntegrityCheck(volunteer);
+            DO.Volunteer doVolunteer = new(
+                volunteer.Id,
+                volunteer.Name,
+                volunteer.Phone,
+                volunteer.Email,
+                role == null ? (DO.Role)volunteer.Role : (DO.Role)role,
+                volunteer.Active,
+                (DO.DistanceType)volunteer.DistanceType,
+                volunteer.Latitude,//לעדכן קווי אורך ורוחב בהתאם לכתובת פונקציית עזר
+                volunteer.Longitude,
+                volunteer.Password,
+                volunteer.Address,
+                volunteer.MaxDistanceForCall
+                 );
+            return doVolunteer;
         }
     }
 
