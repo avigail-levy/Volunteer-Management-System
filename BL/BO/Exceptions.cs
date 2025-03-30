@@ -9,7 +9,6 @@ public class BlDoesNotExistException : Exception
     public BlDoesNotExistException(string message, Exception ex) : base(message, ex) { }
 
 }
-//attribute with null value
 [Serializable]
 public class BlNullPropertyException : Exception
 {
@@ -54,10 +53,5 @@ public class BlInvalidRequestException : Exception
     public BlInvalidRequestException(string? message, Exception ex) : base(message, ex) { }
 
 }
-//[Serializable]
-//public class DalXMLFileLoadCreateException : Exception
-//{
-//    public DalXMLFileLoadCreateException(string? message) : base(message) { }
-//}
 
 

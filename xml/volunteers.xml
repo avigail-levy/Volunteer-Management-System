@@ -1,199 +1,213 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfVolunteer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Volunteer>
-    <Id>233655205</Id>
+    <Id>218217508</Id>
+    <Name>Dani Levy</Name>
+    <Phone>0504133382</Phone>
+    <Email>Dani Levy@gmail.com</Email>
+    <Role>Volunteer</Role>
+    <Active>true</Active>
+    <DistanceType>TraveledByCar</DistanceType>
+    <Latitude>31.965539</Latitude>
+    <Longitude>34.803267</Longitude>
+    <Password>Dani Levy0504133382</Password>
+    <Address>Herzl Street 77, Rishon Lezion</Address>
+    <MaxDistanceForCall>21.30405036894627</MaxDistanceForCall>
+  </Volunteer>
+  <Volunteer>
+    <Id>223630981</Id>
     <Name>Eli Amar</Name>
     <Phone>0556726282</Phone>
     <Email>Eli Amar@gmail.com</Email>
     <Role>Manager</Role>
     <Active>false</Active>
     <DistanceType>TraveledByCar</DistanceType>
-    <Latitude>32.070446</Latitude>
-    <Longitude>34.794667</Longitude>
+    <Latitude>32.818271</Latitude>
+    <Longitude>35.001148</Longitude>
     <Password>Eli Amar0556726282</Password>
-    <Address>Herzl Street 1, Tel Aviv</Address>
-    <MaxDistanceForCall>15.450486973764205</MaxDistanceForCall>
+    <Address>Derech HaAtsmaut 67, Haifa</Address>
+    <MaxDistanceForCall>43.20348552454442</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>268903125</Id>
+    <Id>265731098</Id>
     <Name>Yair Cohen</Name>
     <Phone>0527175821</Phone>
     <Email>Yair Cohen@gmail.com</Email>
     <Role>Volunteer</Role>
     <Active>true</Active>
-    <DistanceType>walking</DistanceType>
-    <Latitude>32.080126</Latitude>
-    <Longitude>34.774455</Longitude>
+    <DistanceType>TraveledByCar</DistanceType>
+    <Latitude>31.764492</Latitude>
+    <Longitude>35.220554</Longitude>
     <Password>Yair Cohen0527175821</Password>
-    <Address>Dizengoff Street 65, Tel Aviv</Address>
-    <MaxDistanceForCall>17.007871517721227</MaxDistanceForCall>
+    <Address>Emek Refaim Street 34, Jerusalem</Address>
+    <MaxDistanceForCall>0.5707906101708071</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>309751234</Id>
+    <Id>343951423</Id>
     <Name>Ariela Levin</Name>
     <Phone>0527175820</Phone>
     <Email>Ariela Levin@gmail.com</Email>
     <Role>Manager</Role>
     <Active>false</Active>
-    <DistanceType>walking</DistanceType>
-    <Latitude>32.068281</Latitude>
-    <Longitude>34.770236</Longitude>
+    <DistanceType>TraveledByCar</DistanceType>
+    <Latitude>32.174547</Latitude>
+    <Longitude>34.905562</Longitude>
     <Password>Ariela Levin0527175820</Password>
-    <Address>Hashomer Street 10, Tel Aviv</Address>
-    <MaxDistanceForCall>44.81992411497276</MaxDistanceForCall>
+    <Address>Weizmann Street 19, Kfar Saba</Address>
+    <MaxDistanceForCall>12.449506810197464</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>327662331</Id>
+    <Id>344147452</Id>
     <Name>Dina Klein</Name>
     <Phone>0504160838</Phone>
     <Email>Dina Klein@gmail.com</Email>
     <Role>Volunteer</Role>
     <Active>true</Active>
-    <DistanceType>Aerial</DistanceType>
-    <Latitude>33.208588</Latitude>
-    <Longitude>35.570471</Longitude>
+    <DistanceType>walking</DistanceType>
+    <Latitude>32.017102</Latitude>
+    <Longitude>34.747173</Longitude>
     <Password>Dina Klein0504160838</Password>
-    <Address>Shapira Street 2, Kiryat Shmona</Address>
-    <MaxDistanceForCall>38.299308112681565</MaxDistanceForCall>
+    <Address>Ben Gurion Boulevard 25, Bat Yam</Address>
+    <MaxDistanceForCall>17.79219814971036</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>245096533</Id>
+    <Id>383118703</Id>
     <Name>Shira Israelof</Name>
     <Phone>0504156891</Phone>
     <Email>Shira Israelof@gmail.com</Email>
     <Role>Manager</Role>
     <Active>false</Active>
-    <DistanceType>TraveledByCar</DistanceType>
-    <Latitude>31.764492</Latitude>
-    <Longitude>35.220554</Longitude>
+    <DistanceType>Aerial</DistanceType>
+    <Latitude>32.068588</Latitude>
+    <Longitude>34.769863</Longitude>
     <Password>Shira Israelof0504156891</Password>
-    <Address>Emek Refaim Street 34, Jerusalem</Address>
-    <MaxDistanceForCall>33.42858098409266</MaxDistanceForCall>
+    <Address>Allenby Street 99, Tel Aviv</Address>
+    <MaxDistanceForCall>41.491179120388</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>279343292</Id>
+    <Id>359050118</Id>
     <Name>David Gold</Name>
     <Phone>0503133382</Phone>
     <Email>David Gold@gmail.com</Email>
     <Role>Volunteer</Role>
     <Active>true</Active>
     <DistanceType>TraveledByCar</DistanceType>
-    <Latitude>31.607161</Latitude>
-    <Longitude>34.768885</Longitude>
+    <Latitude>32.084027</Latitude>
+    <Longitude>34.812335</Longitude>
     <Password>David Gold0503133382</Password>
-    <Address>Palmach Street 15, Kiryat Gat</Address>
-    <MaxDistanceForCall>45.350490929307725</MaxDistanceForCall>
+    <Address>Ben Gurion Street 22, Ramat Gan</Address>
+    <MaxDistanceForCall>31.55202783377656</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>277397814</Id>
+    <Id>284738694</Id>
     <Name>Rachel Green</Name>
     <Phone>0556724282</Phone>
     <Email>Rachel Green@gmail.com</Email>
     <Role>Manager</Role>
     <Active>false</Active>
-    <DistanceType>Aerial</DistanceType>
-    <Latitude>32.045431</Latitude>
-    <Longitude>34.764147</Longitude>
+    <DistanceType>walking</DistanceType>
+    <Latitude>32.073187</Latitude>
+    <Longitude>34.775301</Longitude>
     <Password>Rachel Green0556724282</Password>
-    <Address>Kibbutz Galuyot 23, Tel Aviv</Address>
-    <MaxDistanceForCall>26.476094259565365</MaxDistanceForCall>
+    <Address>King George Street 27, Tel Aviv</Address>
+    <MaxDistanceForCall>25.515644298295182</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>292049591</Id>
+    <Id>365265751</Id>
     <Name>Miriam Azulay</Name>
     <Phone>0527175221</Phone>
     <Email>Miriam Azulay@gmail.com</Email>
     <Role>Volunteer</Role>
     <Active>true</Active>
-    <DistanceType>Aerial</DistanceType>
-    <Latitude>32.069509</Latitude>
-    <Longitude>34.78337</Longitude>
+    <DistanceType>TraveledByCar</DistanceType>
+    <Latitude>32.062819</Latitude>
+    <Longitude>34.774061</Longitude>
     <Password>Miriam Azulay0527175221</Password>
-    <Address>Begin Road 48, Tel Aviv</Address>
-    <MaxDistanceForCall>39.37343200452657</MaxDistanceForCall>
+    <Address>Rothschild Boulevard 16, Tel Aviv</Address>
+    <MaxDistanceForCall>20.920008077642482</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>226471198</Id>
+    <Id>243745783</Id>
     <Name>Eyal Shani</Name>
     <Phone>0528175820</Phone>
     <Email>Eyal Shani@gmail.com</Email>
     <Role>Manager</Role>
     <Active>false</Active>
-    <DistanceType>Aerial</DistanceType>
-    <Latitude>32.815532</Latitude>
-    <Longitude>34.995479</Longitude>
+    <DistanceType>walking</DistanceType>
+    <Latitude>31.960252</Latitude>
+    <Longitude>34.804289</Longitude>
     <Password>Eyal Shani0528175820</Password>
-    <Address>Hertzel Boulevard 33, Haifa</Address>
-    <MaxDistanceForCall>33.44348732591336</MaxDistanceForCall>
+    <Address>Rothschild Street 18, Rishon Lezion</Address>
+    <MaxDistanceForCall>38.45499392473838</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>357249772</Id>
+    <Id>367944617</Id>
     <Name>Noa Bar</Name>
     <Phone>0504160837</Phone>
     <Email>Noa Bar@gmail.com</Email>
     <Role>Volunteer</Role>
     <Active>true</Active>
-    <DistanceType>Aerial</DistanceType>
-    <Latitude>33.004863</Latitude>
-    <Longitude>35.092421</Longitude>
+    <DistanceType>TraveledByCar</DistanceType>
+    <Latitude>32.051958</Latitude>
+    <Longitude>34.758285</Longitude>
     <Password>Noa Bar0504160837</Password>
-    <Address>Hertzel Street 9, Nahariya</Address>
-    <MaxDistanceForCall>7.368198292127071</MaxDistanceForCall>
+    <Address>Sderot Yerushalayim 45, Jaffa</Address>
+    <MaxDistanceForCall>4.5919199356905525</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>341453388</Id>
+    <Id>333766583</Id>
     <Name>Yael Harel</Name>
     <Phone>0504756891</Phone>
     <Email>Yael Harel@gmail.com</Email>
     <Role>Manager</Role>
     <Active>false</Active>
-    <DistanceType>TraveledByCar</DistanceType>
-    <Latitude>32.062819</Latitude>
-    <Longitude>34.774061</Longitude>
+    <DistanceType>Aerial</DistanceType>
+    <Latitude>32.084027</Latitude>
+    <Longitude>34.812335</Longitude>
     <Password>Yael Harel0504756891</Password>
-    <Address>Rothschild Boulevard 16, Tel Aviv</Address>
-    <MaxDistanceForCall>48.396629200484554</MaxDistanceForCall>
+    <Address>Ben Gurion Street 22, Ramat Gan</Address>
+    <MaxDistanceForCall>39.56208495545746</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>245398578</Id>
+    <Id>311374845</Id>
     <Name>zipi salomon</Name>
     <Phone>0504113382</Phone>
     <Email>zipi salomon@gmail.com</Email>
     <Role>Volunteer</Role>
     <Active>true</Active>
     <DistanceType>Aerial</DistanceType>
-    <Latitude>31.785704</Latitude>
-    <Longitude>35.211248</Longitude>
+    <Latitude>32.111427</Latitude>
+    <Longitude>34.840487</Longitude>
     <Password>zipi salomon0504113382</Password>
-    <Address>Jaffa Street 31, Jerusalem</Address>
-    <MaxDistanceForCall>5.414631974149947</MaxDistanceForCall>
+    <Address>Raoul Wallenberg Street 24, Tel Aviv</Address>
+    <MaxDistanceForCall>5.708872772685875</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>332250330</Id>
+    <Id>362264167</Id>
     <Name>avigail levy</Name>
     <Phone>0556723282</Phone>
     <Email>avigail levy@gmail.com</Email>
     <Role>Manager</Role>
     <Active>false</Active>
     <DistanceType>TraveledByCar</DistanceType>
-    <Latitude>32.051958</Latitude>
-    <Longitude>34.758285</Longitude>
+    <Latitude>32.174547</Latitude>
+    <Longitude>34.905562</Longitude>
     <Password>avigail levy0556723282</Password>
-    <Address>Sderot Yerushalayim 45, Jaffa</Address>
-    <MaxDistanceForCall>1.2707251439597556</MaxDistanceForCall>
+    <Address>Weizmann Street 19, Kfar Saba</Address>
+    <MaxDistanceForCall>17.25196002499853</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>206845315</Id>
+    <Id>373299582</Id>
     <Name>yaeli shushan</Name>
     <Phone>0527575821</Phone>
     <Email>yaeli shushan@gmail.com</Email>
     <Role>Volunteer</Role>
     <Active>true</Active>
-    <DistanceType>Aerial</DistanceType>
-    <Latitude>31.803685</Latitude>
-    <Longitude>34.641451</Longitude>
+    <DistanceType>TraveledByCar</DistanceType>
+    <Latitude>32.818271</Latitude>
+    <Longitude>35.001148</Longitude>
     <Password>yaeli shushan0527575821</Password>
-    <Address>Shlomo HaMelekh Street 19, Ashdod</Address>
-    <MaxDistanceForCall>47.745112399661636</MaxDistanceForCall>
+    <Address>Derech HaAtsmaut 67, Haifa</Address>
+    <MaxDistanceForCall>40.50431861892058</MaxDistanceForCall>
   </Volunteer>
 </ArrayOfVolunteer>
