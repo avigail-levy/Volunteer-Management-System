@@ -494,8 +494,8 @@
     <Id>50</Id>
     <CallType>Ironing</CallType>
     <CallAddress>HaNassi Street 2, Rehovot</CallAddress>
-    <Latitude>31.896828</Latitude>
-    <Longitude>34.812281</Longitude>
+    <Latitude>31.8229775</Latitude>
+    <Longitude>34.779346</Longitude>
     <OpeningTime>2025-03-19T21:55:54</OpeningTime>
     <CallDescription>HaNassi Street 2, Rehovot 34.812281 31.896828 call</CallDescription>
     <MaxTimeFinishCall>2025-04-10T21:55:54</MaxTimeFinishCall>

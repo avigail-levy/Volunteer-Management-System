@@ -146,16 +146,17 @@ namespace BlTest
         /// </summary>
         private static void UpdateCall()
         {
-            Console.WriteLine("insert id-entity to update:");
             int idToUpdate = ReadHelper.ReadInt("insert id of call to update");
             try
             {
                 BO.Call? oldCall = s_bl.Call.GetCallDetails(idToUpdate);
                 Console.WriteLine("Enter the data to create a new object of type call:");
                 Console.WriteLine("Enter the data of: type of call, full address,opening time, maximum time of finish call, description");
-                BO.Call newCall = new BO.Call()
+                BO.Call newCall = new BO.Call
                 {
+                    Id=oldCall.Id,
                     CallType = int.TryParse(Console.ReadLine(), out int typeOfCall) ? (BO.CallType)typeOfCall : oldCall!.CallType,
+                    CallType = ReadHelper.ReadEnum<BO.CallType> ? (BO.CallType)typeOfCall : oldCall!.CallType,
                     CallAddress = ReadHelper.ReadOrDefault(Console.ReadLine(), oldCall!.CallAddress),
                     OpeningTime = oldCall.OpeningTime,
                     MaxTimeFinishCall = DateTime.TryParse(Console.ReadLine(), out DateTime MaximumTimeFinishCall) ? MaximumTimeFinishCall : oldCall.MaxTimeFinishCall,

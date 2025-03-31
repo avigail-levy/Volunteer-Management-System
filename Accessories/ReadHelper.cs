@@ -87,8 +87,6 @@ namespace Accessories
             return data;
 
         }
-
-
         public static T? ReadEnumNull<T>(string message) where T : struct, Enum
         {
             Console.WriteLine(message);
