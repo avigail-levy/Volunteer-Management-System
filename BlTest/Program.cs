@@ -155,8 +155,7 @@ namespace BlTest
                 BO.Call newCall = new BO.Call
                 {
                     Id=oldCall.Id,
-                    CallType = int.TryParse(Console.ReadLine(), out int typeOfCall) ? (BO.CallType)typeOfCall : oldCall!.CallType,
-                    CallType = ReadHelper.ReadEnum<BO.CallType> ? (BO.CallType)typeOfCall : oldCall!.CallType,
+                    CallType = Enum.TryParse(Console.ReadLine(), out BO.CallType parsedCallType)? parsedCallType: oldCall.CallType,
                     CallAddress = ReadHelper.ReadOrDefault(Console.ReadLine(), oldCall!.CallAddress),
                     OpeningTime = oldCall.OpeningTime,
                     MaxTimeFinishCall = DateTime.TryParse(Console.ReadLine(), out DateTime MaximumTimeFinishCall) ? MaximumTimeFinishCall : oldCall.MaxTimeFinishCall,

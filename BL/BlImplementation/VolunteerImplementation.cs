@@ -7,6 +7,12 @@ namespace BlImplementation;
 internal class VolunteerImplementation : IVolunteer
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
+    /// <summary>
+    /// From the logical object details, creates a new object of the data entity type DO.Voluteer
+    ///Performs an attempt to request the addition of the new volunteer to the data layer(Create)
+    /// </summary>
+    /// <param name="newBoVolunteer">An object of the logical entity type "volunteer"</param>
+    /// <exception cref="BO.BlAlreadyExistsException">There is a volunteer with this id}</exception>
     public void AddVolunteer(BO.Volunteer newBoVolunteer)
     {
         DO.Volunteer doVolunteer = VolunteerManager.CreateDoVolunteer(newBoVolunteer);
@@ -19,7 +25,16 @@ internal class VolunteerImplementation : IVolunteer
             throw new BO.BlAlreadyExistsException($"Volunteer with ID={newBoVolunteer.Id} already exists", ex);
         }
     }
-
+    /// <summary>
+    /// Requests the record from the data layer and checks which fields have changed
+    /// From the details of the logical object BO.Volunteer, creates an object of the data entity type DO.Volunteer
+    ///Attempts to request an update of the volunteer in the data layer DO.Volunteer
+    /// </summary>
+    /// <param name="idVolunteer">ID of the person requesting the update</param>
+    /// <param name="volunteer">An object of the logical entity type "volunteer" for update</param>
+    /// <exception cref="BO.BlDoesNotExistException">The volunteer is not exist</exception>
+    /// <exception cref="BO.BlUnauthorizedException"> There is no authorization</exception>
+    /// <exception cref="BO.BlCantUpdateException">cant update volunteer details</exception>
     public void UpdateVolunteerDetails(int idRequester, BO.Volunteer volunteer)
     {
         DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteer.Id) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteer.Id} does Not exist");//מיותר?כי הרי כשמזמנים את הפעולה הזאת שולחים מתנדב מוכן וכבר מה בודקים אם קיים או לא
@@ -37,6 +52,12 @@ internal class VolunteerImplementation : IVolunteer
             throw new BO.BlCantUpdateException($"volunteer with ID={volunteer.Id} is not exists", ex);
         }
     }
+    /// <summary>
+    /// Requesting a request to the data layer to check if the volunteer can be deleted
+    ///Attempting to request a deletion of the volunteer from the data layer
+    /// </summary>
+    /// <param name="idVolunteer">Volunteer ID</param>
+    /// <exception cref="BO.BlCantDeleteException"></exception>
     public void DeleteVolunteer(int idVolunteer)
     {
         var assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == idVolunteer);
