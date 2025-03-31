@@ -129,7 +129,7 @@ internal class VolunteerImplementation : IVolunteer
             {
                 Id = assignInTreatment.Id,
                 CallId = assignInTreatment.CallId,
-                CallType = (BO.CallType)call.CallType,
+                CallType = (BO.CallType)call!.CallType,
                 CallDescription = call.CallDescription,
                 CallAddress = call.CallAddress,
                 OpeningTime = call.OpeningTime,

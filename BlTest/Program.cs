@@ -461,7 +461,7 @@ namespace BlTest
             Console.WriteLine("insert id volunteer");
             int idVolunteer = int.TryParse(Console.ReadLine(), out int result) ? result : throw new BO.BlInvalidValueException("insert value");
             Console.WriteLine("insert id assignment");
-            int idAssignment = int.Parse(Console.ReadLine());
+            int idAssignment = int.TryParse(Console.ReadLine(), out int result2) ? result2 : throw new BO.BlInvalidValueException("insert value");
             try
             {
                 s_bl.Call.UpdateEndTreatmentOnCall(idVolunteer, idAssignment);

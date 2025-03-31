@@ -107,7 +107,7 @@ namespace Helpers
                     return [latitude, longitude];
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 return null;
             }
@@ -120,9 +120,10 @@ namespace Helpers
 
         internal static double CalcDistance(string addressVol,string addressCall)
         {  
-            double [] volunteerLonLat = CalcCoordinates(addressVol);
-            double[] callLonLat = CalcCoordinates(addressCall);
-            if (volunteerLonLat[0] == null || volunteerLonLat[1] == null) return 0;
+            double []? volunteerLonLat = CalcCoordinates(addressVol);
+            double[]? callLonLat = CalcCoordinates(addressCall);
+            if (volunteerLonLat?[0] == null || volunteerLonLat?[1] == null) 
+                return 0;
             const double R = 6371; // רדיוס כדור הארץ בק"מ
             double dLat = DegreesToRadians(volunteerLonLat[0] - callLonLat[0]);
             double dLon = DegreesToRadians(volunteerLonLat[1] - callLonLat[1]);
