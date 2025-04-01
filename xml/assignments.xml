@@ -93,7 +93,7 @@
     <CallId>13</CallId>
     <VolunteerId>373299582</VolunteerId>
     <EntryTimeForTreatment>2025-03-19T02:46:54</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination>CancelAdministrator</TypeOfTreatmentTermination>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
     <EndOfTreatmentTime>2025-03-19T13:33:54</EndOfTreatmentTime>
   </Assignment>
   <Assignment>

@@ -76,7 +76,7 @@ namespace Helpers
 
             if (sortByAttributeObj != null)
             {
-                var propertySort = typeof(DO.Call).GetProperty(sortByAttributeObj.ToString());
+                var propertySort = sortByAttributeObj?.GetType().GetProperty(sortByAttributeObj.ToString());
                 calls = propertySort != null ?
                     from c in calls
                     orderby propertySort.GetValue(c, null)

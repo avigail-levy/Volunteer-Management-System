@@ -128,7 +128,6 @@ internal class CallImplementation : ICall
             DO.Assignment assign = _dal.Assignment.Read(c.Id);
             return new BO.ClosedCallInList
             {
-
                 Id = c.Id,
                 CallType = (BO.CallType)c.CallType,
                 CallAddress = c.CallAddress,
