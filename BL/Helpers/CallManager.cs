@@ -43,20 +43,21 @@ namespace Helpers
             {
                 throw new BO.BlInvalidValueException("the finish-time cant be earlier than the opening time");
             }
- 
+            
 
         }
-        internal static DO.Call CreateDoCall(BO.Call call)
+        internal static DO.Call CreateDoCall(BO.Call call, bool add = false)
         {
+            double[]? latlon = VolunteerManager.CalcCoordinates(call.CallAddress)?? throw new BO.BlInvalidValueException("invalid address");
             validCall(call);
-
+            DateTime openingTime = add? ClockManager.Now : call.OpeningTime;
             DO.Call doCall = new(
                 call.Id,
                 (DO.CallType)call.CallType,
                 call.CallAddress,
-                VolunteerManager.CalcCoordinates(call.CallAddress)[0],
-                VolunteerManager.CalcCoordinates(call.CallAddress)[1],
-                call.OpeningTime,
+                latlon[0],
+                latlon[1],
+                openingTime,
                 call.CallDescription,
                 call.MaxTimeFinishCall
             );

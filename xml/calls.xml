@@ -500,4 +500,34 @@
     <CallDescription>HaNassi Street 2, Rehovot 34.812281 31.896828 call</CallDescription>
     <MaxTimeFinishCall>2025-04-10T21:55:54</MaxTimeFinishCall>
   </Call>
+  <Call>
+    <Id>51</Id>
+    <CallType>Ironing</CallType>
+    <CallAddress>אהרונסון 9, בני ברק</CallAddress>
+    <Latitude>32.0820584</Latitude>
+    <Longitude>34.8273464</Longitude>
+    <OpeningTime>0001-01-01T00:00:00</OpeningTime>
+    <CallDescription>1452</CallDescription>
+    <MaxTimeFinishCall>2025-04-01T22:12:16</MaxTimeFinishCall>
+  </Call>
+  <Call>
+    <Id>52</Id>
+    <CallType>Ironing</CallType>
+    <CallAddress>אהרונסון 9, בני ברק</CallAddress>
+    <Latitude>32.0820584</Latitude>
+    <Longitude>34.8273464</Longitude>
+    <OpeningTime>0001-01-01T00:00:00</OpeningTime>
+    <CallDescription>גכגגג</CallDescription>
+    <MaxTimeFinishCall>2026-11-12T00:00:00</MaxTimeFinishCall>
+  </Call>
+  <Call>
+    <Id>53</Id>
+    <CallType>Ironing</CallType>
+    <CallAddress>אבן גבירול 11, אלעד</CallAddress>
+    <Latitude>32.0539178</Latitude>
+    <Longitude>34.9586121</Longitude>
+    <OpeningTime>2025-03-30T21:55:54</OpeningTime>
+    <CallDescription>two shirts</CallDescription>
+    <MaxTimeFinishCall>2025-06-22T00:00:00</MaxTimeFinishCall>
+  </Call>
 </ArrayOfCall>

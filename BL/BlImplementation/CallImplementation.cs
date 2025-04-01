@@ -14,7 +14,7 @@ internal class CallImplementation : ICall
     {
         if (newBoCall.MaxTimeFinishCall < ClockManager.Now || newBoCall.MaxTimeFinishCall < newBoCall.OpeningTime)
             throw new BO.BlInvalidValueException("OpeningTime value of call is not valid");
-        DO.Call doCall = CallManager.CreateDoCall(newBoCall);
+        DO.Call doCall = CallManager.CreateDoCall(newBoCall,true);
         try
         {
             _dal.Call.Create(doCall);

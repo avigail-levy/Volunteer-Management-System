@@ -151,7 +151,7 @@ namespace BlTest
             {
                 BO.Call? oldCall = s_bl.Call.GetCallDetails(idToUpdate);
                 Console.WriteLine("Enter the data to create a new object of type call:");
-                Console.WriteLine("Enter the data of: type of call, full address,opening time, maximum time of finish call, description");
+                Console.WriteLine("Enter the data of: type of call, full address, maximum time of finish call, description");
                 BO.Call newCall = new BO.Call
                 {
                     Id=oldCall.Id,
