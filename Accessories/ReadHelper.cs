@@ -101,7 +101,7 @@ namespace Accessories
                 Console.WriteLine("The value you entered is invalid. Please enter it again!");
                 enumInput = Console.ReadLine();
             }
-            return (T)data;
+            return data==null?null:(T)data;
 
         }
 

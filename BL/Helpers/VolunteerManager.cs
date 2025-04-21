@@ -118,8 +118,10 @@ namespace Helpers
             public string lon { get; set; }
         }
 
-        internal static double CalcDistance(string addressVol,string addressCall)
-        {  
+        internal static double CalcDistance(string? addressVol,string addressCall)
+        {
+            if (addressVol == null)
+               throw new BO.BlInvalidValueException("the value of volunteer address can not be null");
             double []? volunteerLonLat = CalcCoordinates(addressVol);
             double[]? callLonLat = CalcCoordinates(addressCall);
             if (volunteerLonLat?[0] == null || volunteerLonLat?[1] == null) 
