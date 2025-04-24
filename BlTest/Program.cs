@@ -456,6 +456,7 @@ namespace BlTest
                     break;
             }
         }
+
         private static void EndTreatmentOnCall()
         {
             Console.WriteLine("insert id volunteer");
