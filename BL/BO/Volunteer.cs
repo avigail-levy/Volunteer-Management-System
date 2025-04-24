@@ -2,6 +2,15 @@
 using Helpers;
 public class Volunteer
 {
+   /// <summary>
+   /// Id:id volunteer
+   /// Name: volunteer name
+   /// Phone:volunteer phone
+   /// Email:voluteer email
+   /// Password:volunteer password
+   /// Address:volunteer address
+   /// latitude:
+   /// </summary>
     public int Id { get; init; }
     public string Name { get; set; }
     public string Phone {  get; set; }

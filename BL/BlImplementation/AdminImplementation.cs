@@ -6,7 +6,7 @@ namespace BlImplementation;
 internal class AdminImplementation : IAdmin
 {
     private readonly DalApi.IDal _dal = DalApi.Factory.Get;
-    // <summary>
+    /// <summary>
     /// Advance the system clock by the appropriate time unit.
     /// </summary>
     /// <param name="timeUnit">The unit of time for promotion</param>

@@ -25,12 +25,12 @@
         /// <returns>The object she built</returns>
         BO.Call GetCallDetails(int idCall);
         /// <summary>
-        /// מבצעת ניסיון בקשת עדכון (Update) של הקריאה בשכבת נתונים DO.Call
+        ///call update in data layer
         /// </summary>
         /// <param name="call">Object of the logical entity type "Call" BO.Call</param>
         void UpdateCallDetails( BO.Call call);
         /// <summary>
-        /// Attempting a deletion request
+        /// call deletion request
         /// </summary>
         /// <param name="idCall">Call ID</param>
         void DeleteCall(int idCall);

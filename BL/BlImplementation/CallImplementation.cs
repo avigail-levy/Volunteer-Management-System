@@ -43,12 +43,12 @@ internal class CallImplementation : ICall
         }
     }
     /// <summary>
-    ///
+    ///Choosing a call for treatment
     /// </summary>
-    /// <param name="idVolunteer"></param>
-    /// <param name="idCall"></param>
-    /// <exception cref="BO.BlDoesNotExistException"></exception>
-    /// <exception cref="BO.BlInvalidRequestException"></exception>
+    /// <param name="idVolunteer">id Volunteer who chooses call.</param>
+    /// <param name="idCall">id call for selection</param>
+    /// <exception cref="BO.BlDoesNotExistException">Does Not Exist</exception>
+    /// <exception cref="BO.BlInvalidRequestException">Invalid Request</exception>
     public void ChooseTreatmentCall(int idVolunteer, int idCall)
     {
         var call = _dal.Call.Read(idCall) ?? throw new BO.BlDoesNotExistException($"the call with id{idCall} does not exist");
@@ -115,8 +115,8 @@ internal class CallImplementation : ICall
     /// Sorts and filters the calls by ID and by the attributes received as parameters.
     /// </summary>
     /// <param name="idVolunteer">ID volunteer</param>
-    /// <param name="filterByAttribute">Call filtering feature</param>
-    /// <param name="sortByAttribute">Reading sorting feature</param>
+    /// <param name="filterByAttribute">call filtering attribute</param>
+    /// <param name="sortByAttribute">call sorting attribute</param>
     /// <returns>A sorted and filtered list of the volunteer</returns>
     public IEnumerable<BO.ClosedCallInList> ClosedCallsListHandledByVolunteer(int idVolunteer, BO.CallType? filterByAttribute = null, BO.ClosedCallInListAttributes? sortByAttribute = null)
     {
@@ -223,7 +223,7 @@ internal class CallImplementation : ICall
     /// <param name="filterByAttribute">A field in the "callInList" entity by which the list will be filtered</param>
     /// <param name="filterValue">Value to filter</param>
     /// <param name="sortByAttribute">a field in the "List Read" entity, by which the list is sorted</param>
-    /// <returns></returns>
+    /// <returns>call list</returns>
     public IEnumerable<BO.CallInList> GetCallsList(BO.CallInListAttributes? filterByAttribute = null, object? filterValue = null, BO.CallInListAttributes? sortByAttribute = null)
     {
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
@@ -299,8 +299,6 @@ internal class CallImplementation : ICall
             throw new BO.BlCantUpdateException("Unable to update the assignment", ex);
         }
     }
-
-
 
     /// <summary>
     /// "EndTreatment" update method on read

@@ -5,7 +5,7 @@ namespace Helpers
     {
         private static IDal s_dal = Factory.Get; //stage 4
         /// <summary>
-        /// A function that updates expired allocations of their calls so that the termination type is expired
+        /// A function that updates assignments that expired of their calls so that the termination type is expired
         /// </summary>
         internal static void PeriodicCallsUpdates() 
         {
@@ -98,12 +98,12 @@ namespace Helpers
             return doCall;
         }
         /// <summary>
-        /// A function that sorts and filters a reading list
+        /// A function that sorts and filters a call list
         /// </summary>
         /// <param name="calls">List of BO type calls for sorting and filtering</param>
         /// <param name="filterByAttribute">CallType attribute</param>
         /// <param name="sortByAttributeObj">Attribute</param>
-        /// <returns></returns>
+        /// <returns>filtered and sort list call</returns>
         internal static IEnumerable<DO.Call> FilterAndSortCalls(IEnumerable<DO.Call> calls, BO.CallType? filterByAttribute,
                                                                 object? sortByAttributeObj)
         {
