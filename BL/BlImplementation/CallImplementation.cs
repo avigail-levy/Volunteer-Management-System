@@ -41,7 +41,6 @@ internal class CallImplementation : ICall
         {
             throw new BO.BlDoesNotExistException($"Call with ID={call.Id} is not exists", ex);
         }
-
     }
     /// <summary>
     ///
@@ -278,7 +277,6 @@ internal class CallImplementation : ICall
     /// <exception cref="BlCantUpdateEception">Error during update</exception>
     public void UpdateCancelTreatmentOnCall(int idRequest, int idAssign)
     {
-
         DO.Assignment assignment = _dal.Assignment.Read(idAssign) ?? throw new BO.BlDoesNotExistException($"Assignment with id:{idAssign} does not exist");
         DO.Call call = _dal.Call.Read(assignment!.CallId);
 

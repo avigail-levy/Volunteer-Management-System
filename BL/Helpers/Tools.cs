@@ -10,8 +10,6 @@ namespace Helpers
     {
         private static IDal s_dal = Factory.Get; //stage 4
 
-
-
         public static string ToStringProperty<T>(this T t)
         {
             string str = "";
@@ -31,11 +29,6 @@ namespace Helpers
                     str += value?.ToString() + '\n';
             }
             return str;
-        }
-
-        public static DO.Call? GetCallByAssignment(DO.Assignment? assignment)
-        {
-            return assignment==null?null: s_dal.Call.Read(assignment.CallId);
         }
     }
 

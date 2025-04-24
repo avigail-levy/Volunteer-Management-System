@@ -100,7 +100,7 @@ internal class VolunteerImplementation : IVolunteer
         {
             var assignVol = _dal.Assignment.ReadAll(a => a.VolunteerId == v.Id);
             DO.Assignment? assignInTreatment = VolunteerManager.GetCallInTreatment(v.Id);
-            DO.Call? call = Tools.GetCallByAssignment(assignInTreatment);
+            DO.Call? call = AssignmentManager.GetCallByAssignment(assignInTreatment);
             return new BO.VolunteerInList
             {
 
@@ -128,7 +128,7 @@ internal class VolunteerImplementation : IVolunteer
         DO.Volunteer vol = _dal.Volunteer.Read(idVolunteer) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID {idVolunteer} is not found in database.");
         var assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == idVolunteer);
         DO.Assignment? assignInTreatment = VolunteerManager.GetCallInTreatment(idVolunteer);
-        var call = Tools.GetCallByAssignment(assignInTreatment);
+        var call = AssignmentManager.GetCallByAssignment(assignInTreatment);
         var volunteerBO = new BO.Volunteer
         {
             Id = vol.Id,

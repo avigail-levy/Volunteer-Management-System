@@ -1,5 +1,5 @@
-﻿
-using DalApi;
+﻿using DalApi;
+using DO;
 
 namespace Helpers
 {
@@ -8,17 +8,28 @@ namespace Helpers
         private static IDal s_dal = Factory.Get; //stage 4
         internal static void PeriodicCallsUpdates(DateTime oldClock, DateTime newClock) //stage 4
         {
-            var list = s_dal.Call.ReadAll().ToList();
-            foreach (var doCall in list)
-            {
-                //if student study for more than MaxRange years
-                //then student should be automatically updated to 'not active'
-                if (ClockManager.Now - doCall.OpeningTime >= s_dal.Config.RiskRange)
-                {
-                    //s_dal.Call.Update(doCall with { StatusCall = (StatusCall)OpenAtRisk });
-                }
-            }
+            var listCalls = s_dal.Call.ReadAll().ToList();
+            listCalls.Where(c=>ClockManager.Now - c.OpeningTime >= s_dal.Config.RiskRange)
+            //foreach (var doCall in list)
+            //{
+            //    if (ClockManager.Now - doCall.OpeningTime >= s_dal.Config.RiskRange)
+            //    {
+            //        //s_dal.Call.Update(doCall with { StatusCall = (StatusCall)OpenAtRisk });
+            //    }
+            //    var calls = s_dal.Call.ReadAll().Where(c => c.MaxTimeFinishCall > ClockManager.Now
+            //           && (GetStatusCall(c) != BO.StatusCall.Closed && GetStatusCall(c) != BO.StatusCall.Expired)).ToList();
+            //var assin = from c in calls
+            //            from a in s_dal.Assignment.ReadAll(a => a.CallId == c.Id)
+            //            where a.TypeOfTreatmentTermination is null
+            //            select a;
+
+            //if (assin.Any())
+            //    CreateDoAssignment(assin, DO.TypeOfTreatmentTermination.CancellationExpired);
+
+
+
         }
+
         internal static BO.StatusCall GetStatusCall(DO.Call call)
         {
             DateTime now = ClockManager.Now;
@@ -43,14 +54,14 @@ namespace Helpers
             {
                 throw new BO.BlInvalidValueException("the finish-time cant be earlier than the opening time");
             }
-            
+
 
         }
         internal static DO.Call CreateDoCall(BO.Call call, bool add = false)
         {
-            double[]? latlon = VolunteerManager.CalcCoordinates(call.CallAddress)?? throw new BO.BlInvalidValueException("invalid address");
+            double[]? latlon = VolunteerManager.CalcCoordinates(call.CallAddress) ?? throw new BO.BlInvalidValueException("invalid address");
             validCall(call);
-            DateTime openingTime = add? ClockManager.Now : call.OpeningTime;
+            DateTime openingTime = add ? ClockManager.Now : call.OpeningTime;
             DO.Call doCall = new(
                 call.Id,
                 (DO.CallType)call.CallType,
