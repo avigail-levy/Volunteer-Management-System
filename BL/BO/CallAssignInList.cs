@@ -13,7 +13,7 @@ public class CallAssignInList
     public string? Name { get; set; }
     public DateTime EntryTimeForTreatment { get; set; }
     public DateTime? EndOfTreatmentTime {  get; set; }
-    public TypeOfTreatmentTermination? TypeOfTreatmentTermination {  get; set; }
+    public TypeOfTreatmentTermination ? TypeOfTreatmentTermination {  get; set; }
     public override string ToString() => this.ToStringProperty();
 
 

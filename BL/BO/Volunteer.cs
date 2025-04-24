@@ -21,9 +21,9 @@ public class Volunteer
     /// CallingVolunteerTherapy: Calling volunteer therapy
     /// </summary>
     public int Id { get; init; }
-    public string Name { get; set; }
-    public string Phone {  get; set; }
-    public string Email { get; set; }
+    public string Name { get; set; } = null!;
+    public string Phone { get; set; } = null!;
+    public string Email { get; set; } = null!;
     public string? Password { get; set; }
     public string? Address {  get; set; }
     public double? Latitude { get; set; }

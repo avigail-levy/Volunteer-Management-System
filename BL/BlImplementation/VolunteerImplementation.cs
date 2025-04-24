@@ -38,7 +38,7 @@ internal class VolunteerImplementation : IVolunteer
     public void UpdateVolunteerDetails(int idRequester, BO.Volunteer volunteer)
     {
         DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteer.Id) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteer.Id} does Not exist");//מיותר?כי הרי כשמזמנים את הפעולה הזאת שולחים מתנדב מוכן וכבר מה בודקים אם קיים או לא
-        DO.Volunteer requester = _dal.Volunteer.Read(idRequester);
+        DO.Volunteer requester = _dal.Volunteer.Read(idRequester)!;
         if (requester.Role != DO.Role.Manager && idRequester != volunteer.Id)
             throw new BO.BlUnauthorizedException("Only a manager can update the volunteer's role");
         DO.Volunteer updatedDoVolunteer = VolunteerManager.CreateDoVolunteer(volunteer,
@@ -86,7 +86,7 @@ internal class VolunteerImplementation : IVolunteer
                where v.Active == active
                select v
                : vols;
-        var propertySort = typeof(DO.Volunteer).GetProperty(sortByAttribute.ToString());
+        var propertySort = sortByAttribute!=null? typeof(DO.Volunteer).GetProperty(sortByAttribute.ToString()!):null;
 
         vols = propertySort != null ?
               from v in vols

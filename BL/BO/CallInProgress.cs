@@ -19,7 +19,7 @@ public class CallInProgress
     public int CallId {  get; init; }
     public CallType CallType { get; set; }
     public string? CallDescription{ get; set; }
-    public string CallAddress { get; set; }
+    public string CallAddress { get; set; } = null!;
     public DateTime OpeningTime { get; set; }
     public DateTime? MaxTimeFinishCall {  get; set; }
     public DateTime EntryTimeForTreatment { get; set; }//maybee init??

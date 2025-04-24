@@ -18,7 +18,7 @@ public class Call
     /// </summary>
     public CallType CallType { get; set; }
     public string? CallDescription { get; set; }
-    public string CallAddress { get; set; }
+    public string CallAddress { get; set; } = null!;
     public double Latitude { get; set; }
     public double Longitude { get; set; }
     public DateTime OpeningTime { get; init; }

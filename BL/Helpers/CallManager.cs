@@ -63,7 +63,7 @@ namespace Helpers
         /// </summary>
         /// <param name="call">Call for valid check</param>
         /// <exception cref="BO.BlInvalidValueException">the max time to finish call is invalid</exception>
-        internal static void validCall(BO.Call call)
+        internal static void ValidCall(BO.Call call)
         {
 
             if (call.MaxTimeFinishCall < call.OpeningTime)
@@ -83,7 +83,7 @@ namespace Helpers
         internal static DO.Call CreateDoCall(BO.Call call, bool add = false)
         {
             double[]? latlon = VolunteerManager.CalcCoordinates(call.CallAddress) ?? throw new BO.BlInvalidValueException("invalid address");
-            validCall(call);
+            ValidCall(call);
             DateTime openingTime = add ? ClockManager.Now : call.OpeningTime;
             DO.Call doCall = new(
                 call.Id,
@@ -116,7 +116,7 @@ namespace Helpers
 
             if (sortByAttributeObj != null)
             {
-                var propertySort = sortByAttributeObj?.GetType().GetProperty(sortByAttributeObj.ToString());
+                var propertySort = sortByAttributeObj?.GetType().GetProperty(sortByAttributeObj.ToString()!);
                 calls = propertySort != null ?
                     from c in calls
                     orderby propertySort.GetValue(c, null)
