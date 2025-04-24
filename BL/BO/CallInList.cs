@@ -1,7 +1,17 @@
 ﻿namespace BO;
 using Helpers;
 public class CallInList
-{
+{ /// <summary>
+/// Id:id automatic
+/// CallId: call id
+/// CallType:call type
+/// OpeningTime:opening time call
+/// TotalTimeRemainingFinishCalling:Total Time Remaining Finish Calling
+/// LastVolunteerName:Last Volunteer Name
+/// TotalTimeCompleteTreatment:Total Time Complete Treatment
+/// StatusCall: status call
+/// TotalAssignments:Total Assignments of call
+/// </summary>
     public int? Id { get; init; } = null;
     public int CallId { get; init; }
     public CallType CallType { get; set; }
