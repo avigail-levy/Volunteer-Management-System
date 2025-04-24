@@ -2,23 +2,19 @@
 using Helpers;
 
 public class Call
-{/// <summary>
-/// ID: Automatic identification number
-/// </summary>
+{
     public int Id { get; init; }
     /// <summary>
-    /// Call type : BO.CallType
-    /// call description: string
-    /// Call address:string
-    /// Latitude: will be calculated automatically
-    /// Longitude: will be calculated automatically
-    /// Reading start time: DateTime
-    /// Maximum time to finish call: DateTime
-    /// 
-    /// Call status: BO.StatusCall
-    /// Assignment list to call
-    /// If there are no allocations it will be NULL
-    /// Type BO.Assignment
+    /// ID: call id
+    /// CallType: Call type 
+    /// CallDescription: call description
+    /// CallAddress: Call address
+    /// Latitude: Call address latitude
+    /// Longitude: Call address longitude
+    /// OpeningTime: call start time
+    /// MaxTimeFinishCall: Maximum time to finish call
+    /// StatusCall: Call status
+    /// CallAssignInList: Assignment list to call
     /// </summary>
     public CallType CallType { get; set; }
     public string? CallDescription { get; set; }

@@ -3,7 +3,7 @@ using Helpers;
 public class OpenCallInList
 {
     /// <summary>
-    /// CallID: Automatic 
+    /// CallID: call id 
     /// CallType:call type
     /// CallDescription:  Call description
     /// CallAddress :  Call address
