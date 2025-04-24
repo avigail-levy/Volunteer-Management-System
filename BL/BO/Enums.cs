@@ -1,6 +1,6 @@
 ﻿namespace BO;
 public enum Role { Manager, Volunteer }
-public enum DistanceType { Aerial, Walking, TraveledByCar  }
+public enum DistanceType { Aerial, Walking, TraveledByCar }
 public enum CallType { HouseCleaning, CookingFood, BabysitterServices, Transportation, Ironing, Shopping,None }
 public enum StatusCallInProgress { InTreatment, InRiskTreatment }
 public enum TypeOfTreatmentTermination { Handled, SelfCancellation, CancelAdministrator, CancellationExpired }
