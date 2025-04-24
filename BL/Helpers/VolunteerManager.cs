@@ -12,6 +12,12 @@ namespace Helpers
             public string display_name { get; set; }
         }
         private static IDal s_dal = Factory.Get; //stage 4
+        /// <summary>
+        /// Function to check the correctness of volunteer details
+        /// </summary>
+        /// <param name="volunteer">Volunteer for testing</param>
+        /// <returns>true if correct</returns>
+        /// <exception cref="BO.BlInvalidValueException">Invalid volunteer details</exception>
         public static bool IntegrityCheck(BO.Volunteer volunteer)
         {
             if (volunteer.MaxDistanceForCall < 0)
@@ -52,38 +58,19 @@ namespace Helpers
             return sum % 10 == 0;
         }
         /// <summary>
-        /// Checking if the address is valid
+        /// Function to convert degrees to radians
         /// </summary>
-        /// <param name="lon">Longitude</param>
-        /// <param name="lat">Latitude</param>
-        /// <returns>true if the address is valid, otherwise false</returns>
-
-        //public static double[]? IsValidAddress(string? address)
-        //{
-        //   //double []? latlon = CalcCoordinates(address);
-        //    //string requestUri = $"https://nominatim.openstreetmap.org/reverse?format=json&lat={latlon[0]}&lon={latlon[1]}";
-
-        //    // using HttpClient client = new HttpClient();
-        //    // HttpResponseMessage response = client.Send(new HttpRequestMessage(HttpMethod.Get, requestUri));
-
-        //    // if (!response.IsSuccessStatusCode) return false;
-
-        //    // string jsonResponse = response.Content.ReadAsStringAsync().Result;
-        //    // var result = JsonSerializer.Deserialize<OSMGeocodeResponse>(jsonResponse);
-
-        //    // return !string.IsNullOrWhiteSpace(result?.display_name);
-        //    //return latlon;
-        //}
+        /// <param name="degrees">Degrees to convert: double</param>
+        /// <returns>Degrees in radians</returns>
         internal static double DegreesToRadians(double degrees)
         {
             return degrees * Math.PI / 180;
         }
         /// <summary>
-        /// 
+        /// Function that calculates the longitude and latitude of an address
         /// </summary>
-        /// <param name="address"></param>
-        /// <returns></returns>
-        /// <exception cref="BO.BlInvalidValueException"></exception>
+        /// <param name="address">Address for calculation: string</param>
+        /// <returns>An array of length 2 where the first index is width and the second index is length</returns>
         public static double[]? CalcCoordinates(string address)
         {
             if (string.IsNullOrWhiteSpace(address))
@@ -117,7 +104,13 @@ namespace Helpers
             public string lat { get; set; }
             public string lon { get; set; }
         }
-
+        /// <summary>
+        /// Function to calculate distance between volunteer and call
+        /// </summary>
+        /// <param name="addressVol">Volunteer address</param>
+        /// <param name="addressCall">Call address</param>
+        /// <returns>distance</returns>
+        /// <exception cref="BO.BlInvalidValueException">Invalid addresses</exception>
         internal static double CalcDistance(string? addressVol,string addressCall)
         {
             if (addressVol == null)
@@ -135,6 +128,11 @@ namespace Helpers
             double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             return R * c; // המרחק בקילומטרים
         }
+        /// <summary>
+        /// The assignment that volunteer handles
+        /// </summary>
+        /// <param name="idVol">id volunteer</param>
+        /// <returns>DO.Assignment</returns>
         internal static DO.Assignment GetCallInTreatment(int idVol)
         {
             var assignVol = s_dal.Assignment.ReadAll(a => a.VolunteerId == idVol);
@@ -146,12 +144,22 @@ namespace Helpers
                                                 select a).FirstOrDefault();
             return assignInTreatment;
         }
+        /// <summary>
+        /// Call status in treatment
+        /// </summary>
+        /// <param name="call">call to get status</param>
+        /// <returns>StatusCallInProgress</returns>
         internal static BO.StatusCallInProgress GetCallInProgress(DO.Call call)
         {
             return call.MaxTimeFinishCall - ClockManager.Now > s_dal.Config.RiskRange ?
                 BO.StatusCallInProgress.InTreatment : BO.StatusCallInProgress.InRiskTreatment;
         }
-
+        /// <summary>
+        /// Count of calls of a specific treatment termination type
+        /// </summary>
+        /// <param name="type">Type of treatment termination</param>
+        /// <param name="assignVol">Volunteer's collection of assignments</param>
+        /// <returns></returns>
         internal static int CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination type, IEnumerable<DO.Assignment> assignVol)
         {
 
@@ -159,6 +167,12 @@ namespace Helpers
                     where a.TypeOfTreatmentTermination == type
                     select a).Count();
         }
+        /// <summary>
+        /// Function that converts BO.Volunteer to DO.Volunteer
+        /// </summary>
+        /// <param name="volunteer">BO.Volunteer</param>
+        /// <param name="role">Volunteer role</param>
+        /// <returns>DO.Volunteer</returns>
         internal static DO.Volunteer CreateDoVolunteer(BO.Volunteer volunteer, DO.Role? role = null)
         {
             double[]? latlon = CalcCoordinates(volunteer.Address ?? null);

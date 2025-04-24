@@ -2,6 +2,16 @@
 using Helpers;
 public class VolunteerInList
 {
+    /// <summary>
+    /// ID: automatic
+    /// Name: name of volunteer
+    /// Active: if volunteer is active
+    /// TotalCallsHandledByVolunteer: Total calls handled by volunteer
+    /// TotalCallsCanceledByVolunteer: Total calls canceled by volunteer
+    /// TotalExpiredCallingsByVolunteer: Total calls expired by volunteer
+    /// IDCallInHisCare: id call by that volunteer care
+    /// CallType: call type
+    /// </summary>
     public int Id {  get; init; }
     public string Name { get; set; }
     public bool Active { get; set; }

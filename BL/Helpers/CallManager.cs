@@ -1,35 +1,47 @@
 ﻿using DalApi;
-using DO;
-
 namespace Helpers
 {
     internal static class CallManager
     {
         private static IDal s_dal = Factory.Get; //stage 4
-        internal static void PeriodicCallsUpdates(DateTime oldClock, DateTime newClock) //stage 4
+        /// <summary>
+        /// A function that updates expired allocations of their calls so that the termination type is expired
+        /// </summary>
+        internal static void PeriodicCallsUpdates() 
         {
-            var listCalls = s_dal.Call.ReadAll().ToList();
-            listCalls.Where(c=>ClockManager.Now - c.OpeningTime >= s_dal.Config.RiskRange)
-            //foreach (var doCall in list)
-            //{
-            //    if (ClockManager.Now - doCall.OpeningTime >= s_dal.Config.RiskRange)
-            //    {
-            //        //s_dal.Call.Update(doCall with { StatusCall = (StatusCall)OpenAtRisk });
-            //    }
-            //    var calls = s_dal.Call.ReadAll().Where(c => c.MaxTimeFinishCall > ClockManager.Now
-            //           && (GetStatusCall(c) != BO.StatusCall.Closed && GetStatusCall(c) != BO.StatusCall.Expired)).ToList();
-            //var assin = from c in calls
-            //            from a in s_dal.Assignment.ReadAll(a => a.CallId == c.Id)
-            //            where a.TypeOfTreatmentTermination is null
-            //            select a;
-
-            //if (assin.Any())
-            //    CreateDoAssignment(assin, DO.TypeOfTreatmentTermination.CancellationExpired);
-
-
-
+            var calls = s_dal.Call.ReadAll().Where(c => c.MaxTimeFinishCall > ClockManager.Now
+                   && GetStatusCall(c) != BO.StatusCall.Closed && GetStatusCall(c) != BO.StatusCall.Expired)
+                  .Select(
+                call =>
+                {
+                    var assin = (from a in s_dal.Assignment.ReadAll(a => a.CallId == call.Id)
+                                 where a.TypeOfTreatmentTermination is null
+                                 select a).FirstOrDefault();
+                    DO.Assignment newDoAssign;
+                    if (assin is not null)
+                    {
+                        s_dal.Assignment.Update( CreateDoAssignment(assin, DO.TypeOfTreatmentTermination.CancellationExpired));
+                    }
+                    else
+                    {
+                        newDoAssign = new(
+                         0,
+                         call.Id,
+                         0,
+                         ClockManager.Now,
+                         DO.TypeOfTreatmentTermination.CancellationExpired,
+                         ClockManager.Now);
+                        s_dal.Assignment.Create(newDoAssign);
+                    }
+                    return 1;
+                }
+                );
         }
-
+        /// <summary>
+        /// A function that finds and returns the status of a specific call.
+        /// </summary>
+        /// <param name="call">The call whose status is of interest</param>
+        /// <returns>status call</returns>
         internal static BO.StatusCall GetStatusCall(DO.Call call)
         {
             DateTime now = ClockManager.Now;
@@ -46,7 +58,11 @@ namespace Helpers
                 return BO.StatusCall.OpenAtRisk;//OpenAtRisk
             else return BO.StatusCall.Open;//Open
         }
-
+        /// <summary>
+        /// A method that get a call and checks its MaxTimeFinishCall.
+        /// </summary>
+        /// <param name="call">Call for valid check</param>
+        /// <exception cref="BO.BlInvalidValueException">the max time to finish call is invalid</exception>
         internal static void validCall(BO.Call call)
         {
 
@@ -57,6 +73,13 @@ namespace Helpers
 
 
         }
+        /// <summary>
+        /// A function that converts a BO call to a DO call.
+        /// </summary>
+        /// <param name="call">BO.Call type call</param>
+        /// <param name="add">Boolean parameter if the object to be added is true or updated is false</param>
+        /// <returns>DO.Call type call</returns>
+        /// <exception cref="BO.BlInvalidValueException">address is invalid</exception>
         internal static DO.Call CreateDoCall(BO.Call call, bool add = false)
         {
             double[]? latlon = VolunteerManager.CalcCoordinates(call.CallAddress) ?? throw new BO.BlInvalidValueException("invalid address");
@@ -74,7 +97,13 @@ namespace Helpers
             );
             return doCall;
         }
-
+        /// <summary>
+        /// A function that sorts and filters a reading list
+        /// </summary>
+        /// <param name="calls">List of BO type calls for sorting and filtering</param>
+        /// <param name="filterByAttribute">CallType attribute</param>
+        /// <param name="sortByAttributeObj">Attribute</param>
+        /// <returns></returns>
         internal static IEnumerable<DO.Call> FilterAndSortCalls(IEnumerable<DO.Call> calls, BO.CallType? filterByAttribute,
                                                                 object? sortByAttributeObj)
         {
@@ -100,7 +129,12 @@ namespace Helpers
             }
             return calls;
         }
-
+        /// <summary>
+        /// A function that converts a BO call to a DO call.
+        /// </summary>
+        /// <param name="assignment">BO Assignment</param>
+        /// <param name="type">DO Assignment</param>
+        /// <returns>DO assignment</returns>
         internal static DO.Assignment CreateDoAssignment(DO.Assignment assignment, DO.TypeOfTreatmentTermination type)
         {
             return new(
