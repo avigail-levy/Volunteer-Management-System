@@ -7,7 +7,6 @@ public class Volunteer
     /// Name: volunteer name
     /// Phone:volunteer phone
     /// Email:voluteer email
-    /// Password:volunteer password
     /// Address:volunteer address
     /// latitude: Volunteer address latitude
     /// Longitude: Volunteer address longitude
@@ -24,7 +23,6 @@ public class Volunteer
     public string Name { get; set; } = null!;
     public string Phone { get; set; } = null!;
     public string Email { get; set; } = null!;
-    public string? Password { get; set; }
     public string? Address {  get; set; }
     public double? Latitude { get; set; }
     public double? Longitude { get; set; }
