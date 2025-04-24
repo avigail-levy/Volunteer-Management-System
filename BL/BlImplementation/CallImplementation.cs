@@ -112,7 +112,13 @@ internal class CallImplementation : ICall
             CallingDistanceFromTreatingVolunteer = VolunteerManager.CalcDistance(vol.Address,c.CallAddress)
         });
     }
-
+    /// <summary>
+    /// Sorts and filters the calls by ID and by the attributes received as parameters.
+    /// </summary>
+    /// <param name="idVolunteer">ID volunteer</param>
+    /// <param name="filterByAttribute">Call filtering feature</param>
+    /// <param name="sortByAttribute">Reading sorting feature</param>
+    /// <returns>A sorted and filtered list of the volunteer</returns>
     public IEnumerable<BO.ClosedCallInList> ClosedCallsListHandledByVolunteer(int idVolunteer, BO.CallType? filterByAttribute = null, BO.ClosedCallInListAttributes? sortByAttribute = null)
     {
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
@@ -250,11 +256,11 @@ internal class CallImplementation : ICall
             return new BO.CallInList
             {
                 Id = 1,
-                CallId = c.Id,//???????
+                CallId = c.Id,
                 CallType = (BO.CallType)c.CallType,
                 OpeningTime = c.OpeningTime,
                 TotalTimeRemainingFinishCalling = c.MaxTimeFinishCall - ClockManager.Now,
-                LastVolunteerName = _dal.Volunteer.Read(allAssign.LastOrDefault()?.VolunteerId ?? 0)!.Name,//???????????????????????????????????
+                LastVolunteerName = _dal.Volunteer.Read(allAssign.LastOrDefault()?.VolunteerId ?? 0)?.Name,
                 TotalTimeCompleteTreatment = allAssign.LastOrDefault()?.TypeOfTreatmentTermination
             == DO.TypeOfTreatmentTermination.Handled ? allAssign.LastOrDefault()?.EndOfTreatmentTime - c.OpeningTime : null,
                 StatusCall = CallManager.GetStatusCall(c),

@@ -3,7 +3,7 @@ using Helpers;
 
 public class Call
 {
-    public int Id { get; init; }
+    public int Id { get; init; }//
     public CallType CallType { get; set; }
     public string? CallDescription { get; set; }
     public string CallAddress { get; set; }
