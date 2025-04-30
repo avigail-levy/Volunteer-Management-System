@@ -151,7 +151,7 @@ namespace BlTest
                 BO.Call? oldCall = s_bl.Call.GetCallDetails(idToUpdate);
                 Console.WriteLine("Enter the data to create a new object of type call:");
                 Console.WriteLine("Enter the data of: type of call, full address, maximum time of finish call, description");
-                BO.Call newCall = new BO.Call
+                BO.Call newCall = new()
                 {
                     Id=oldCall.Id,
                     CallType = Enum.TryParse(Console.ReadLine(), out BO.CallType parsedCallType)? parsedCallType: oldCall.CallType,
@@ -185,7 +185,7 @@ namespace BlTest
                 int idToUpdate = ReadHelper.ReadInt("insert id volunteer to update:");
                 BO.Volunteer? oldVolunteer = s_bl.Volunteer.GetVolunteerDetails(idToUpdate);
                 Console.WriteLine("Enter the data of:  full name, phone, email, role, active, distance type,password, address, max distance for call");
-                BO.Volunteer newVolunteer = new BO.Volunteer()
+                BO.Volunteer newVolunteer = new ()
                 {
                     Id = oldVolunteer!.Id,
                     Name = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Name),
