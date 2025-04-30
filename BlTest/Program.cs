@@ -30,7 +30,6 @@ namespace BlTest
                 Role = ReadHelper.ReadEnum<BO.Role>("insert role: "),
                 Active = ReadHelper.ReadBool("insert is active: "),
                 DistanceType = ReadHelper.ReadEnum<BO.DistanceType>("insert distance type "),
-                Password = ReadHelper.ReadString("insert password: "),
                 Address = ReadHelper.ReadString("insert address: "),
                 MaxDistanceForCall = ReadHelper.ReadDouble("insert max distance for call: ")
             };
@@ -195,7 +194,6 @@ namespace BlTest
                     Role = int.TryParse(Console.ReadLine(), out int role) ? (BO.Role)role : oldVolunteer.Role,
                     Active = bool.TryParse(Console.ReadLine(), out bool active) ? active : oldVolunteer.Active,
                     DistanceType = int.TryParse(Console.ReadLine(), out int distanceType) ? (BO.DistanceType)distanceType : oldVolunteer.DistanceType,
-                    Password = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Password!),
                     Address = ReadHelper.ReadOrDefault(Console.ReadLine(), oldVolunteer.Address!),
                     MaxDistanceForCall = double.TryParse(Console.ReadLine(), out double maxDistanceForCall) ? maxDistanceForCall : oldVolunteer.MaxDistanceForCall,
                 };

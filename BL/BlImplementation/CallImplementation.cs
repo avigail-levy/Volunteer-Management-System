@@ -12,12 +12,14 @@ internal class CallImplementation : ICall
     /// <param name="newBoCall">Object of the logical entity type "Call" BO.Call</param>
     public void AddCall(BO.Call newBoCall)
     {
-        if (newBoCall.MaxTimeFinishCall < ClockManager.Now || newBoCall.MaxTimeFinishCall < newBoCall.OpeningTime)
+        if (newBoCall.MaxTimeFinishCall < AdminManager.Now || newBoCall.MaxTimeFinishCall < newBoCall.OpeningTime)
             throw new BO.BlInvalidValueException("OpeningTime value of call is not valid");
-        DO.Call doCall = CallManager.CreateDoCall(newBoCall,true);
+        DO.Call doCall = CallManager.CreateDoCall(newBoCall, true);
         try
         {
             _dal.Call.Create(doCall);
+            CallManager.Observers.NotifyListUpdated(); //stage 5
+
         }
         catch (DO.DalAlreadyExistsException ex)
         {
@@ -36,6 +38,8 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Call.Update(doCall);
+            CallManager.Observers.NotifyItemUpdated(doCall.Id); //stage 5
+            CallManager.Observers.NotifyListUpdated(); //stage 5
         }
         catch (DO.DalDoesNotExistException ex)
         {
@@ -66,7 +70,7 @@ internal class CallImplementation : ICall
         {
             CallId = idCall,
             VolunteerId = idVolunteer,
-            EntryTimeForTreatment = ClockManager.Now
+            EntryTimeForTreatment = AdminManager.Now
         };
         try
         {
@@ -108,7 +112,7 @@ internal class CallImplementation : ICall
             CallAddress = c.CallAddress,
             OpeningTime = c.OpeningTime,
             MaxTimeFinishCall = c.MaxTimeFinishCall,
-            CallingDistanceFromTreatingVolunteer = VolunteerManager.CalcDistance(vol.Address,c.CallAddress)
+            CallingDistanceFromTreatingVolunteer = VolunteerManager.CalcDistance(vol.Address, c.CallAddress)
         });
     }
     /// <summary>
@@ -124,13 +128,13 @@ internal class CallImplementation : ICall
         var assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == idVolunteer);
         var closeCalls = from c in calls
                          from a in assignments
-                         where c.Id == a.CallId && CallManager.GetStatusCall(c) == BO.StatusCall.Closed 
+                         where c.Id == a.CallId && CallManager.GetStatusCall(c) == BO.StatusCall.Closed
                          select c;
 
         closeCalls = CallManager.FilterAndSortCalls(closeCalls, filterByAttribute, sortByAttribute);
         return closeCalls.Select(c =>
         {
-            DO.Assignment assign = _dal.Assignment.Read(a=> { return c.Id == a.CallId && a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.Handled; })!;
+            DO.Assignment assign = _dal.Assignment.Read(a => { return c.Id == a.CallId && a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.Handled; })!;
             return new BO.ClosedCallInList
             {
                 Id = c.Id,
@@ -161,6 +165,7 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Call.Delete(idCall);
+            CallManager.Observers.NotifyListUpdated(); //stage 5
         }
         catch (DO.DalDoesNotExistException ex)
         {
@@ -176,7 +181,7 @@ internal class CallImplementation : ICall
     public BO.Call GetCallDetails(int idCall)
     {
         DO.Call call = _dal.Call.Read(idCall) ?? throw new BO.BlDoesNotExistException("call does not exist");
-        BO.Call newBOCall = new ()
+        BO.Call newBOCall = new()
         {
             Id = call.Id,
             CallAddress = call.CallAddress,
@@ -227,8 +232,8 @@ internal class CallImplementation : ICall
     public IEnumerable<BO.CallInList> GetCallsList(BO.CallInListAttributes? filterByAttribute = null, object? filterValue = null, BO.CallInListAttributes? sortByAttribute = null)
     {
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
-        
-        var propertyFilter = filterByAttribute!=null? typeof(DO.Call).GetProperty(filterByAttribute.ToString()!):null;
+
+        var propertyFilter = filterByAttribute != null ? typeof(DO.Call).GetProperty(filterByAttribute.ToString()!) : null;
 
         calls = propertyFilter != null ?
                 from c in calls
@@ -239,7 +244,7 @@ internal class CallImplementation : ICall
                 select item;
 
 
-        var propertySort = sortByAttribute !=null? typeof(DO.Call).GetProperty(sortByAttribute.ToString()!):null;
+        var propertySort = sortByAttribute != null ? typeof(DO.Call).GetProperty(sortByAttribute.ToString()!) : null;
 
         calls = sortByAttribute != null ?
                 from c in calls
@@ -259,7 +264,7 @@ internal class CallImplementation : ICall
                 CallId = c.Id,
                 CallType = (BO.CallType)c.CallType,
                 OpeningTime = c.OpeningTime,
-                TotalTimeRemainingFinishCalling = c.MaxTimeFinishCall - ClockManager.Now,
+                TotalTimeRemainingFinishCalling = c.MaxTimeFinishCall - AdminManager.Now,
                 LastVolunteerName = _dal.Volunteer.Read(allAssign.LastOrDefault()?.VolunteerId ?? 0)?.Name,
                 TotalTimeCompleteTreatment = allAssign.LastOrDefault()?.TypeOfTreatmentTermination
             == DO.TypeOfTreatmentTermination.Handled ? allAssign.LastOrDefault()?.EndOfTreatmentTime - c.OpeningTime : null,
@@ -287,7 +292,7 @@ internal class CallImplementation : ICall
         DO.TypeOfTreatmentTermination type = assignment.VolunteerId == idRequest ? DO.TypeOfTreatmentTermination.SelfCancellation
                 : DO.TypeOfTreatmentTermination.CancelAdministrator;
 
-        if (!(CallManager.GetStatusCall(call) == BO.StatusCall.InTreatment|| CallManager.GetStatusCall(call) == BO.StatusCall.InTreatmentAtRisk))
+        if (!(CallManager.GetStatusCall(call) == BO.StatusCall.InTreatment || CallManager.GetStatusCall(call) == BO.StatusCall.InTreatmentAtRisk))
             throw new BO.BlCantUpdateException("the call is  not at treatment");
 
         DO.Assignment newAssignment = CallManager.CreateDoAssignment(assignment, type);
@@ -295,6 +300,7 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Assignment.Update(newAssignment);
+
         }
         catch (DO.DalDoesNotExistException ex)
         {
@@ -327,4 +333,15 @@ internal class CallImplementation : ICall
             throw new BO.BlCantUpdateException("Unable to update the assignment", ex);
         }
     }
+    #region Stage 5
+    public void AddObserver(Action listObserver) =>
+    CallManager.Observers.AddListObserver(listObserver); //stage 5
+    public void AddObserver(int id, Action observer) =>
+    CallManager.Observers.AddObserver(id, observer); //stage 5
+    public void RemoveObserver(Action listObserver) =>
+    CallManager.Observers.RemoveListObserver(listObserver); //stage 5
+    public void RemoveObserver(int id, Action observer) =>
+    CallManager.Observers.RemoveObserver(id, observer); //stage 5
+    #endregion Stage 5
+
 }

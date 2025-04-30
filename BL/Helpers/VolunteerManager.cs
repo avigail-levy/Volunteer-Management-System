@@ -6,7 +6,7 @@ namespace Helpers
 {
     internal static class VolunteerManager
     {
-
+        internal static ObserverManager Observers = new(); //stage 5
         private class OSMGeocodeResponse
         {
             public string display_name { get; set; }
@@ -151,7 +151,7 @@ namespace Helpers
         /// <returns>StatusCallInProgress</returns>
         internal static BO.StatusCallInProgress GetCallInProgress(DO.Call call)
         {
-            return call.MaxTimeFinishCall - ClockManager.Now > s_dal.Config.RiskRange ?
+            return call.MaxTimeFinishCall - AdminManager.Now > s_dal.Config.RiskRange ?
                 BO.StatusCallInProgress.InTreatment : BO.StatusCallInProgress.InRiskTreatment;
         }
         /// <summary>

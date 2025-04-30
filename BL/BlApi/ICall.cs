@@ -1,6 +1,6 @@
 ﻿namespace BlApi
 {
-    public interface ICall
+    public interface ICall: IObservable
     {
         /// <summary>
         ///Return an array of quantities by call status

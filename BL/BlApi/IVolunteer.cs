@@ -1,6 +1,6 @@
 ﻿namespace BlApi
 {
-    public interface IVolunteer
+    public interface IVolunteer: IObservable
     {
         IEnumerable<BO.VolunteerInList> GetListVolunteers(bool? active , BO.VolunteerInListAttributes? sortByAttribute);// במימוש לכתוב בכותרת =נאל ע"פ הדרישות
         

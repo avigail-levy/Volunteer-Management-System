@@ -3,13 +3,14 @@ namespace Helpers
 {
     internal static class CallManager
     {
+        internal static ObserverManager Observers = new(); //stage 5
         private static IDal s_dal = Factory.Get; //stage 4
         /// <summary>
         /// A function that updates assignments that expired of their calls so that the termination type is expired
         /// </summary>
         internal static void PeriodicCallsUpdates() 
         {
-            var calls = s_dal.Call.ReadAll().Where(c => c.MaxTimeFinishCall > ClockManager.Now
+            var calls = s_dal.Call.ReadAll().Where(c => c.MaxTimeFinishCall > AdminManager.Now
                    && GetStatusCall(c) != BO.StatusCall.Closed && GetStatusCall(c) != BO.StatusCall.Expired)
                   .Select(
                 call =>
@@ -21,6 +22,7 @@ namespace Helpers
                     if (assin is not null)
                     {
                         s_dal.Assignment.Update( CreateDoAssignment(assin, DO.TypeOfTreatmentTermination.CancellationExpired));
+
                     }
                     else
                     {
@@ -28,9 +30,9 @@ namespace Helpers
                          0,
                          call.Id,
                          0,
-                         ClockManager.Now,
+                         AdminManager.Now,
                          DO.TypeOfTreatmentTermination.CancellationExpired,
-                         ClockManager.Now);
+                         AdminManager.Now);
                         s_dal.Assignment.Create(newDoAssign);
                     }
                     return 1;
@@ -44,9 +46,9 @@ namespace Helpers
         /// <returns>status call</returns>
         internal static BO.StatusCall GetStatusCall(DO.Call call)
         {
-            DateTime now = ClockManager.Now;
+            DateTime now = AdminManager.Now;
             IEnumerable<DO.Assignment> assignmentsCall = s_dal.Assignment.ReadAll(assignment => assignment.CallId == call.Id);
-            if (ClockManager.Now > call.MaxTimeFinishCall && assignmentsCall.Any(a => a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.Handled))
+            if (AdminManager.Now > call.MaxTimeFinishCall && assignmentsCall.Any(a => a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.Handled))
                 return BO.StatusCall.Expired;//Expired
             if (assignmentsCall.Any(a => a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.Handled))
                 return BO.StatusCall.Closed;//Closed
@@ -84,7 +86,7 @@ namespace Helpers
         {
             double[]? latlon = VolunteerManager.CalcCoordinates(call.CallAddress) ?? throw new BO.BlInvalidValueException("invalid address");
             ValidCall(call);
-            DateTime openingTime = add ? ClockManager.Now : call.OpeningTime;
+            DateTime openingTime = add ? AdminManager.Now : call.OpeningTime;
             DO.Call doCall = new(
                 call.Id,
                 (DO.CallType)call.CallType,
@@ -143,7 +145,7 @@ namespace Helpers
                 assignment.VolunteerId,
                 assignment.EntryTimeForTreatment,
                 type,
-                ClockManager.Now
+                AdminManager.Now
                 );
         }
     }

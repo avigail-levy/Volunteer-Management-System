@@ -19,6 +19,8 @@ internal class VolunteerImplementation : IVolunteer
         try
         {
             _dal.Volunteer.Create(doVolunteer);
+                    VolunteerManager.Observers.NotifyListUpdated(); //stage 5
+
         }
         catch (DO.DalAlreadyExistsException ex)
         {
@@ -46,6 +48,8 @@ internal class VolunteerImplementation : IVolunteer
         try
         {
             _dal.Volunteer.Update(updatedDoVolunteer);
+            VolunteerManager.Observers.NotifyItemUpdated(updatedDoVolunteer.Id); //stage 5
+            VolunteerManager.Observers.NotifyListUpdated(); //stage 5
         }
         catch (DO.DalDoesNotExistException ex)
         {
@@ -66,6 +70,8 @@ internal class VolunteerImplementation : IVolunteer
         try
         {
             _dal.Volunteer.Delete(idVolunteer);
+            VolunteerManager.Observers.NotifyListUpdated(); //stage 5
+
         }
         catch (DO.DalDoesNotExistException ex)
         {
@@ -135,7 +141,6 @@ internal class VolunteerImplementation : IVolunteer
             Name = vol.Name,
             Phone = vol.Phone,
             Email = vol.Email,
-            Password = vol.Password,
             Address = vol.Address,
             Latitude = vol.Latitude,
             Longitude = vol.Longitude,
@@ -174,5 +179,16 @@ internal class VolunteerImplementation : IVolunteer
         throw new BO.BlDoesNotExistException($"Volunteer with Name ={username} does Not exist");
         return (BO.Role)vol.Role;
     }
+    #region Stage 5
+    public void AddObserver(Action listObserver) =>
+    VolunteerManager.Observers.AddListObserver(listObserver); //stage 5
+    public void AddObserver(int id, Action observer) =>
+    VolunteerManager.Observers.AddObserver(id, observer); //stage 5
+    public void RemoveObserver(Action listObserver) =>
+    VolunteerManager.Observers.RemoveListObserver(listObserver); //stage 5
+    public void RemoveObserver(int id, Action observer) =>
+    VolunteerManager.Observers.RemoveObserver(id, observer); //stage 5
+    #endregion Stage 5
+
 
 }

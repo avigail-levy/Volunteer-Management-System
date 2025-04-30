@@ -14,11 +14,10 @@ internal class AdminImplementation : IAdmin
     {
         switch (timeUnit)
         {
-            case BO.TimeUnit.Minute: ClockManager.UpdateClock(ClockManager.Now.AddMinutes(1)); break;
-            case BO.TimeUnit.Hour: ClockManager.UpdateClock(ClockManager.Now.AddHours(1)); break;
-            case BO.TimeUnit.Day: ClockManager.UpdateClock(ClockManager.Now.AddDays(1)); break;
-            case BO.TimeUnit.Month: ClockManager.UpdateClock(ClockManager.Now.AddMonths(1)); break;
-            case BO.TimeUnit.Year: ClockManager.UpdateClock(ClockManager.Now.AddYears(1)); break;
+            case BO.TimeUnit.Hour: AdminManager.UpdateClock(AdminManager.Now.AddHours(1)); break;
+            case BO.TimeUnit.Day: AdminManager.UpdateClock(AdminManager.Now.AddDays(1)); break;
+            case BO.TimeUnit.Month: AdminManager.UpdateClock(AdminManager.Now.AddMonths(1)); break;
+            case BO.TimeUnit.Year: AdminManager.UpdateClock(AdminManager.Now.AddYears(1)); break;
         };
     }
     /// <summary>
@@ -27,7 +26,7 @@ internal class AdminImplementation : IAdmin
     /// <returns> the value of the system clock. </returns>
     public DateTime GetClock()
     {
-        return ClockManager.Now;
+        return AdminManager.Now;
     }
     /// <summary>
     /// Return the value of the configuration variable "Risk Range"
@@ -43,7 +42,7 @@ internal class AdminImplementation : IAdmin
     public void InitializeDB()
     {
         DalTest.Initialization.Do();
-        ClockManager.UpdateClock(ClockManager.Now);
+        AdminManager.UpdateClock(AdminManager.Now);
     }
     /// <summary>
     /// Reset all configuration data (reset all configuration data to its initial value)
@@ -52,7 +51,7 @@ internal class AdminImplementation : IAdmin
     public void ResetDB()
     {
         _dal.ResetDB();
-        ClockManager.UpdateClock(ClockManager.Now);
+        AdminManager.UpdateClock(AdminManager.Now);
     }
     /// <summary>
     /// Updates the value of the configuration variable "Risk Time Range" to the value received as a parameter
