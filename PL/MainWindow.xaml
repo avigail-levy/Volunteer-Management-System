@@ -1,0 +1,62 @@
+﻿<Window x:Class="PL.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    
+    <Window.Resources>
+        <Style x:Key="myButtonStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontFamily" Value="Consolas" />
+            <Setter Property="Height" Value="25" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+    </Window.Resources>
+    <!--External Grid-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <!--Date Time Grid-->
+        <Grid Grid.Column="1">
+            <StackPanel>
+                <Label Content="{Binding CurrentTime}" Background="Yellow" HorizontalAlignment="Center"/>
+                <Button Style="{StaticResource myButtonStyle}" Content="Add One Minutes"/>
+                <Button  Style="{StaticResource myButtonStyle}" Content="Add One Day"/>
+                <Button  Style="{StaticResource myButtonStyle}" Content="Add One Hour"/>
+                <Button Style="{StaticResource myButtonStyle}" Content="Add One Month"/>
+                <Button  Style="{StaticResource myButtonStyle}" Content="Add One Year"/>
+            </StackPanel>
+        </Grid>
+        <WrapPanel Margin="10">
+            <TextBlock Text="Risk Range:" VerticalAlignment="Center" Foreground="Blue"/>
+            <TextBox Text="5" Width="40" Margin="5,0" BorderBrush="HotPink"/>
+            <Button Content="Update" Width="60" Margin="5,0" Style="{StaticResource myButtonStyle}"/>
+
+            <TextBlock Text="[The maximum number of years for study," 
+               Margin="0,10,0,0" Foreground="MediumOrchid" 
+               TextWrapping="Wrap" Width="300"/>
+
+            <TextBlock Text="After that the student becomes InActive]" 
+               Foreground="MediumOrchid" 
+               TextWrapping="Wrap" Width="300"/>
+        </WrapPanel>
+        <StackPanel Grid.Row="1" VerticalAlignment="Center">
+            <Button Content="Reset DB"  Width="200" Margin="10" Style="{StaticResource myButtonStyle}"/>
+            <Button Content="init DB" Width="200" Margin="10"  Style="{StaticResource myButtonStyle}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
+            <Button Content="Handle Volunteer"  Width="200" Margin="10" Style="{StaticResource myButtonStyle}"/>
+            <Button Content="Handle Call" Width="200" Margin="10"  Style="{StaticResource myButtonStyle}"/>
+        </StackPanel>
+    </Grid>
+</Window>
