@@ -28,7 +28,7 @@ public static class Initialization
         for (int i = 0; i < valunteerNames.Length; i++)
         {
             AddAddress randAddress = addresses[s_rand.Next(addresses.Count)];
-            Volunteer newVolunteer = new Volunteer()
+            Volunteer newVolunteer = new ()
             {
                 Id = s_rand.Next(MIN_ID, MAX_ID), // מזהה אקראי
                 Name = valunteerNames[i], // שם המתנדב
@@ -55,7 +55,7 @@ public static class Initialization
         {
             int rand_day = s_rand.Next(3, 14);
             AddAddress randAddress = addresses[s_rand.Next(addresses.Count)];
-            Call newCall = new Call()
+            Call newCall = new ()
             {
                 CallType = (DO.CallType)s_rand.Next(0, 6),
                 CallAddress = randAddress.StringAddress!,
@@ -114,7 +114,7 @@ public static class Initialization
             }
 
             // יצירת אובייקט הקצאה חדש
-            Assignment newAssignment = new Assignment()
+            Assignment newAssignment = new ()
             {
                 CallId = call.Id,                        // מזהה הקריאה
                 VolunteerId = volunteer.Id,              // מזהה המתנדב
