@@ -8,7 +8,7 @@ namespace Helpers
         /// <summary>
         /// A function that updates assignments that expired of their calls so that the termination type is expired
         /// </summary>
-        internal static void PeriodicCallsUpdates() 
+        internal static void PeriodicCallsUpdates()
         {
             var calls = s_dal.Call.ReadAll().Where(c => c.MaxTimeFinishCall > AdminManager.Now
                    && GetStatusCall(c) != BO.StatusCall.Closed && GetStatusCall(c) != BO.StatusCall.Expired)
@@ -21,7 +21,9 @@ namespace Helpers
                     DO.Assignment newDoAssign;
                     if (assin is not null)
                     {
-                        s_dal.Assignment.Update( CreateDoAssignment(assin, DO.TypeOfTreatmentTermination.CancellationExpired));
+                        s_dal.Assignment.Update(CreateDoAssignment(assin, DO.TypeOfTreatmentTermination.CancellationExpired));
+                        Observers.NotifyItemUpdated(assin.Id);
+                        Observers.NotifyListUpdated();
 
                     }
                     else

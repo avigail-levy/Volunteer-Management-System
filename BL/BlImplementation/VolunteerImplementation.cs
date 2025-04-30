@@ -19,7 +19,7 @@ internal class VolunteerImplementation : IVolunteer
         try
         {
             _dal.Volunteer.Create(doVolunteer);
-                    VolunteerManager.Observers.NotifyListUpdated(); //stage 5
+            VolunteerManager.Observers.NotifyListUpdated(); //stage 5
 
         }
         catch (DO.DalAlreadyExistsException ex)
@@ -92,7 +92,7 @@ internal class VolunteerImplementation : IVolunteer
                where v.Active == active
                select v
                : vols;
-        var propertySort = sortByAttribute!=null? typeof(DO.Volunteer).GetProperty(sortByAttribute.ToString()!):null;
+        var propertySort = sortByAttribute != null ? typeof(DO.Volunteer).GetProperty(sortByAttribute.ToString()!) : null;
 
         vols = propertySort != null ?
               from v in vols
@@ -109,7 +109,6 @@ internal class VolunteerImplementation : IVolunteer
             DO.Call? call = AssignmentManager.GetCallByAssignment(assignInTreatment);
             return new BO.VolunteerInList
             {
-
                 Id = v.Id,
                 Name = v.Name,
                 Active = v.Active,
@@ -141,6 +140,7 @@ internal class VolunteerImplementation : IVolunteer
             Name = vol.Name,
             Phone = vol.Phone,
             Email = vol.Email,
+            Password = vol.Password,
             Address = vol.Address,
             Latitude = vol.Latitude,
             Longitude = vol.Longitude,
@@ -161,7 +161,7 @@ internal class VolunteerImplementation : IVolunteer
                 OpeningTime = call.OpeningTime,
                 MaxTimeFinishCall = call.MaxTimeFinishCall,
                 EntryTimeForTreatment = assignInTreatment.EntryTimeForTreatment,
-                CallingDistanceFromTreatingVolunteer = VolunteerManager.CalcDistance(vol.Address,call.CallAddress),
+                CallingDistanceFromTreatingVolunteer = VolunteerManager.CalcDistance(vol.Address, call.CallAddress),
                 StatusCalling = VolunteerManager.GetCallInProgress(call),
             } : null,
         };

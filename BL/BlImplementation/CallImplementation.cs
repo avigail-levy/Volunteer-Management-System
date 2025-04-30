@@ -1,5 +1,7 @@
 ﻿using BlApi;
 using Helpers;
+using System.Text;
+using System;
 namespace BlImplementation;
 
 internal class CallImplementation : ICall
@@ -75,6 +77,7 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Assignment.Create(newAssignment);
+            CallManager.Observers.NotifyListUpdated();
         }
         catch (DO.DalAlreadyExistsException ex)
         {
@@ -300,6 +303,8 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Assignment.Update(newAssignment);
+            CallManager.Observers.NotifyItemUpdated(newAssignment.Id);
+            CallManager.Observers.NotifyListUpdated();
 
         }
         catch (DO.DalDoesNotExistException ex)
@@ -327,6 +332,8 @@ internal class CallImplementation : ICall
         try
         {
             _dal.Assignment.Update(newAssignment);
+            CallManager.Observers.NotifyItemUpdated(newAssignment.Id);
+            CallManager.Observers.NotifyListUpdated();
         }
         catch (DO.DalDoesNotExistException ex)
         {

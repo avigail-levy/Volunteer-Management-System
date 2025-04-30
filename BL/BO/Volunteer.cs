@@ -23,17 +23,18 @@ public class Volunteer
     public string Name { get; set; } = null!;
     public string Phone { get; set; } = null!;
     public string Email { get; set; } = null!;
-    public string? Address {  get; set; }
+    public string? Password { get; set; }
+    public string? Address { get; set; }
     public double? Latitude { get; set; }
     public double? Longitude { get; set; }
     public Role Role { get; set; }
     public bool Active { get; set; }
     public double? MaxDistanceForCall { get; set; }
     public DistanceType DistanceType { get; set; } = DistanceType.Aerial;
-    public int TotalCallsHandled { get;set;}
+    public int TotalCallsHandled { get; set; }
     public int TotalCallsCanceled { get; set; }
     public int TotalCallsChoseHandleHaveExpired { get; set; }
-    public BO.CallInProgress? CallingVolunteerTherapy {  get; set; }
+    public BO.CallInProgress? CallingVolunteerTherapy { get; set; }
 
     public override string ToString() => this.ToStringProperty();
 

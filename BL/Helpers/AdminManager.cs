@@ -1,6 +1,7 @@
 ﻿using BlImplementation;
 using BO;
 using DalApi;
+using System.Threading;
 namespace Helpers;
 
 /// <summary>
@@ -108,7 +109,7 @@ internal static class AdminManager //stage 4
             //TO_DO:
             //Add calls here to any logic simulation that was required in stage 7
             //for example: course registration simulation
-            StudentManager.SimulateCourseRegistrationAndGrade(); //stage 7
+            // StudentManager.SimulateCourseRegistrationAndGrade(); //stage 7
 
             //etc...
             #endregion Stage 7
@@ -121,5 +122,24 @@ internal static class AdminManager //stage 4
         }
     }
     #endregion Stage 7 base
+    internal static void InitializeDB()
+    {
+        // lock (BlMutex) //stage 7
+        //{
+        DalTest.Initialization.Do();
+        AdminManager.UpdateClock(AdminManager.Now);  // stage 5 - needed for update the PL
+        AdminManager.RiskRange = AdminManager.RiskRange; // stage 5 - needed for update the PL
+        //}
+    }
+    internal static void ResetDB()
+    {
+        //lock (BlMutex) //stage 7
+        //{
+        s_dal.ResetDB();
+        AdminManager.UpdateClock(AdminManager.Now); //stage 5 - needed for update PL
+        AdminManager.RiskRange = AdminManager.RiskRange; //stage 5 - needed for update PL
+                                                         // }
+    }
+
 
 }

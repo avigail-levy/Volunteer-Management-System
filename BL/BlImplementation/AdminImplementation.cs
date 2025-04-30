@@ -34,15 +34,14 @@ internal class AdminImplementation : IAdmin
     /// <returns>The value of the configuration variable "Risk Range"</returns>
     public TimeSpan GetRiskRange()
     {
-        return _dal.Config.RiskRange;
+        return AdminManager.RiskRange;
     }
     /// <summary>
     /// Initialize the database.
     /// </summary>
     public void InitializeDB()
     {
-        DalTest.Initialization.Do();
-        AdminManager.UpdateClock(AdminManager.Now);
+        AdminManager.InitializeDB();
     }
     /// <summary>
     /// Reset all configuration data (reset all configuration data to its initial value)
@@ -50,8 +49,7 @@ internal class AdminImplementation : IAdmin
     /// </summary>
     public void ResetDB()
     {
-        _dal.ResetDB();
-        AdminManager.UpdateClock(AdminManager.Now);
+        AdminManager.ResetDB();
     }
     /// <summary>
     /// Updates the value of the configuration variable "Risk Time Range" to the value received as a parameter
@@ -59,6 +57,17 @@ internal class AdminImplementation : IAdmin
     /// <param name="newRiskRange">Risk time frame</param>
     public void SetRiskRange(TimeSpan newRiskRange)
     {
-        _dal.Config.RiskRange = newRiskRange;
+        AdminManager.RiskRange = newRiskRange;
     }
+    #region Stage 5
+    public void AddClockObserver(Action clockObserver) =>
+    AdminManager.ClockUpdatedObservers += clockObserver;
+    public void RemoveClockObserver(Action clockObserver) =>
+    AdminManager.ClockUpdatedObservers -= clockObserver;
+    public void AddConfigObserver(Action configObserver) =>
+   AdminManager.ConfigUpdatedObservers += configObserver;
+    public void RemoveConfigObserver(Action configObserver) =>
+    AdminManager.ConfigUpdatedObservers -= configObserver;
+    #endregion Stage 5
+
 }

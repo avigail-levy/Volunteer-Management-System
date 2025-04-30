@@ -3,7 +3,7 @@
     public interface IAdmin
     {
         /// <summary>
-        /// Returns the value of the system clock. 
+        /// Returns the value of the system clock.
         /// </summary>
         /// <returns> the value of the system clock. </returns>
         DateTime GetClock();
@@ -36,6 +36,12 @@
         /// Initialize the database.
         /// </summary>
         void InitializeDB();
+        #region Stage 5
+        void AddConfigObserver(Action configObserver);
+        void RemoveConfigObserver(Action configObserver);
+        void AddClockObserver(Action clockObserver);
+        void RemoveClockObserver(Action clockObserver);
+        #endregion Stage 5
 
     }
 }
