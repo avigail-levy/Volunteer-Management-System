@@ -30,5 +30,26 @@ namespace PL
             InitializeComponent();
             CurrentTime = s_bl.Admin.GetClock();
         }
+
+        private void btnAddOneMinute_Click(object sender, RoutedEventArgs e)
+        {
+                s_bl.Admin.AdvanceClock(BO.TimeUnit.Minute);
+        }
+        private void btnAddOneDay_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.AdvanceClock(BO.TimeUnit.Day);
+        }
+        private void btnAddOneHour_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.AdvanceClock(BO.TimeUnit.Hour);
+        }
+        private void btnAddOneMonth_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.AdvanceClock(BO.TimeUnit.Month);
+        }
+        private void btnAddOneYear_Click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.AdvanceClock(BO.TimeUnit.Year);
+        }
     }
 }
