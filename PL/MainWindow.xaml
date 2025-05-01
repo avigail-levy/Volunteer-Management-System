@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+         Loaded="window_Loaded"
+          Closed="window_Closed">
     
     <Window.Resources>
         <Style x:Key="myButtonStyle" TargetType="Button">
@@ -39,8 +41,8 @@
         </Grid>
         <WrapPanel Margin="10">
             <TextBlock Text="Risk Range:" VerticalAlignment="Center" Foreground="Blue"/>
-            <TextBox Text="5" Width="40" Margin="5,0" BorderBrush="HotPink"/>
-            <Button Content="Update" Width="60" Margin="5,0" Style="{StaticResource myButtonStyle}"/>
+            <TextBox Text="{Binding CurrentRiskRange}"  Width="40" Margin="5,0" BorderBrush="HotPink" />
+            <Button Content="Update" Width="60" Margin="5,0" Style="{StaticResource myButtonStyle}" Click="btnUpdateRiskRange_click"/>
 
             <TextBlock Text="[The maximum number of years for study," 
                Margin="0,10,0,0" Foreground="MediumOrchid" 
@@ -51,12 +53,14 @@
                TextWrapping="Wrap" Width="300"/>
         </WrapPanel>
         <StackPanel Grid.Row="1" VerticalAlignment="Center">
-            <Button Content="Reset DB"  Width="200" Margin="10" Style="{StaticResource myButtonStyle}"/>
-            <Button Content="init DB" Width="200" Margin="10"  Style="{StaticResource myButtonStyle}"/>
+            <Button Content="Reset DB"  Width="200" Margin="10" Style="{StaticResource myButtonStyle}" Click="resetDB_Click"/>
+            <Button Content="init DB" Width="200" Margin="10"  Style="{StaticResource myButtonStyle}" Click="initDB_Click"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
-            <Button Content="Handle Volunteer"  Width="200" Margin="10" Style="{StaticResource myButtonStyle}"/>
-            <Button Content="Handle Call" Width="200" Margin="10"  Style="{StaticResource myButtonStyle}"/>
+            <!--view volunteer list-->
+            <Button Content="Handle Volunteer"  Width="200" Margin="10" Style="{StaticResource myButtonStyle}" Click="btnViewVolunteerList_Click"/>
+            <!--view call list-->
+            <Button Content="Handle Call" Width="200" Margin="10"  Style="{StaticResource myButtonStyle}" Click="btnViewCallList_Click"/>
         </StackPanel>
     </Grid>
 </Window>

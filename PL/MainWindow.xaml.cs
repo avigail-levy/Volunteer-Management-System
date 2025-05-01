@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using PL.Call;
+using PL.Volunteer;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -25,15 +27,30 @@ namespace PL
         public static readonly DependencyProperty CurrentTimeProperty =
        DependencyProperty.Register("CurrentTime", typeof(DateTime), typeof(MainWindow));
 
+        public TimeSpan CurrentRiskRange
+        {
+            get { return (TimeSpan)GetValue(CurrentRiskRangeProperty); }
+            set { SetValue(CurrentRiskRangeProperty, value); }
+        }
+        public static readonly DependencyProperty CurrentRiskRangeProperty =
+       DependencyProperty.Register("CurrentTime", typeof(TimeSpan), typeof(TimeSpan));
+
         public MainWindow()
         {
             InitializeComponent();
-            CurrentTime = s_bl.Admin.GetClock();
         }
 
+        private void clockObserver()
+        {
+            CurrentTime = s_bl.Admin.GetClock();
+        }
+        private void configObserver()
+        {
+            CurrentRiskRange = s_bl.Admin.GetRiskRange();
+        }
         private void btnAddOneMinute_Click(object sender, RoutedEventArgs e)
         {
-                s_bl.Admin.AdvanceClock(BO.TimeUnit.Minute);
+            s_bl.Admin.AdvanceClock(BO.TimeUnit.Minute);
         }
         private void btnAddOneDay_Click(object sender, RoutedEventArgs e)
         {
@@ -51,5 +68,62 @@ namespace PL
         {
             s_bl.Admin.AdvanceClock(BO.TimeUnit.Year);
         }
-    }
+
+        private void btnUpdateRiskRange_click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Admin.SetRiskRange(CurrentRiskRange);
+        }
+
+        private void window_Loaded(object sender, RoutedEventArgs e)
+        {
+            CurrentTime = s_bl.Admin.GetClock();
+            CurrentRiskRange = s_bl.Admin.GetRiskRange();
+            s_bl.Admin.AddClockObserver(clockObserver);
+            s_bl.Admin.AddConfigObserver(configObserver);
+        }
+
+        private void window_Closed(object sender, EventArgs e)
+        {
+            s_bl.Admin.RemoveClockObserver(clockObserver);
+            s_bl.Admin.RemoveConfigObserver(configObserver);
+        }
+
+        private void btnViewVolunteerList_Click(object sender, RoutedEventArgs e)
+        {
+            new VolunteerListWindow().Show();
+        }
+        private void btnViewCallList_Click(object sender, RoutedEventArgs e)
+        {
+            new CallListWindow().Show();
+        }
+
+        private void resetDB_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to reset?", "its ok?",
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
+            if (messageResult == MessageBoxResult.Yes)
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                s_bl.Admin.ResetDB();
+                Mouse.OverrideCursor = null;
+
+            }
+
+
+        }
+        private void initDB_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to init?", "its ok?",
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
+            if (messageResult == MessageBoxResult.Yes)
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                s_bl.Admin.InitializeDB();
+                Mouse.OverrideCursor = null;
+            }
+
+        }
+        }
 }
