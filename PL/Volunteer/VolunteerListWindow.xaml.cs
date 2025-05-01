@@ -20,7 +20,7 @@ namespace PL.Volunteer
     public partial class VolunteerListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
+        public BO.CallType CallType { get; set; } = BO.CallType.None;
 
         public IEnumerable<BO.VolunteerInList> VolunteerList
         {
@@ -34,6 +34,12 @@ namespace PL.Volunteer
         public VolunteerListWindow()
         {
             InitializeComponent();
+        }
+
+        private void filterBySelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            VolunteerList = (CallType == BO.CallType.None) ?
+                s_bl?.Volunteer.GetListVolunteers(null, null)! : s_bl?.Volunteer.GetListVolunteers(null, BO.VolunteerInListAttributes.CallType)!;
         }
     }
 }
