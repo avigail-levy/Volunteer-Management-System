@@ -14,6 +14,7 @@ internal class AdminImplementation : IAdmin
     {
         switch (timeUnit)
         {
+            case BO.TimeUnit.Minute: AdminManager.UpdateClock(AdminManager.Now.AddMinutes(1)); break;
             case BO.TimeUnit.Hour: AdminManager.UpdateClock(AdminManager.Now.AddHours(1)); break;
             case BO.TimeUnit.Day: AdminManager.UpdateClock(AdminManager.Now.AddDays(1)); break;
             case BO.TimeUnit.Month: AdminManager.UpdateClock(AdminManager.Now.AddMonths(1)); break;
