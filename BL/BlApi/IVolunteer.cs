@@ -11,5 +11,7 @@
         void DeleteVolunteer(int idVolunteer);
 
         void AddVolunteer(BO.Volunteer newBoVolunteer);
+        IEnumerable<BO.VolunteerInList> GetVolunteersList(BO.VolunteerInListAttributes? filterByAttribute, object? filterValue, BO.VolunteerInListAttributes? sortByAttribute);//null בכותרת המימוש
+
     }
 }

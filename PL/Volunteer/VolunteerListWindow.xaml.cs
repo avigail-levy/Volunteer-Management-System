@@ -39,7 +39,7 @@ namespace PL.Volunteer
         private void filterBySelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             VolunteerList = (CallType == BO.CallType.None) ?
-                s_bl?.Volunteer.GetListVolunteers(null, null)! : s_bl?.Volunteer.GetListVolunteers(null, BO.VolunteerInListAttributes.CallType)!;
+                s_bl?.Volunteer.GetListVolunteers(null, null)! : s_bl?.Volunteer.GetVolunteersList(BO.VolunteerInListAttributes.CallType,CallType,null)!;
         }
     }
 }

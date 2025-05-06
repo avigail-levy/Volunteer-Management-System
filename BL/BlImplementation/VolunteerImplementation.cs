@@ -179,6 +179,64 @@ internal class VolunteerImplementation : IVolunteer
         throw new BO.BlDoesNotExistException($"Volunteer with Name ={username} does Not exist");
         return (BO.Role)vol.Role;
     }
+
+
+    /// <summary>
+    /// Returns a sorted and filtered collection of entities "call  in a list"
+    /// </summary>
+    /// <param name="filterByAttribute">A field in the "callInList" entity by which the list will be filtered</param>
+    /// <param name="filterValue">Value to filter</param>
+    /// <param name="sortByAttribute">a field in the "List Read" entity, by which the list is sorted</param>
+    /// <returns>call list</returns>
+    public IEnumerable<BO.VolunteerInList> GetVolunteersList(BO.VolunteerInListAttributes? filterByAttribute = null, object? filterValue = null, BO.VolunteerInListAttributes? sortByAttribute = null)
+    {
+        IEnumerable<DO.Volunteer> volunteers = _dal.Volunteer.ReadAll();
+
+        var propertyFilter = filterByAttribute != null ? typeof(DO.Volunteer).GetProperty(filterByAttribute.ToString()!) : null;
+
+        volunteers = propertyFilter != null ?
+                from v in volunteers
+                where propertyFilter.GetValue(v, null) == filterValue
+                select v
+                :
+                from item in volunteers
+                select item;
+
+
+        var propertySort = sortByAttribute != null ? typeof(DO.Call).GetProperty(sortByAttribute.ToString()!) : null;
+
+        volunteers = sortByAttribute != null ?
+                from v in volunteers
+                orderby propertySort!.GetValue(v, null)
+                select v
+                :
+                from v in volunteers
+                orderby v.Id
+                select v;
+
+        return volunteers.Select(v =>
+        {
+
+            var assignVol = _dal.Assignment.ReadAll(a => a.VolunteerId == v.Id);
+            DO.Assignment? assignInTreatment = VolunteerManager.GetCallInTreatment(v.Id);
+            DO.Call? call = AssignmentManager.GetCallByAssignment(assignInTreatment);
+            return new BO.VolunteerInList
+            {
+                Id = v.Id,
+                Name = v.Name,
+                Active = v.Active,
+                TotalCallsHandledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.Handled, assignVol),
+                TotalCallsCanceledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.SelfCancellation, assignVol)
+                + VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancelAdministrator, assignVol),
+                TotalExpiredCallingsByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancellationExpired, assignVol),
+                IDCallInHisCare = call?.Id,
+                CallType = (BO.CallType?)call?.CallType ?? BO.CallType.None
+            };
+        });
+    }
+
+
+
     #region Stage 5
     public void AddObserver(Action listObserver) =>
     VolunteerManager.Observers.AddListObserver(listObserver); //stage 5
