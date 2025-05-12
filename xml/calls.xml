@@ -537,7 +537,7 @@
 		<Latitude>32.0539178</Latitude>
 		<Longitude>34.9586121</Longitude>
 		<OpeningTime>2025-03-30T21:55:54</OpeningTime>
-		<CallDescription>two </CallDescription>
+		<CallDescription>two R</CallDescription>
 		<MaxTimeFinishCall>2025-06-22T00:00:00</MaxTimeFinishCall>
 	</Call>
 </ArrayOfCall>
