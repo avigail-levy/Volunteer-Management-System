@@ -117,7 +117,10 @@ internal class VolunteerImplementation : IVolunteer
                 + VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancelAdministrator, assignVol),
                 TotalExpiredCallingsByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancellationExpired, assignVol),
                 IDCallInHisCare = call?.Id,
-                CallType = (BO.CallType?)call?.CallType ?? BO.CallType.None
+                //CallType = (BO.CallType?)call?.CallType ?? BO.CallType.None
+                CallType = call is not null? (BO.CallType)call.CallType : BO.CallType.None
+    
+   
             };
         });
     }
@@ -230,7 +233,7 @@ internal class VolunteerImplementation : IVolunteer
                 + VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancelAdministrator, assignVol),
                 TotalExpiredCallingsByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancellationExpired, assignVol),
                 IDCallInHisCare = call?.Id,
-                CallType = (BO.CallType?)call?.CallType ?? BO.CallType.None
+                CallType = (BO.CallType?)(call?.CallType) ?? BO.CallType.None
             };
         });
     }

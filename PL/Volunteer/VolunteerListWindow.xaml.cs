@@ -37,9 +37,24 @@ namespace PL.Volunteer
         }
 
         private void filterBySelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
+           => queryVolunteerList();
+
+        private void queryVolunteerList()
+         => VolunteerList = (CallType == BO.CallType.None) ?
+                s_bl?.Volunteer.GetListVolunteers(null, null)! : s_bl?.Volunteer.GetVolunteersList(BO.VolunteerInListAttributes.CallType, CallType, null)!;
+
+        private void volunteerListObserver()
+           => queryVolunteerList();
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+          => s_bl.Volunteer.AddObserver(volunteerListObserver);
+
+        private void Window_Closed(object sender, EventArgs e)
+           => s_bl.Volunteer.RemoveObserver(volunteerListObserver);
+
+        private void dgStudentList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            VolunteerList = (CallType == BO.CallType.None) ?
-                s_bl?.Volunteer.GetListVolunteers(null, null)! : s_bl?.Volunteer.GetVolunteersList(BO.VolunteerInListAttributes.CallType,CallType,null)!;
+
         }
     }
 }
