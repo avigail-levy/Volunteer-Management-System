@@ -133,7 +133,7 @@ namespace Helpers
         /// </summary>
         /// <param name="idVol">id volunteer</param>
         /// <returns>DO.Assignment</returns>
-        internal static DO.Assignment GetCallInTreatment(int idVol)
+        internal static DO.Assignment? GetCallInTreatment(int idVol)
         {
             var assignVol = s_dal.Assignment.ReadAll(a => a.VolunteerId == idVol);
             DO.Assignment? assignInTreatment = (from a in assignVol

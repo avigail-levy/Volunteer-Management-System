@@ -33,7 +33,7 @@ namespace PL
             set { SetValue(CurrentRiskRangeProperty, value); }
         }
         public static readonly DependencyProperty CurrentRiskRangeProperty =
-       DependencyProperty.Register("CurrentRiskRange", typeof(TimeSpan), typeof(TimeSpan));
+       DependencyProperty.Register("CurrentRiskRange", typeof(TimeSpan), typeof(MainWindow));
 
         public MainWindow()
         {

@@ -41,7 +41,7 @@ namespace PL.Volunteer
 
         private void queryVolunteerList()
          => VolunteerList = (CallType == BO.CallType.None) ?
-                s_bl?.Volunteer.GetListVolunteers(null, null)! : s_bl?.Volunteer.GetVolunteersList(BO.VolunteerInListAttributes.CallType, CallType, null)!;
+                s_bl?.Volunteer.GetVolunteersList(null, null)! : s_bl?.Volunteer.GetVolunteersList(BO.VolunteerInListAttributes.CallType, CallType, null)!;
 
         private void volunteerListObserver()
            => queryVolunteerList();

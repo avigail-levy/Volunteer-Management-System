@@ -2,7 +2,7 @@
 {
     public interface IVolunteer: IObservable
     {
-        IEnumerable<BO.VolunteerInList> GetListVolunteers(bool? active , BO.VolunteerInListAttributes? sortByAttribute);// במימוש לכתוב בכותרת =נאל ע"פ הדרישות
+        IEnumerable<BO.VolunteerInList> GetVolunteersList(bool? active , BO.VolunteerInListAttributes? sortByAttribute);// במימוש לכתוב בכותרת =נאל ע"פ הדרישות
         
         BO.Volunteer GetVolunteerDetails (int idVolunteer);
         

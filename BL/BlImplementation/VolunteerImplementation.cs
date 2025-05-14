@@ -84,7 +84,7 @@ internal class VolunteerImplementation : IVolunteer
     /// <param name="active">A Boolean value that will filter the list by active and inactive volunteers.</param>
     /// <param name="sortByAttribute">A field in the "Volunteer on List" entity, by which the list is sorted</param>
     /// <returns>Sorted and filtered threshold of logical data entity "Volunteer in list"</returns>
-    public IEnumerable<BO.VolunteerInList> GetListVolunteers(bool? active = null, BO.VolunteerInListAttributes? sortByAttribute = null)
+    public IEnumerable<BO.VolunteerInList> GetVolunteersList(bool? active = null, BO.VolunteerInListAttributes? sortByAttribute = null)
     {
         var vols = _dal.Volunteer.ReadAll();
         vols = active != null ?
@@ -182,62 +182,112 @@ internal class VolunteerImplementation : IVolunteer
         throw new BO.BlDoesNotExistException($"Volunteer with Name ={username} does Not exist");
         return (BO.Role)vol.Role;
     }
-
-
     /// <summary>
     /// Returns a sorted and filtered collection of entities "call  in a list"
     /// </summary>
     /// <param name="filterByAttribute">A field in the "callInList" entity by which the list will be filtered</param>
     /// <param name="filterValue">Value to filter</param>
     /// <param name="sortByAttribute">a field in the "List Read" entity, by which the list is sorted</param>
-    /// <returns>call list</returns>
+    /// <returns>volunteerInList list</returns>
+    //public IEnumerable<BO.VolunteerInList> GetVolunteersList(BO.VolunteerInListAttributes? filterByAttribute = null, object? filterValue = null, BO.VolunteerInListAttributes? sortByAttribute = null)
+    //{
+    //    IEnumerable<DO.Volunteer> volunteers = _dal.Volunteer.ReadAll();
+
+    //    var propertyFilter = filterByAttribute != null ? typeof(DO.Volunteer).GetProperty(filterByAttribute.ToString()!) : null;
+
+    //    volunteers = propertyFilter != null ?
+    //            from v in volunteers
+    //            where propertyFilter.GetValue(v, null) == filterValue
+    //            select v
+    //            :
+    //            from item in volunteers
+    //            select item;
+
+
+    //    var propertySort = sortByAttribute != null ? typeof(DO.Call).GetProperty(sortByAttribute.ToString()!) : null;
+
+    //    volunteers = sortByAttribute != null ?
+    //            from v in volunteers
+    //            orderby propertySort!.GetValue(v, null)
+    //            select v
+    //            :
+    //            from v in volunteers
+    //            orderby v.Id
+    //            select v;
+
+    //    return volunteers.Select(v =>
+    //    {
+
+    //        var assignVol = _dal.Assignment.ReadAll(a => a.VolunteerId == v.Id);
+    //        DO.Assignment? assignInTreatment = VolunteerManager.GetCallInTreatment(v.Id);
+    //        DO.Call? call = AssignmentManager.GetCallByAssignment(assignInTreatment);
+    //        return new BO.VolunteerInList
+    //        {
+    //            Id = v.Id,
+    //            Name = v.Name,
+    //            Active = v.Active,
+    //            TotalCallsHandledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.Handled, assignVol),
+    //            TotalCallsCanceledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.SelfCancellation, assignVol)
+    //            + VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancelAdministrator, assignVol),
+    //            TotalExpiredCallingsByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancellationExpired, assignVol),
+    //            IDCallInHisCare = call?.Id,
+    //            CallType = (BO.CallType?)(call?.CallType) ?? BO.CallType.None
+    //        };
+    //    });
+
+    /// <summary>
+    /// Returns a sorted and filtered collection of entities "volunteerInList"
+    /// </summary>
+    /// <param name="filterByAttribute">A field in the "volunteerInList" entity by which the list will be filtered</param>
+    /// <param name="filterValue">Value to filter</param>
+    /// <param name="sortByAttribute">a field in the "List Read" entity, by which the list is sorted</param>
+    /// <returns>volunteerInList list</returns>
     public IEnumerable<BO.VolunteerInList> GetVolunteersList(BO.VolunteerInListAttributes? filterByAttribute = null, object? filterValue = null, BO.VolunteerInListAttributes? sortByAttribute = null)
     {
         IEnumerable<DO.Volunteer> volunteers = _dal.Volunteer.ReadAll();
 
-        var propertyFilter = filterByAttribute != null ? typeof(DO.Volunteer).GetProperty(filterByAttribute.ToString()!) : null;
+          var volsInList = volunteers.Select(v =>
+          {
+              var assignVol = _dal.Assignment.ReadAll(a => a.VolunteerId == v.Id);
+              DO.Assignment? assignInTreatment = VolunteerManager.GetCallInTreatment(v.Id);
+              DO.Call? call = AssignmentManager.GetCallByAssignment(assignInTreatment);
+              return new BO.VolunteerInList
+              {
+                  Id = v.Id,
+                  Name = v.Name,
+                  Active = v.Active,
+                  TotalCallsHandledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.Handled, assignVol),
+                  TotalCallsCanceledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.SelfCancellation, assignVol)
+                  + VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancelAdministrator, assignVol),
+                  TotalExpiredCallingsByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancellationExpired, assignVol),
+                  IDCallInHisCare = call?.Id,
+                  CallType = (BO.CallType?)(call?.CallType) ?? BO.CallType.None
+              };
+          });
 
-        volunteers = propertyFilter != null ?
-                from v in volunteers
-                where propertyFilter.GetValue(v, null) == filterValue
-                select v
+        var propertyFilter = filterByAttribute != null ? typeof(BO.VolunteerInList).GetProperty(filterByAttribute.ToString()!) : null;
+
+        volsInList = propertyFilter != null ?
+                (from v in volsInList
+                 where propertyFilter.GetValue(v, null) == filterValue
+                 select v).ToList()
                 :
-                from item in volunteers
-                select item;
+                volsInList.ToList();
 
 
-        var propertySort = sortByAttribute != null ? typeof(DO.Call).GetProperty(sortByAttribute.ToString()!) : null;
+        var propertySort = sortByAttribute != null ? typeof(BO.VolunteerInList).GetProperty(sortByAttribute.ToString()!) : null;
 
-        volunteers = sortByAttribute != null ?
-                from v in volunteers
+        volsInList = sortByAttribute != null ?
+                (from v in volsInList
                 orderby propertySort!.GetValue(v, null)
-                select v
+                select v).ToList()
                 :
-                from v in volunteers
+                (from v in volsInList
                 orderby v.Id
-                select v;
+                select v).ToList();
 
-        return volunteers.Select(v =>
-        {
-
-            var assignVol = _dal.Assignment.ReadAll(a => a.VolunteerId == v.Id);
-            DO.Assignment? assignInTreatment = VolunteerManager.GetCallInTreatment(v.Id);
-            DO.Call? call = AssignmentManager.GetCallByAssignment(assignInTreatment);
-            return new BO.VolunteerInList
-            {
-                Id = v.Id,
-                Name = v.Name,
-                Active = v.Active,
-                TotalCallsHandledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.Handled, assignVol),
-                TotalCallsCanceledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.SelfCancellation, assignVol)
-                + VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancelAdministrator, assignVol),
-                TotalExpiredCallingsByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancellationExpired, assignVol),
-                IDCallInHisCare = call?.Id,
-                CallType = (BO.CallType?)(call?.CallType) ?? BO.CallType.None
-            };
-        });
+        return volsInList;
     }
-
 
 
     #region Stage 5
