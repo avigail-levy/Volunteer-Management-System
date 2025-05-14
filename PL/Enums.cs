@@ -14,6 +14,13 @@ namespace PL
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
+    internal class RoleCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.Role> s_enums =
+    (Enum.GetValues(typeof(BO.Role)) as IEnumerable<BO.Role>)!;
+
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    }
 
     internal class Enums
     {

@@ -6,7 +6,50 @@
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
         Title="VolunteerWindow" Height="450" Width="800">
-    <Grid>
-        
+    <Grid FlowDirection="RightToLeft">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="תעודת זהות:"/>
+                <TextBox Text=""/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="שם:"/>
+                <TextBox/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="מספר טלפון:"/>
+                <TextBox Text=""/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="כתובת מייל:"/>
+                <TextBox Text=""/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="סיסמא:"/>
+                <TextBox Text=""/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="כתובת:"/>
+                <TextBox Text=""/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="תפקיד:"/>
+                <ComboBox SelectedValue="{Binding Role, Mode=TwoWay}"
+                      ItemsSource="{Binding Source= {StaticResource RoleCollectionKey}}"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="פעיל/לא פעיל:"/>
+                <TextBox Text=""/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="מרחק מקסימלי לקריאה:"/>
+                <TextBox Text=""/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="סוג מרחק:"/>
+                <TextBox Text=""/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

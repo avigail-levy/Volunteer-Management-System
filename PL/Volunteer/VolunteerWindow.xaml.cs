@@ -19,8 +19,11 @@ namespace PL.Volunteer
     /// </summary>
     public partial class VolunteerWindow : Window
     {
+        public BO.Role Role { get; set; } = BO.Role.Volunteer;
+
         public VolunteerWindow()
         {
+
             InitializeComponent();
         }
     }
