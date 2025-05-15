@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
         Title="VolunteerWindow" Height="500" Width="600"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         FlowDirection="RightToLeft">
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -27,39 +28,54 @@
         </Grid.ColumnDefinitions>
 
         <Label Content="תעודת זהות:" Grid.Row="0" Grid.Column="0"/>
-        <TextBox Grid.Row="0" Grid.Column="1" IsReadOnly="True"/>
+        <TextBox Grid.Row="0" Grid.Column="1" 
+                 Text="{Binding CurrentVolunteer.Id, Mode=TwoWay, NotifyOnValidationError=true,
+            ValidatesOnExceptions=true}"/>
 
         <Label Content="שם:" Grid.Row="1" Grid.Column="0"/>
-        <TextBox Grid.Row="1" Grid.Column="1"/>
-
+        <TextBox Grid.Row="1" Grid.Column="1"
+            Text="{Binding CurrentVolunteer.Name, Mode=TwoWay, NotifyOnValidationError=true,
+            ValidatesOnExceptions=true}"   
+             />
         <Label Content="מספר טלפון:" Grid.Row="2" Grid.Column="0"/>
-        <TextBox Grid.Row="2" Grid.Column="1"/>
+        <TextBox Grid.Row="2" Grid.Column="1"
+                 Text="{Binding CurrentVolunteer.Phone, Mode=TwoWay, NotifyOnValidationError=true,
+                  ValidatesOnExceptions=true}"/>
 
         <Label Content="מייל:" Grid.Row="3" Grid.Column="0"/>
-        <TextBox Grid.Row="3" Grid.Column="1"/>
+        <TextBox Grid.Row="3" Grid.Column="1"
+                 Text="{Binding CurrentVolunteer.Email, Mode=TwoWay, NotifyOnValidationError=true,
+                 ValidatesOnExceptions=true}"/>
         
         <Label Content="סיסמא:" Grid.Row="4" Grid.Column="0"/>
-        <PasswordBox Grid.Row="4" Grid.Column="1"/>
+        <TextBox Grid.Row="4" Grid.Column="1"
+                 Text="{Binding CurrentVolunteer.Password, Mode=TwoWay, NotifyOnValidationError=true,
+                 ValidatesOnExceptions=true}"/>
 
         <Label Content="כתובת:" Grid.Row="5" Grid.Column="0"/>
-        <TextBox Grid.Row="5" Grid.Column="1"/>
+        <TextBox Grid.Row="5" Grid.Column="1"
+                 Text="{Binding CurrentVolunteer.Address, Mode=TwoWay, NotifyOnValidationError=true,
+                 ValidatesOnExceptions=true}"/>
 
         <Label Content="תפקיד:" Grid.Row="6" Grid.Column="0"/>
-        <ComboBox Grid.Row="6" Grid.Column="1"
-                  HorizontalAlignment="Stretch"/>
+        <ComboBox Grid.Row="6" Grid.Column="1" HorizontalAlignment="Stretch"
+                  SelectedValue="{Binding CurrentVolunteer.Role, Mode=TwoWay, NotifyOnValidationError=true, 
+                  ValidatesOnExceptions=true}"
+                  ItemsSource="{Binding Source={StaticResource RoleCollectionKey}}" />
 
         <Label Content="לא פעיל/פעיל:" Grid.Row="7" Grid.Column="0"/>
         <CheckBox Grid.Row="7" Grid.Column="1" VerticalAlignment="Center"/>
 
         <Label Content="מרחק מקסימלי לקריאה:" Grid.Row="8" Grid.Column="0"/>
-        <TextBox Grid.Row="8" Grid.Column="1"/>
+        <TextBox Grid.Row="8" Grid.Column="1"
+                 Text="{Binding CurrentVolunteer.MaxDistanceForCall, Mode=TwoWay, NotifyOnValidationError=true,
+                 ValidatesOnExceptions=true}"/>
 
         <Label Content="סוג מרחק:" Grid.Row="9" Grid.Column="0"/>
         <ComboBox Grid.Row="9" Grid.Column="1"
                   HorizontalAlignment="Stretch"/>
 
-        <Button Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2"
-                Content="הוספה +++ עדכון!!"
-                Height="50" Click="Button_Click" Margin="200,100,200,50" />
+        <Button Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Height="50" Margin="200,100,200,50" 
+                Content="{Binding ButtonText}" Click="btnAddUpdate_Click" />
     </Grid>
 </Window>
