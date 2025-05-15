@@ -23,7 +23,7 @@ namespace PL.Volunteer
 
         //public BO.Role Role { get; set; } = BO.Role.Volunteer;
 
-        public VolunteerWindow(int id=0)
+        public VolunteerWindow(int id = 0)
         {
             ButtonText = id == 0 ? "Add" : "Update";
             InitializeComponent();
@@ -32,12 +32,12 @@ namespace PL.Volunteer
             {
                 CurrentVolunteer = id != 0
                     ? s_bl.Volunteer.GetVolunteerDetails(id)
-                    : 
-                    new BO.Volunteer() {Id=0,Role=BO.Role.Volunteer,Active=false};
+                    :
+                    new BO.Volunteer() { Id = 0, Role = BO.Role.Volunteer, Active = false };
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message,"Error");
                 Close();
             }
         }
@@ -49,7 +49,7 @@ namespace PL.Volunteer
 
         public static readonly DependencyProperty CurrentVolunteerProperty =
             DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerWindow), new PropertyMetadata(null));
-        
+
         public string ButtonText
         {
             get => (string)GetValue(ButtonTextProperty);
@@ -61,10 +61,43 @@ namespace PL.Volunteer
 
         private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
         {
-            if (ButtonText == "Add")
-                s_bl.Volunteer.AddVolunteer(CurrentVolunteer!);
-            else
-                s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer.Id,CurrentVolunteer);
+
+            try
+            {
+                if (CurrentVolunteer == null) return;
+                if (ButtonText == "Add")
+                {
+                    s_bl.Volunteer.AddVolunteer(CurrentVolunteer!);
+                    MessageBox.Show("volunteer added successfully.");
+                }
+                else
+                {
+                    s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer.Id, CurrentVolunteer);
+                    MessageBox.Show("volunteer updated successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+
+        }
+        private void RefreshVolunteer()
+        {
+            int id = CurrentVolunteer!.Id;
+            CurrentVolunteer = null;
+            CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
+        }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (CurrentVolunteer!.Id != 0)
+                s_bl.Volunteer.AddObserver(CurrentVolunteer!.Id, RefreshVolunteer);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (CurrentVolunteer != null && CurrentVolunteer.Id != 0)
+                s_bl.Volunteer.RemoveObserver(CurrentVolunteer.Id, RefreshVolunteer);
         }
     }
 }

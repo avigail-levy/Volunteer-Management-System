@@ -30,7 +30,8 @@
 
         </Grid>
         <DataGrid Grid.Row="1" ItemsSource="{Binding Path=VolunteerList}" IsReadOnly ="True" AutoGenerateColumns="False"
-         EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected">
+         EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected"
+         MouseDoubleClick="lsvVolunteersList_MouseDoubleClick" SelectedItem="{Binding SelectedVolunteer}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="Auto"/>
@@ -48,6 +49,6 @@
                 <DataGridTextColumn Binding="{Binding CallType}" Header="Call Type" Width="Auto"/>
 
             </DataGrid.Columns>
-        </DataGrid>        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+        </DataGrid>        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="Button_Click"/>
     </Grid>
 </Window>

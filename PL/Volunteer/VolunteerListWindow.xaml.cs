@@ -20,6 +20,8 @@ namespace PL.Volunteer
     public partial class VolunteerListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        public BO.VolunteerInList? SelectedVolunteer { get; set; }
+
         public BO.CallType CallType { get; set; } = BO.CallType.None;
 
         public IEnumerable<BO.VolunteerInList> VolunteerList
@@ -52,8 +54,14 @@ namespace PL.Volunteer
         private void Window_Closed(object sender, EventArgs e)
            => s_bl.Volunteer.RemoveObserver(volunteerListObserver);
 
-        private void dgStudentList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
+            new VolunteerWindow().Show();
+        }
+        private void lsvVolunteersList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (SelectedVolunteer != null)
+                new VolunteerWindow(SelectedVolunteer.Id).Show();
 
         }
     }

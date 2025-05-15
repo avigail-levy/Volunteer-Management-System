@@ -42,6 +42,7 @@ static class XMLTools
         }
         catch (Exception ex)
         {
+            Console.WriteLine(ex.ToString());
             throw new DalXMLFileLoadCreateException($"fail to load xml file: {xmlFilePath}, {ex.Message}");
         }
     }
