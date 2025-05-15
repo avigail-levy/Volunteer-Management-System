@@ -30,7 +30,7 @@ public class Volunteer
     public Role Role { get; set; }
     public bool Active { get; set; }
     public double? MaxDistanceForCall { get; set; }
-    public DistanceType DistanceType { get; set; } = DistanceType.Aerial;
+    public DistanceType DistanceType { get; set; }  =DistanceType.Aerial;
     public int TotalCallsHandled { get; set; }
     public int TotalCallsCanceled { get; set; }
     public int TotalCallsChoseHandleHaveExpired { get; set; }

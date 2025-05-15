@@ -1,5 +1,4 @@
-﻿using BO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -60,5 +59,12 @@ namespace PL.Volunteer
         public static readonly DependencyProperty ButtonTextProperty =
             DependencyProperty.Register("ButtonText", typeof(string), typeof(VolunteerWindow));
 
+        private void btnAddUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            if (ButtonText == "Add")
+                s_bl.Volunteer.AddVolunteer(CurrentVolunteer!);
+            else
+                s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer.Id,CurrentVolunteer);
+        }
     }
 }

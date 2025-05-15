@@ -21,7 +21,13 @@ namespace PL
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
+    internal class DistanceTypeCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.DistanceType> s_enums =
+    (Enum.GetValues(typeof(BO.DistanceType)) as IEnumerable<BO.DistanceType>)!;
 
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    }
     internal class Enums
     {
     }
