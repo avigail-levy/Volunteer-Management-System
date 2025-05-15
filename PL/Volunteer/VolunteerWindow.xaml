@@ -5,51 +5,61 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Volunteer"
         mc:Ignorable="d"
-        Title="VolunteerWindow" Height="450" Width="800">
-    <Grid FlowDirection="RightToLeft">
-        <StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="תעודת זהות:"/>
-                <TextBox Text=""/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="שם:"/>
-                <TextBox/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="מספר טלפון:"/>
-                <TextBox Text=""/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="כתובת מייל:"/>
-                <TextBox Text=""/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="סיסמא:"/>
-                <TextBox Text=""/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="כתובת:"/>
-                <TextBox Text=""/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="תפקיד:"/>
-                <ComboBox SelectedValue="{Binding Role, Mode=TwoWay}"
-                      ItemsSource="{Binding Source= {StaticResource RoleCollectionKey}}"
-                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="פעיל/לא פעיל:"/>
-                <TextBox Text=""/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="מרחק מקסימלי לקריאה:"/>
-                <TextBox Text=""/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="סוג מרחק:"/>
-                <TextBox Text=""/>
-            </StackPanel>
-        </StackPanel>
+        Title="VolunteerWindow" Height="500" Width="600"
+        FlowDirection="RightToLeft">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+           <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="תעודת זהות:" Grid.Row="0" Grid.Column="0"/>
+        <TextBox Grid.Row="0" Grid.Column="1" IsReadOnly="True"/>
+
+        <Label Content="שם:" Grid.Row="1" Grid.Column="0"/>
+        <TextBox Grid.Row="1" Grid.Column="1"/>
+
+        <Label Content="מספר טלפון:" Grid.Row="2" Grid.Column="0"/>
+        <TextBox Grid.Row="2" Grid.Column="1"/>
+
+        <Label Content="מייל:" Grid.Row="3" Grid.Column="0"/>
+        <TextBox Grid.Row="3" Grid.Column="1"/>
+        
+        <Label Content="סיסמא:" Grid.Row="4" Grid.Column="0"/>
+        <PasswordBox Grid.Row="4" Grid.Column="1"/>
+
+        <Label Content="כתובת:" Grid.Row="5" Grid.Column="0"/>
+        <TextBox Grid.Row="5" Grid.Column="1"/>
+
+        <Label Content="תפקיד:" Grid.Row="6" Grid.Column="0"/>
+        <ComboBox Grid.Row="6" Grid.Column="1"
+                  HorizontalAlignment="Stretch"/>
+
+        <Label Content="לא פעיל/פעיל:" Grid.Row="7" Grid.Column="0"/>
+        <CheckBox Grid.Row="7" Grid.Column="1" VerticalAlignment="Center"/>
+
+        <Label Content="מרחק מקסימלי לקריאה:" Grid.Row="8" Grid.Column="0"/>
+        <TextBox Grid.Row="8" Grid.Column="1"/>
+
+        <Label Content="סוג מרחק:" Grid.Row="9" Grid.Column="0"/>
+        <ComboBox Grid.Row="9" Grid.Column="1"
+                  HorizontalAlignment="Stretch"/>
+
+        <Button Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2"
+                Content="הוספה +++ עדכון!!"
+                Height="50" Click="Button_Click" Margin="200,100,200,50" />
     </Grid>
 </Window>
