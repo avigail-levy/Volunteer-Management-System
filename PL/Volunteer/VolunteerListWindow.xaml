@@ -8,7 +8,8 @@
         Title="VolunteerListWindow" Height="640" Width="800"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         Loaded="Window_Loaded"
-        Closed="Window_Closed">
+        Closed="Window_Closed"
+        FlowDirection="RightToLeft">
     <!--External Grid-->
     <Grid>
         <Grid.RowDefinitions>
@@ -33,6 +34,13 @@
          EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected"
          MouseDoubleClick="lsvVolunteersList_MouseDoubleClick" SelectedItem="{Binding SelectedVolunteer}">
             <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Delete" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="🚮" Click="delete_btnClick" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="Auto"/>
                 <DataGridTemplateColumn Header="Is Active" Width="Auto">

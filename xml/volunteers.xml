@@ -127,20 +127,6 @@
     <MaxDistanceForCall>20.920008077642482</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>243745783</Id>
-    <Name>Eyal Shani</Name>
-    <Phone>0528175820</Phone>
-    <Email>Eyal Shani@gmail.com</Email>
-    <Role>Manager</Role>
-    <Active>false</Active>
-    <DistanceType>walking</DistanceType>
-    <Latitude>31.960252</Latitude>
-    <Longitude>34.804289</Longitude>
-    <Password>Eyal Shani0528175820</Password>
-    <Address>Rothschild Street 18, Rishon Lezion</Address>
-    <MaxDistanceForCall>38.45499392473838</MaxDistanceForCall>
-  </Volunteer>
-  <Volunteer>
     <Id>367944617</Id>
     <Name>Noa Bar</Name>
     <Phone>0504160837</Phone>
@@ -209,5 +195,33 @@
     <Password>yaeli shushan0527575821</Password>
     <Address>Derech HaAtsmaut 67, Haifa</Address>
     <MaxDistanceForCall>40.50431861892058</MaxDistanceForCall>
+  </Volunteer>
+  <Volunteer>
+    <Id>43019751</Id>
+    <Name>שרה</Name>
+    <Phone>0555555545</Phone>
+    <Email>sara@gmail.com</Email>
+    <Role>Volunteer</Role>
+    <Active>false</Active>
+    <DistanceType>Aerial</DistanceType>
+    <Latitude>32.0820584</Latitude>
+    <Longitude>34.8273464</Longitude>
+    <Password>sara123</Password>
+    <Address>אהרונסון 9, בני ברק</Address>
+    <MaxDistanceForCall>22</MaxDistanceForCall>
+  </Volunteer>
+  <Volunteer>
+    <Id>327773271</Id>
+    <Name>אביגיל לוי!!</Name>
+    <Phone>0556726282</Phone>
+    <Email>avigail6282@gmail.com</Email>
+    <Role>Manager</Role>
+    <Active>false</Active>
+    <DistanceType>TraveledByCar</DistanceType>
+    <Latitude>32.0988842</Latitude>
+    <Longitude>34.8343787</Longitude>
+    <Password>avigail147852369</Password>
+    <Address>שלוש השעות 30, בני ברק</Address>
+    <MaxDistanceForCall>10</MaxDistanceForCall>
   </Volunteer>
 </ArrayOfVolunteer>

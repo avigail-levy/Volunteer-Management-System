@@ -22,9 +22,8 @@ internal class VolunteerImplementation : IVolunteer
             Name = (string?)v.Element("Name") ?? "",
             Phone = (string?)v.Element("Phone") ?? "",
             Email = (string?)v.Element("Email") ?? "",
-            //CurrentYear = s.ToEnumNullable<Year>("CurrentYear") ?? Year.FirstYear,
             MaxDistanceForCall = (double?)v.Element("MaxDistanceForCall") ?? null,
-            Address = (string?)v.Element("Address") ?? "",
+            Address = (string?)v.Element("Address") ?? null,
             Password = (string?)v.Element("Password") ?? "",
             Longitude = (double?)v.Element("Longitude") ?? null,
             Latitude = (double?)v.Element("Latitude") ?? null,
@@ -42,7 +41,10 @@ internal class VolunteerImplementation : IVolunteer
     /// <exception cref="Exception"></exception>
     public void Create(Volunteer item)
     {
+
         XElement volunteersRootElem = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);
+        if(volunteersRootElem.Elements().FirstOrDefault(st => (int?)st.Element("Id") == item.Id) is not null)
+            throw new DalAlreadyExistsException($"Volunteer with ID={item.Id} already exists");
         XElement newVol = new XElement("Volunteer",
             new XElement("Id", item.Id),
             new XElement("Name",item.Name),

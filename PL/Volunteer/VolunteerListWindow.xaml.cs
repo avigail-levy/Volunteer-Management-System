@@ -64,5 +64,21 @@ namespace PL.Volunteer
                 new VolunteerWindow(SelectedVolunteer.Id).Show();
 
         }
+
+        private void delete_btnClick(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to delete the volunteer with", "its ok?",
+           MessageBoxButton.OK,
+           MessageBoxImage.Information);
+            if (messageResult == MessageBoxResult.OK)
+            {
+                var button = sender as Button;
+                BO.VolunteerInList? volunteer = button?.DataContext as BO.VolunteerInList;
+                var id = volunteer.Id;
+                if (volunteer != null)
+                    s_bl.Volunteer.DeleteVolunteer(volunteer.Id); // לדוגמה
+
+            }
+        }
     }
 }
