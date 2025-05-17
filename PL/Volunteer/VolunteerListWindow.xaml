@@ -46,7 +46,7 @@
                 <DataGridTemplateColumn Header="Is Active" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsEnabled="False" IsChecked="{Binding Active}" />
+                            <CheckBox IsChecked="{Binding Active}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
