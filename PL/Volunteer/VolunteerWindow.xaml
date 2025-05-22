@@ -15,43 +15,29 @@
         <Style x:Key="myTextBlockStyle" TargetType="TextBlock">
             <Setter Property="Visibility" Value="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}" />
         </Style>
+        <Style x:Key="myLabelStyle" TargetType="Label">
+            <Setter Property="Visibility" Value="{Binding ButtonText, Converter={StaticResource ConvertUpdateToVisibleKey}}" />
+        </Style>
     </Window.Resources>
 
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <!-- שורה לכל שדה -->
             <RowDefinition Height="Auto"/>
-            <!-- 0: ID -->
             <RowDefinition Height="Auto"/>
-            <!-- 1: Name -->
             <RowDefinition Height="Auto"/>
-            <!-- 2: Phone -->
             <RowDefinition Height="Auto"/>
-            <!-- 3: Email -->
             <RowDefinition Height="Auto"/>
-            <!-- 4: Password -->
             <RowDefinition Height="Auto"/>
-            <!-- 5: Address -->
             <RowDefinition Height="Auto"/>
-            <!-- 6: Latitude -->
             <RowDefinition Height="Auto"/>
-            <!-- 7: Longitude -->
             <RowDefinition Height="Auto"/>
-            <!-- 8: Role -->
             <RowDefinition Height="Auto"/>
-            <!-- 9: Active -->
             <RowDefinition Height="Auto"/>
-            <!-- 10: MaxDistance -->
             <RowDefinition Height="Auto"/>
-            <!-- 11: DistanceType -->
             <RowDefinition Height="Auto"/>
-            <!-- 12: TotalCallsHandled -->
             <RowDefinition Height="Auto"/>
-            <!-- 13: TotalCallsCanceled -->
             <RowDefinition Height="Auto"/>
-            <!-- 14: TotalCallsChoseHandleHaveExpired -->
             <RowDefinition Height="*"/>
-            <!-- 15: Button -->
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -84,12 +70,12 @@
         <TextBox Grid.Row="5" Grid.Column="1"
                  Text="{Binding CurrentVolunteer.Address, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
-        <Label Content="קו רוחב:" Grid.Row="6" Grid.Column="0"/>
+        <Label Content="קו רוחב:" Grid.Row="6" Grid.Column="0" Style="{StaticResource myLabelStyle}"/>
         <TextBlock Grid.Row="6" Grid.Column="1"
                  Style="{StaticResource myTextBlockStyle}"
                  Text="{Binding CurrentVolunteer.Latitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
-        <Label Content="קו אורך:" Grid.Row="7" Grid.Column="0"/>
+        <Label Content="קו אורך:" Grid.Row="7" Grid.Column="0" Style="{StaticResource myLabelStyle}"/>
         <TextBlock Grid.Row="7" Grid.Column="1"
                  Style="{StaticResource myTextBlockStyle}"
                  Text="{Binding CurrentVolunteer.Longitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
@@ -113,17 +99,17 @@
                   SelectedValue="{Binding CurrentVolunteer.DistanceType, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
                   ItemsSource="{Binding Source={StaticResource DistanceTypeCollectionKey}}"/>
 
-        <Label Content="סך קריאות שטופלו:" Grid.Row="12" Grid.Column="0"/>
+        <Label Content="סך קריאות שטופלו:" Grid.Row="12" Grid.Column="0" Style="{StaticResource myLabelStyle}"/>
         <TextBlock Grid.Row="12" Grid.Column="1"
                  Style="{StaticResource myTextBlockStyle}"
                  Text="{Binding CurrentVolunteer.TotalCallsHandled, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
-        <Label Content="סך קריאות שבוטלו:" Grid.Row="13" Grid.Column="0"/>
+        <Label Content="סך קריאות שבוטלו:" Grid.Row="13" Grid.Column="0" Style="{StaticResource myLabelStyle}"/>
         <TextBlock Grid.Row="13" Grid.Column="1"
                  Style="{StaticResource myTextBlockStyle}"
                  Text="{Binding CurrentVolunteer.TotalCallsCanceled, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
-        <Label Content="סך קריאות שבחר לטפל ופג תוקפן:" Grid.Row="14" Grid.Column="0"/>
+        <Label Content="סך קריאות שבחר לטפל ופג תוקפן:" Grid.Row="14" Grid.Column="0" Style="{StaticResource myLabelStyle}"/>
         <TextBlock Grid.Row="14" Grid.Column="1"
                  Style="{StaticResource myTextBlockStyle}"
                  Text="{Binding CurrentVolunteer.TotalCallsChoseHandleHaveExpired, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>

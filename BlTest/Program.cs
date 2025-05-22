@@ -570,7 +570,7 @@ namespace BlTest
         {
             bool? active = ReadHelper.ReadBoolNull("insert if active");
             BO.VolunteerInListAttributes? sortByAttribute = ReadHelper.ReadEnumNull<BO.VolunteerInListAttributes>("insert sort By Attribute: ");
-            var listVols = s_bl.Volunteer.GetVolunteersList(active, sortByAttribute);
+            var listVols = s_bl.Volunteer.GetVolunteersList(BO.VolunteerInListAttributes.Active,active, sortByAttribute);
             foreach (var v in listVols)
             {
                 Console.WriteLine(v);

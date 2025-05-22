@@ -84,49 +84,7 @@ internal class VolunteerImplementation : IVolunteer
     /// <param name="active">A Boolean value that will filter the list by active and inactive volunteers.</param>
     /// <param name="sortByAttribute">A field in the "Volunteer on List" entity, by which the list is sorted</param>
     /// <returns>Sorted and filtered threshold of logical data entity "Volunteer in list"</returns>
-    public IEnumerable<BO.VolunteerInList> GetVolunteersList(bool? active = null, BO.VolunteerInListAttributes? sortByAttribute = null)
-    {
-
-        var vols = _dal.Volunteer.ReadAll();
-        var volsInList= vols.Select(v =>
-        {
-            var assignVol = _dal.Assignment.ReadAll(a => a.VolunteerId == v.Id);
-            DO.Assignment? assignInTreatment = VolunteerManager.GetCallInTreatment(v.Id);
-            DO.Call? call = AssignmentManager.GetCallByAssignment(assignInTreatment);
-            return new BO.VolunteerInList
-            {
-                Id = v.Id,
-                Name = v.Name,
-                Active = v.Active,
-                TotalCallsHandledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.Handled, assignVol),
-                TotalCallsCanceledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.SelfCancellation, assignVol)
-                + VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancelAdministrator, assignVol),
-                TotalExpiredCallingsByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancellationExpired, assignVol),
-                IDCallInHisCare = call?.Id,
-                CallType = (BO.CallType?)call?.CallType ?? BO.CallType.None
-            };
-        });
-
-        volsInList = active != null ?
-               (from v in volsInList
-               where v.Active == active
-               select v).ToList()
-               :
-               volsInList.ToList();
-
-        var propertySort = sortByAttribute != null ? typeof(DO.Volunteer).GetProperty(sortByAttribute.ToString()!) : null;
-
-        volsInList = propertySort != null ?
-              (from v in volsInList
-              orderby propertySort.GetValue(v, null)
-              select v).ToList()
-              :
-              (from v in volsInList
-              orderby v.Id
-              select v).ToList();
-
-        return volsInList;
-    }
+  
     /// <summary>
     /// Please refer to the data layer (Read) to obtain details about the volunteer and the read he/she is handling (if any).
     /// </summary>

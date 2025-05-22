@@ -43,7 +43,7 @@ namespace PL.Volunteer
 
         private void queryVolunteerList()
          => VolunteerList = (CallType == BO.CallType.None) ?
-                s_bl?.Volunteer.GetVolunteersList(null, null)! : s_bl?.Volunteer.GetVolunteersList(BO.VolunteerInListAttributes.CallType, CallType, null)!;
+                s_bl?.Volunteer.GetVolunteersList(null,null, null)! : s_bl?.Volunteer.GetVolunteersList(BO.VolunteerInListAttributes.CallType, CallType, null)!;
 
         private void volunteerListObserver()
            => queryVolunteerList();
@@ -64,20 +64,17 @@ namespace PL.Volunteer
                 new VolunteerWindow(SelectedVolunteer.Id).Show();
 
         }
-
         private void delete_btnClick(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to delete the volunteer with", "its ok?",
-           MessageBoxButton.OK,
-           MessageBoxImage.Information);
+            MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to delete the volunteer", "its ok?",
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
             if (messageResult == MessageBoxResult.OK)
             {
                 var button = sender as Button;
                 BO.VolunteerInList? volunteer = button?.DataContext as BO.VolunteerInList;
-                var id = volunteer.Id;
                 if (volunteer != null)
-                    s_bl.Volunteer.DeleteVolunteer(volunteer.Id); // לדוגמה
-
+                    s_bl.Volunteer.DeleteVolunteer(volunteer.Id);
             }
         }
     }

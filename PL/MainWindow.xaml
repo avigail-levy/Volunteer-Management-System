@@ -18,7 +18,6 @@
             <Setter Property="FontWeight" Value="Bold" />
         </Style>
     </Window.Resources>
-    <!--External Grid-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

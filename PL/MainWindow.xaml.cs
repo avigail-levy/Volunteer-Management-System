@@ -48,6 +48,7 @@ namespace PL
         {
             CurrentRiskRange = s_bl.Admin.GetRiskRange();
         }
+        //functions to advnce time
         private void btnAddOneMinute_Click(object sender, RoutedEventArgs e)
         {
             s_bl.Admin.AdvanceClock(BO.TimeUnit.Minute);
@@ -73,7 +74,6 @@ namespace PL
         {
             s_bl.Admin.SetRiskRange(CurrentRiskRange);
         }
-
         private void window_Loaded(object sender, RoutedEventArgs e)
         {
             CurrentTime = s_bl.Admin.GetClock();
