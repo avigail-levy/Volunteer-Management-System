@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -75,11 +76,14 @@ namespace PL.Volunteer
                     MessageBox.Show("volunteer updated successfully.");
                 }
             }
-            catch (Exception ex)
+            catch (BO.BlAlreadyExistsException ex)
             {
                 MessageBox.Show(ex.Message, "Error");
             }
-
+            catch(BO.BlUnauthorizedException ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
         }
         private void RefreshVolunteer()
         {

@@ -261,6 +261,9 @@ internal class CallImplementation : ICall
         return calls.Select(c =>
         {
             var allAssign = _dal.Assignment.ReadAll(a => a.CallId == c.Id);
+            var lastAssign = allAssign
+               .OrderByDescending(a => a.EndOfTreatmentTime) 
+               .FirstOrDefault();
             return new BO.CallInList
             {
                 Id = 1,
@@ -268,9 +271,9 @@ internal class CallImplementation : ICall
                 CallType = (BO.CallType)c.CallType,
                 OpeningTime = c.OpeningTime,
                 TotalTimeRemainingFinishCalling = c.MaxTimeFinishCall - AdminManager.Now,
-                LastVolunteerName = _dal.Volunteer.Read(allAssign.LastOrDefault()?.VolunteerId ?? 0)?.Name,
-                TotalTimeCompleteTreatment = allAssign.LastOrDefault()?.TypeOfTreatmentTermination
-            == DO.TypeOfTreatmentTermination.Handled ? allAssign.LastOrDefault()?.EndOfTreatmentTime - c.OpeningTime : null,
+                LastVolunteerName = _dal.Volunteer.Read(lastAssign?.VolunteerId ?? 0)?.Name,
+                TotalTimeCompleteTreatment = lastAssign?.TypeOfTreatmentTermination
+                                            == DO.TypeOfTreatmentTermination.Handled ? lastAssign?.EndOfTreatmentTime - c.OpeningTime : null,
                 StatusCall = CallManager.GetStatusCall(c),
                 TotalAssignments = allAssign.Count()
             };

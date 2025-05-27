@@ -29,9 +29,9 @@
             </ComboBox>
 
         </Grid>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Path=VolunteerList}" IsReadOnly ="True" AutoGenerateColumns="False"
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Path=CallList}" IsReadOnly ="True" AutoGenerateColumns="False"
      EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected"
-     MouseDoubleClick="lsvVolunteersList_MouseDoubleClick" SelectedItem="{Binding SelectedVolunteer}">
+     MouseDoubleClick="lsvCallsList_MouseDoubleClick" SelectedItem="{Binding SelectedCall}">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Delete" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
@@ -41,19 +41,36 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="Auto"/>
-                <DataGridTemplateColumn Header="Is Active" Width="Auto">
+                <DataGridTextColumn Binding="{Binding CallId}" Header="CallId" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding CallType}" Header="Call Type" Width="Auto"/>
+                <DataGridTemplateColumn Header="OpeningTime" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsEnabled="False" IsChecked="{Binding Active}" />
+                            <TextBlock Text="{Binding OpeningTime, StringFormat='{}{0:HH:mm dd/MM/yyyy}'}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding TotalCallsHandledByVolunteer}" Header="Total Calls Handled By Volunteer" Width="Auto"/>
+
+                <DataGridTemplateColumn Header="Total Time Remaining Finish Calling" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding TotalTimeRemainingFinishCalling, StringFormat='{}{0:HH:mm dd/MM/yyyy}'}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+
+                <DataGridTextColumn Binding="{Binding LastVolunteerName}" Header="Last Volunteer Name" Width="Auto"/>
+                <DataGridTemplateColumn Header="Total Time Complete Treatment" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding TotalTimeCompleteTreatment, StringFormat='{}{0:HH:mm dd/MM/yyyy}'}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Binding="{Binding TotalCallsCanceledByVolunteer}" Header="Total Calls Canceled By Volunteer" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding TotalExpiredCallingsByVolunteer}" Header="Total Expired Callings By Volunteer" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding IDCallInHisCare}" Header="ID Call In His Care" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding CallType}" Header="Call Type" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding StatusCall}" Header="Status Call" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding TotalAssignments}" Header="Total Assignments" Width="Auto"/>
 
             </DataGrid.Columns>
         </DataGrid>        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="Button_Click"/>

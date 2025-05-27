@@ -39,7 +39,7 @@ internal class VolunteerImplementation : IVolunteer
     /// <exception cref="BO.BlCantUpdateException">cant update volunteer details</exception>
     public void UpdateVolunteerDetails(int idRequester, BO.Volunteer volunteer)
     {
-        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteer.Id) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteer.Id} does Not exist");//מיותר?כי הרי כשמזמנים את הפעולה הזאת שולחים מתנדב מוכן וכבר מה בודקים אם קיים או לא
+        DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteer.Id) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteer.Id} does Not exist");
         DO.Volunteer requester = _dal.Volunteer.Read(idRequester)!;
         if (requester.Role != DO.Role.Manager && idRequester != volunteer.Id)
             throw new BO.BlUnauthorizedException("Only a manager can update the volunteer's role");
@@ -53,7 +53,7 @@ internal class VolunteerImplementation : IVolunteer
         }
         catch (DO.DalDoesNotExistException ex)
         {
-            throw new BO.BlCantUpdateException($"volunteer with ID={volunteer.Id} is not exists", ex);
+            throw new BO.BlCantUpdateException($"volunteer with ID={volunteer.Id} does not exists", ex);
         }
     }
     /// <summary>

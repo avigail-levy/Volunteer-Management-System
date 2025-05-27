@@ -1,5 +1,4 @@
-﻿using BO;
-using PL.Volunteer;
+﻿using PL.Volunteer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +22,7 @@ namespace PL.Call
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        public BO.VolunteerInList? SelectedCall { get; set; }
+        public BO.CallInList? SelectedCall { get; set; }
 
         public BO.CallType CallType { get; set; } = BO.CallType.None;
         public IEnumerable<BO.CallInList> CallList
@@ -39,16 +38,15 @@ namespace PL.Call
         {
             InitializeComponent();
         }
-
         private void filterBySelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
-           => queryVolunteerList();
+           => queryCallList();
 
-        private void queryVolunteerList()
+        private void queryCallList()
          => CallList = (CallType == BO.CallType.None) ?
                 s_bl?.Call.GetCallsList(null, null, null)! : s_bl?.Call.GetCallsList(BO.CallInListAttributes.CallType, CallType, null)!;
 
         private void callListObserver()
-           => queryVolunteerList();
+           => queryCallList();
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
           => s_bl.Volunteer.AddObserver(callListObserver);
@@ -62,9 +60,8 @@ namespace PL.Call
         }
         private void lsvCallsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (SelectedCall != null)
-                new CallWindow(SelectedCall.Id).Show();
-
+            if (SelectedCall?.Id != null)
+                new CallWindow(SelectedCall.Id.Value).Show();
         }
         private void delete_btnClick(object sender, RoutedEventArgs e)
         {
@@ -75,8 +72,15 @@ namespace PL.Call
             {
                 var button = sender as Button;
                 BO.CallInList? call = button?.DataContext as BO.CallInList;
-                if (call != null)
-                    s_bl.Call.DeleteCall(call.Id);
+                if (call?.Id != null)
+                    try
+                    {
+                        s_bl.Call.DeleteCall(call.Id.Value);
+                    }
+                    catch(BO.BlCantDeleteException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error");
+                    }
             }
         }
     }
