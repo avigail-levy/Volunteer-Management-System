@@ -266,14 +266,14 @@ internal class CallImplementation : ICall
                .FirstOrDefault();
             return new BO.CallInList
             {
-                Id = 1,
+                Id = lastAssign?.Id ?? null,
                 CallId = c.Id,
                 CallType = (BO.CallType)c.CallType,
                 OpeningTime = c.OpeningTime,
                 TotalTimeRemainingFinishCalling = c.MaxTimeFinishCall - AdminManager.Now,
                 LastVolunteerName = _dal.Volunteer.Read(lastAssign?.VolunteerId ?? 0)?.Name,
-                TotalTimeCompleteTreatment = lastAssign?.TypeOfTreatmentTermination
-                                            == DO.TypeOfTreatmentTermination.Handled ? lastAssign?.EndOfTreatmentTime - c.OpeningTime : null,
+                TotalTimeCompleteTreatment = (lastAssign?.TypeOfTreatmentTermination
+                                            == DO.TypeOfTreatmentTermination.Handled) ? lastAssign ?.EndOfTreatmentTime - c.OpeningTime : null,
                 StatusCall = CallManager.GetStatusCall(c),
                 TotalAssignments = allAssign.Count()
             };

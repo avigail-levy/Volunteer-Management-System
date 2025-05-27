@@ -40,7 +40,6 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding CallId}" Header="CallId" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding CallType}" Header="Call Type" Width="Auto"/>
                 <DataGridTemplateColumn Header="OpeningTime" Width="Auto">
