@@ -7,6 +7,7 @@
         <local:CallTypeCollection x:Key="CallTypeCollectionKey" />
         <local:RoleCollection x:Key="RoleCollectionKey" />
         <local:DistanceTypeCollection x:Key="DistanceTypeCollectionKey"/>
+        <local:StatusCallCollection x:Key="StatusCallCollectionKey"/>
         <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
         <local:ConvertUpdateToVisible x:Key="ConvertUpdateToVisibleKey"/>
     </Application.Resources>

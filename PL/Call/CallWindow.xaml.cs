@@ -32,7 +32,7 @@ namespace PL.Call
                 CurrentCall = id != 0
                     ? s_bl.Call.GetCallDetails(id)
                     :
-                    new BO.Call() { CallType =BO.CallType.None, OpeningTime = s_bl.Admin.GetClock(),};
+                    new BO.Call() { CallType =BO.CallType.None, OpeningTime = s_bl.Admin.GetClock(),StatusCall=BO.StatusCall.Open};
             }
             catch (Exception ex)
             {
@@ -66,6 +66,7 @@ namespace PL.Call
                 if (CurrentCall == null) return;
                 if (ButtonText == "Add")
                 {
+                    
                     s_bl.Call.AddCall(CurrentCall!);
                     MessageBox.Show("call added successfully.");
                 }

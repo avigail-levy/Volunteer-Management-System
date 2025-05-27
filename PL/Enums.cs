@@ -28,6 +28,13 @@ namespace PL
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
+    internal class StatusCallCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.StatusCall> s_enums =
+    (Enum.GetValues(typeof(BO.StatusCall)) as IEnumerable<BO.StatusCall>)!;
+
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    }
     internal class Enums
     {
     }
