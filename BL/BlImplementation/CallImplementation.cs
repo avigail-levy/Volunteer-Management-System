@@ -270,7 +270,7 @@ internal class CallImplementation : ICall
                 CallId = c.Id,
                 CallType = (BO.CallType)c.CallType,
                 OpeningTime = c.OpeningTime,
-                TotalTimeRemainingFinishCalling = c.MaxTimeFinishCall - AdminManager.Now,
+                TotalTimeRemainingFinishCalling = c.MaxTimeFinishCall - AdminManager.Now, 
                 LastVolunteerName = _dal.Volunteer.Read(lastAssign?.VolunteerId ?? 0)?.Name,
                 TotalTimeCompleteTreatment = (lastAssign?.TypeOfTreatmentTermination
                                             == DO.TypeOfTreatmentTermination.Handled) ? lastAssign ?.EndOfTreatmentTime - c.OpeningTime : null,
