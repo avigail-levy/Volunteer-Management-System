@@ -2,9 +2,7 @@
 using Helpers;
 
 public class Call
-{
-    public int Id { get; init; }
-    /// <summary>
+{/// <summary>
     /// ID: call id
     /// CallType: Call type 
     /// CallDescription: call description
@@ -16,6 +14,7 @@ public class Call
     /// StatusCall: Call status
     /// CallAssignInList: Assignment list to call
     /// </summary>
+    public int Id { get; init; }
     public CallType CallType { get; set; }
     public string? CallDescription { get; set; }
     public string CallAddress { get; set; } = null!;

@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Call"
         mc:Ignorable="d"
-        Title="CallListWindow" Height="450" Width="800"
-        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+        Title="CallListWindow" Height="640" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Loaded="Window_Loaded"
+        Closed="Window_Closed"
+        FlowDirection="RightToLeft">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
@@ -19,9 +22,40 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0"/>
-            <ComboBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <ComboBox SelectedValue="{Binding CallType, Mode=TwoWay}"
+                  ItemsSource="{Binding Source= {StaticResource CallTypeCollectionKey}}"
+                  SelectionChanged="filterBySelect_SelectionChanged"
+                  Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            </ComboBox>
+
         </Grid>
-        <ListView Grid.Row="1" Margin="5" ItemsSource="{Binding CallList}"/>
-        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100"/>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Path=VolunteerList}" IsReadOnly ="True" AutoGenerateColumns="False"
+     EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected"
+     MouseDoubleClick="lsvVolunteersList_MouseDoubleClick" SelectedItem="{Binding SelectedVolunteer}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Delete" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="🚮" Click="delete_btnClick" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding Id}" Header="Id" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="Auto"/>
+                <DataGridTemplateColumn Header="Is Active" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsEnabled="False" IsChecked="{Binding Active}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding TotalCallsHandledByVolunteer}" Header="Total Calls Handled By Volunteer" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding TotalCallsCanceledByVolunteer}" Header="Total Calls Canceled By Volunteer" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding TotalExpiredCallingsByVolunteer}" Header="Total Expired Callings By Volunteer" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding IDCallInHisCare}" Header="ID Call In His Care" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding CallType}" Header="Call Type" Width="Auto"/>
+
+            </DataGrid.Columns>
+        </DataGrid>        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="Button_Click"/>
     </Grid>
 </Window>
