@@ -60,6 +60,7 @@ namespace PL.Call
         }
         private void lsvCallsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            var s = SelectedCall;
             if (SelectedCall?.Id != null)
                 new CallWindow(SelectedCall.Id.Value).Show();
         }

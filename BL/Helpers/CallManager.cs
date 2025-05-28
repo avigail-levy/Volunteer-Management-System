@@ -141,13 +141,14 @@ namespace Helpers
         /// <returns>DO assignment</returns>
         internal static DO.Assignment CreateDoAssignment(DO.Assignment assignment, DO.TypeOfTreatmentTermination type)
         {
+            DateTime? endTime = type == DO.TypeOfTreatmentTermination.CancellationExpired ?null:AdminManager.Now;
             return new(
                 assignment.Id,
                 assignment.CallId,
                 assignment.VolunteerId,
                 assignment.EntryTimeForTreatment,
                 type,
-                AdminManager.Now
+                endTime
                 );
         }
     }

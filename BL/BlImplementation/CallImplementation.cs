@@ -235,34 +235,13 @@ internal class CallImplementation : ICall
     public IEnumerable<BO.CallInList> GetCallsList(BO.CallInListAttributes? filterByAttribute = null, object? filterValue = null, BO.CallInListAttributes? sortByAttribute = null)
     {
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
-
-        var propertyFilter = filterByAttribute != null ? typeof(DO.Call).GetProperty(filterByAttribute.ToString()!) : null;
-
-        calls = propertyFilter != null ?
-                from c in calls
-                where propertyFilter.GetValue(c, null) == filterValue
-                select c
-                :
-                from item in calls
-                select item;
-
-
-        var propertySort = sortByAttribute != null ? typeof(DO.Call).GetProperty(sortByAttribute.ToString()!) : null;
-
-        calls = sortByAttribute != null ?
-                from c in calls
-                orderby propertySort!.GetValue(c, null)
-                select c
-                :
-                from c in calls
-                orderby c.Id
-                select c;
-
-        return calls.Select(c =>
+       var callsInList= calls.Select(c =>
         {
             var allAssign = _dal.Assignment.ReadAll(a => a.CallId == c.Id);
-            var lastAssign = allAssign
-               .OrderByDescending(a => a.EndOfTreatmentTime) 
+            var lastAssign =
+            allAssign.FirstOrDefault(a => a.EndOfTreatmentTime == null)??
+            allAssign
+               .OrderByDescending(a => a.EndOfTreatmentTime)
                .FirstOrDefault();
             return new BO.CallInList
             {
@@ -270,14 +249,38 @@ internal class CallImplementation : ICall
                 CallId = c.Id,
                 CallType = (BO.CallType)c.CallType,
                 OpeningTime = c.OpeningTime,
-                TotalTimeRemainingFinishCalling = c.MaxTimeFinishCall - AdminManager.Now, 
+                TotalTimeRemainingFinishCalling = c.MaxTimeFinishCall - AdminManager.Now,
                 LastVolunteerName = _dal.Volunteer.Read(lastAssign?.VolunteerId ?? 0)?.Name,
                 TotalTimeCompleteTreatment = (lastAssign?.TypeOfTreatmentTermination
-                                            == DO.TypeOfTreatmentTermination.Handled) ? lastAssign ?.EndOfTreatmentTime - c.OpeningTime : null,
+                                            == DO.TypeOfTreatmentTermination.Handled) ? lastAssign?.EndOfTreatmentTime - c.OpeningTime : null,
                 StatusCall = CallManager.GetStatusCall(c),
                 TotalAssignments = allAssign.Count()
             };
         });
+
+        var propertyFilter = filterByAttribute != null ? typeof(BO.CallInList).GetProperty(filterByAttribute.ToString()!) : null;
+
+        callsInList = propertyFilter != null ?
+                (from c in callsInList
+                 where propertyFilter.GetValue(c, null)?.ToString() == filterValue?.ToString()
+                 select c).ToList()
+                :
+                (from item in callsInList
+                 select item).ToList();
+
+
+        var propertySort = sortByAttribute != null ? typeof(BO.CallInList).GetProperty(sortByAttribute.ToString()!) : null;
+
+        callsInList = sortByAttribute != null ?
+                (from c in callsInList
+                 orderby propertySort!.GetValue(c, null)
+                select c).ToList()
+                :
+                (from c in callsInList
+                 orderby c.Id
+                select c).ToList();
+
+        return callsInList;
     }
 
     /// <summary>
