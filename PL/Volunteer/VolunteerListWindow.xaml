@@ -22,12 +22,13 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0"/>
+            <Label Grid.Column="0" Content="סנן לפי סוג קריאה:"/>
             <ComboBox SelectedValue="{Binding CallType, Mode=TwoWay}"
                       ItemsSource="{Binding Source= {StaticResource CallTypeCollectionKey}}"
                       SelectionChanged="filterBySelect_SelectionChanged"
                       Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             </ComboBox>
+            
 
         </Grid>
         <DataGrid Grid.Row="1" ItemsSource="{Binding Path=VolunteerList}" IsReadOnly ="True" AutoGenerateColumns="False"
@@ -36,8 +37,8 @@
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Delete" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button Content="🚮" Click="delete_btnClick" />
+                        <DataTemplate >
+                            <Button Content="🚮" Click="delete_btnClick " />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

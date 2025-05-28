@@ -184,6 +184,7 @@ internal class CallImplementation : ICall
     public BO.Call GetCallDetails(int idCall)
     {
         DO.Call call = _dal.Call.Read(idCall) ?? throw new BO.BlDoesNotExistException("call does not exist");
+        var assignments = _dal.Assignment.ReadAll(a => a.CallId == idCall);
         BO.Call newBOCall = new()
         {
             Id = call.Id,
@@ -195,16 +196,17 @@ internal class CallImplementation : ICall
             Longitude = call.Longitude,
             OpeningTime = call.OpeningTime,
             StatusCall = CallManager.GetStatusCall(call),
-            CallAssignInList = _dal.Assignment.ReadAll(a => a.CallId == idCall)
-                                                        .Select(a => new BO.CallAssignInList
-                                                        {
-                                                            VolunteerId = a.VolunteerId,
-                                                            Name = _dal.Volunteer.Read(v => v.Id == a.VolunteerId)!.Name,
-                                                            EntryTimeForTreatment = a.EntryTimeForTreatment,
-                                                            EndOfTreatmentTime = a.EndOfTreatmentTime,
-                                                            TypeOfTreatmentTermination = (BO.TypeOfTreatmentTermination?)a.TypeOfTreatmentTermination
-                                                        }).ToList()
-        };
+            CallAssignInList = assignments.Any() ?
+                                                     assignments.Select(a => new BO.CallAssignInList
+                                                     {
+                                                         VolunteerId = a.VolunteerId,
+                                                         Name = _dal.Volunteer.Read(v => v.Id == a.VolunteerId)?.Name,
+                                                         EntryTimeForTreatment = a.EntryTimeForTreatment,
+                                                         EndOfTreatmentTime = a.EndOfTreatmentTime,
+                                                         TypeOfTreatmentTermination = (BO.TypeOfTreatmentTermination?)a.TypeOfTreatmentTermination
+                                                     }).ToList()
+                                                        : null
+        }; 
         return newBOCall;
     }
 

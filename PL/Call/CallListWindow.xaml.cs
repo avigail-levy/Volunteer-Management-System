@@ -62,7 +62,7 @@ namespace PL.Call
         {
             var s = SelectedCall;
             if (SelectedCall?.Id != null)
-                new CallWindow(SelectedCall.Id.Value).Show();
+                new CallWindow(SelectedCall.CallId).Show();
         }
         private void delete_btnClick(object sender, RoutedEventArgs e)
         {

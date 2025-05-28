@@ -9,14 +9,6 @@
     <EndOfTreatmentTime>2025-03-30T16:30:54</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
-    <Id>2</Id>
-    <CallId>2</CallId>
-    <VolunteerId>243745783</VolunteerId>
-    <EntryTimeForTreatment>2025-03-27T10:39:54</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination>CancellationExpired</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-03-28T09:58:54</EndOfTreatmentTime>
-  </Assignment>
-  <Assignment>
     <Id>3</Id>
     <CallId>4</CallId>
     <VolunteerId>311374845</VolunteerId>
@@ -239,14 +231,6 @@
     <EntryTimeForTreatment>2025-03-26T19:45:54</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>CancelAdministrator</TypeOfTreatmentTermination>
     <EndOfTreatmentTime>2025-03-27T14:13:54</EndOfTreatmentTime>
-  </Assignment>
-  <Assignment>
-    <Id>33</Id>
-    <CallId>40</CallId>
-    <VolunteerId>243745783</VolunteerId>
-    <EntryTimeForTreatment>2025-03-21T07:01:54</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination>SelfCancellation</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-03-22T11:30:54</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>34</Id>
