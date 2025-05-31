@@ -216,7 +216,7 @@
     <Phone>0556726282</Phone>
     <Email>avigail6282@gmail.com</Email>
     <Role>Manager</Role>
-    <Active>false</Active>
+    <Active>true</Active>
     <DistanceType>TraveledByCar</DistanceType>
     <Latitude>32.0988842</Latitude>
     <Longitude>34.8343787</Longitude>

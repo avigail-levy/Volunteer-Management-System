@@ -32,7 +32,7 @@ namespace PL.Call
                 CurrentCall = id != 0
                     ? s_bl.Call.GetCallDetails(id)
                     :
-                    new BO.Call() { CallType =BO.CallType.None, OpeningTime = s_bl.Admin.GetClock(),StatusCall=BO.StatusCall.Open};
+                    new BO.Call() {CallType =BO.CallType.None, OpeningTime = s_bl.Admin.GetClock(), MaxTimeFinishCall = s_bl.Admin.GetClock(), StatusCall=BO.StatusCall.Open};
             }
             catch (Exception ex)
             {
@@ -75,6 +75,7 @@ namespace PL.Call
                     s_bl.Call.UpdateCallDetails(CurrentCall);
                     MessageBox.Show("call updated successfully.");
                 }
+                
             }
             catch (Exception ex)
             {

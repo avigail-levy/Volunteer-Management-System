@@ -49,7 +49,7 @@ namespace PL.Call
            => queryCallList();
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
-          => s_bl.Volunteer.AddObserver(callListObserver);
+          => s_bl.Call.AddObserver(callListObserver);
 
         private void Window_Closed(object sender, EventArgs e)
            => s_bl.Volunteer.RemoveObserver(callListObserver);
@@ -61,7 +61,7 @@ namespace PL.Call
         private void lsvCallsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var s = SelectedCall;
-            if (SelectedCall?.Id != null)
+            if (SelectedCall?.CallId != null)
                 new CallWindow(SelectedCall.CallId).Show();
         }
         private void delete_btnClick(object sender, RoutedEventArgs e)
@@ -83,6 +83,11 @@ namespace PL.Call
                         MessageBox.Show(ex.Message, "Error");
                     }
             }
+        }
+
+        private void DataGrid_SelectionChanged()
+        {
+
         }
     }
 }
