@@ -84,11 +84,6 @@ namespace PL.Call
                     }
             }
         }
-
-        private void DataGrid_SelectionChanged()
-        {
-
-        }
     }
 }
 

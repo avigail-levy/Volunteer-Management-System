@@ -98,15 +98,16 @@ internal class CallImplementation : ICall
     public IEnumerable<BO.OpenCallInList> OpenCallsListSelectedByVolunteer(int idVolunteer, BO.CallType? filterByAttribute, BO.OpenCallInListAttributes? sortByAttribute)
     {
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
+        var vol = _dal.Volunteer.Read(idVolunteer) ??
+           throw new BO.BlDoesNotExistException($"The volunteer with id:{idVolunteer} does not exist");
 
         var openCalls = from c in calls
-                        where CallManager.GetStatusCall(c) == BO.StatusCall.Open || CallManager.GetStatusCall(c) == BO.StatusCall.OpenAtRisk
+                        where CallManager.GetStatusCall(c) == BO.StatusCall.Open || 
+                        CallManager.GetStatusCall(c) == BO.StatusCall.OpenAtRisk && 
+                        vol.MaxDistanceForCall>= VolunteerManager.CalcDistance(vol.Address, c.CallAddress)
                         select c;
 
         openCalls = CallManager.FilterAndSortCalls(openCalls, filterByAttribute, sortByAttribute);
-
-        var vol = _dal.Volunteer.Read(idVolunteer) ??
-            throw new BO.BlDoesNotExistException($"The volunteer with id:{idVolunteer} does not exist");
         return openCalls.Select(c => new BO.OpenCallInList
         {
             Id = c.Id,
