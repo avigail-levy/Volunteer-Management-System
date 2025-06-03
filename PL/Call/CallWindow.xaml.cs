@@ -75,7 +75,7 @@ namespace PL.Call
                     s_bl.Call.UpdateCallDetails(CurrentCall);
                     MessageBox.Show("call updated successfully.");
                 }
-                
+                Close();
             }
             catch (Exception ex)
             {

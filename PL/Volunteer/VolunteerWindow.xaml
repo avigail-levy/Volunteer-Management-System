@@ -70,7 +70,7 @@
         <TextBox Grid.Row="5" Grid.Column="1"
                  Text="{Binding CurrentVolunteer.Address, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
-        <Label Content="קו רוחב:" Grid.Row="6" Grid.Column="0" Style="{StaticResource myLabelStyle}"/>
+        <!--<Label Content="קו רוחב:" Grid.Row="6" Grid.Column="0" Style="{StaticResource myLabelStyle}"/>
         <TextBlock Grid.Row="6" Grid.Column="1"
                  Style="{StaticResource myTextBlockStyle}"
                  Text="{Binding CurrentVolunteer.Latitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
@@ -78,7 +78,7 @@
         <Label Content="קו אורך:" Grid.Row="7" Grid.Column="0" Style="{StaticResource myLabelStyle}"/>
         <TextBlock Grid.Row="7" Grid.Column="1"
                  Style="{StaticResource myTextBlockStyle}"
-                 Text="{Binding CurrentVolunteer.Longitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                 Text="{Binding CurrentVolunteer.Longitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>-->
 
         <Label Content="תפקיד:" Grid.Row="8" Grid.Column="0"/>
         <ComboBox Grid.Row="8" Grid.Column="1"

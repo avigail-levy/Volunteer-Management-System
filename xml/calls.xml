@@ -520,4 +520,14 @@
     <CallDescription>HaNassi Street 2, Rehovot 34.812281 31.896828 call</CallDescription>
     <MaxTimeFinishCall>2025-04-10T21:55:54</MaxTimeFinishCall>
   </Call>
+  <Call>
+    <Id>59</Id>
+    <CallType>Ironing</CallType>
+    <CallAddress>Hertzel Street 60, Hadera</CallAddress>
+    <Latitude>32.4348469</Latitude>
+    <Longitude>34.9185402</Longitude>
+    <OpeningTime>2025-07-01T06:02:55</OpeningTime>
+    <CallDescription>ironing</CallDescription>
+    <MaxTimeFinishCall>2025-07-07T06:02:55</MaxTimeFinishCall>
+  </Call>
 </ArrayOfCall>

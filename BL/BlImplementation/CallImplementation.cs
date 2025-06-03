@@ -51,7 +51,7 @@ internal class CallImplementation : ICall
     /// <summary>
     ///Choosing a call for treatment
     /// </summary>
-    /// <param name="idVolunteer">id Volunteer who chooses call.</param>
+    /// <param name="idVolunteer">id Volunteer who  s call.</param>
     /// <param name="idCall">id call for selection</param>
     /// <exception cref="BO.BlDoesNotExistException">Does Not Exist</exception>
     /// <exception cref="BO.BlInvalidRequestException">Invalid Request</exception>

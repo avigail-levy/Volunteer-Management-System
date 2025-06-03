@@ -10,5 +10,6 @@
         <local:StatusCallCollection x:Key="StatusCallCollectionKey"/>
         <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
         <local:ConvertUpdateToVisible x:Key="ConvertUpdateToVisibleKey"/>
+        <local:ConvertMax x:Key="ConvertMaxKey"/>
     </Application.Resources>
 </Application>

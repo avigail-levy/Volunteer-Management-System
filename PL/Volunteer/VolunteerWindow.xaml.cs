@@ -75,6 +75,7 @@ namespace PL.Volunteer
                     s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer.Id, CurrentVolunteer);
                     MessageBox.Show("volunteer updated successfully.");
                 }
+                Close();
             }
             catch (BO.BlAlreadyExistsException ex)
             {
