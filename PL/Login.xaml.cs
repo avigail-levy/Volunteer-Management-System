@@ -19,9 +19,16 @@ namespace PL
     /// </summary>
     public partial class Login : Window
     {
+        public int password { get; set; }
+        public int id { get; set; }
         public Login()
         {
             InitializeComponent();
+        }
+
+        private void Login_Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -5,8 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="Login" Height="450" Width="800">
+        Title="Login" Height="450" Width="800"
+        FlowDirection="RightToLeft">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+        <Label Content="תעודת זהות:"/>
+            <TextBox Text="{Binding password, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+        <Label Content="סיסמא:"/>
+        <TextBox/>
+            <Button Content="אישור" Margin="0,10" Click="Login_Button_Click"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Visibility="Hidden">
+            <Button Content="הכנס כמנהל"/>
+            <Button Content="הכנס כמתנדב"/>
+        </StackPanel>
     </Grid>
 </Window>
