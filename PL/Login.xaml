@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="Login" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         FlowDirection="RightToLeft">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -13,16 +14,21 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        
         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-        <Label Content="תעודת זהות:"/>
-            <TextBox Text="{Binding password, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
-        <Label Content="סיסמא:"/>
-        <TextBox/>
+            
+        <Label Content="שם משתמש:"/>
+            <TextBox Text="{Binding UserName, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+
+            <Label Content="סיסמא:"/>
+            <TextBox Text="{Binding Password, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+            
             <Button Content="אישור" Margin="0,10" Click="Login_Button_Click"/>
         </StackPanel>
-        <StackPanel Grid.Column="1" Visibility="Hidden">
-            <Button Content="הכנס כמנהל"/>
-            <Button Content="הכנס כמתנדב"/>
+
+        <StackPanel Grid.Column="1" Visibility="{Binding Role, Converter={StaticResource ConvertManagerToVisibleKey} }">
+            <Button Content="ניהול ראשי" Click="mainWindow_Button_Click"/>
+            <Button Content="הכנס כמתנדב" Click="volunteerWindow_Button_Click"/>
         </StackPanel>
     </Grid>
-</Window>
+</Window> 

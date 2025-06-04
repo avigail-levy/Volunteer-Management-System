@@ -35,16 +35,32 @@ namespace PL
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             => throw new NotImplementedException();
     }
-    public class ConvertMax : IValueConverter
+    //public class ConvertMax : IValueConverter
+    //{
+    //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    //    {
+    //        return value?.ToString() == "InTreatment" || value?.ToString() == "InRiskTreatment";
+    //    }
+
+    //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    //        => throw new NotImplementedException();
+    //}
+
+    public class ConvertManagerToVisible : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value?.ToString() == "InTreatment" || value?.ToString() == "InRiskTreatment";
+            if (value is BO.Role role)
+                return role == BO.Role.Manager
+                    ? Visibility.Visible
+                    :
+                    Visibility.Hidden;
+
+            return Visibility.Hidden;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             => throw new NotImplementedException();
     }
-
 
 }
