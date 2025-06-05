@@ -137,10 +137,10 @@ internal class VolunteerImplementation : IVolunteer
     /// <param name="username">user name</param>
     /// <returns>the role of volunteer</returns>
     /// <exception cref="BO.BlDoesNotExistException">the volunteer does not exist</exception>
-    public BO.Role Login(string username,string password)
+    public BO.Role Login(int id,string password)
     {
-        DO.Volunteer vol = _dal.Volunteer.Read(vol => vol.Name == username && vol.Password==password) ??
-        throw new BO.BlDoesNotExistException($"Volunteer with Name ={username} does Not exist");
+        DO.Volunteer vol = _dal.Volunteer.Read(vol => vol.Id == id && vol.Password==password) ??
+        throw new BO.BlDoesNotExistException($"Volunteer with Name ={id} does Not exist");
         return (BO.Role)vol.Role;
     }
     /// <summary>

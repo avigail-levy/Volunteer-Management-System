@@ -100,5 +100,10 @@ namespace PL.Call
                     MessageBox.Show(ex.Message, "Error");
                 }
         }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

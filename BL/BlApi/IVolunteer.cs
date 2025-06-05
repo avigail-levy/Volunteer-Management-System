@@ -3,7 +3,7 @@
     public interface IVolunteer: IObservable
     {        
         BO.Volunteer GetVolunteerDetails (int idVolunteer);
-        BO.Role Login(string username,string password);
+        BO.Role Login(int id,string password);
         void UpdateVolunteerDetails(int idRequester, BO.Volunteer volunteer);
         void DeleteVolunteer(int idVolunteer);
         void AddVolunteer(BO.Volunteer newBoVolunteer);

@@ -111,42 +111,44 @@
                  Style="{StaticResource myTextBlockStyle}"
                    Text="{Binding CurrentVolunteer.TotalCallsChoseHandleHaveExpired, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
-        <StackPanel Visibility="Visible" Grid.Row="14">
+        <StackPanel Visibility="{Binding CurrentVolunteer.CallingVolunteerTherapy, Converter={StaticResource ConvertCallInProgressToVisibleKey}}" Grid.Row="22">
             <TextBlock   Text="הקריאה שבטיפולו:--------------" Grid.Row="13"/>
 
-        <Label Content="מספר קריאה:" Grid.Row="14" Grid.Column="0"/>
-        <TextBlock  Grid.Row="14" Grid.Column="1"
+            <Label Content="מספר קריאה:" Grid.Row="14" Grid.Column="0"/>
+            <TextBlock  Grid.Row="14" Grid.Column="1"
                  Text="{Binding CurrentVolunteer.CallingVolunteerTherapy.CallId, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
-        <Label Content=" סוג :" Grid.Row="15" Grid.Column="0"/>
-        <TextBlock  Grid.Row="15" Grid.Column="1"
+            <Label Content=" סוג :" Grid.Row="15" Grid.Column="0"/>
+            <TextBlock  Grid.Row="15" Grid.Column="1"
          Text="{Binding CurrentVolunteer.CallingVolunteerTherapy.CallType, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
-        <Label Content=" תאור  :" Grid.Row="16" Grid.Column="0"/>
-        <TextBlock  Grid.Row="16" Grid.Column="1"
+            <Label Content=" תאור  :" Grid.Row="16" Grid.Column="0"/>
+            <TextBlock  Grid.Row="16" Grid.Column="1"
         Text="{Binding CurrentVolunteer.CallingVolunteerTherapy.CallDescription, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
-        <Label Content="כתובת  :" Grid.Row="17" Grid.Column="0"/>
-        <TextBlock  Grid.Row="17" Grid.Column="1"
+            <Label Content="כתובת  :" Grid.Row="17" Grid.Column="0"/>
+            <TextBlock  Grid.Row="17" Grid.Column="1"
        Text="{Binding CurrentVolunteer.CallingVolunteerTherapy.CallAddress, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
-        <Label Content=" זמן פתיחת הקיראה  :" Grid.Row="18" Grid.Column="0"/>
-        <TextBlock  Grid.Row="18" Grid.Column="1"
+            <Label Content=" זמן פתיחת הקיראה  :" Grid.Row="18" Grid.Column="0"/>
+            <TextBlock  Grid.Row="18" Grid.Column="1"
         Text="{Binding CurrentVolunteer.CallingVolunteerTherapy.OpeningTime, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
-        <Label Content=" זמן סיום :" Grid.Row="19" Grid.Column="0"/>
-        <TextBlock  Grid.Row="19" Grid.Column="1"
+            <Label Content=" זמן סיום :" Grid.Row="19" Grid.Column="0"/>
+            <TextBlock  Grid.Row="19" Grid.Column="1"
          Text="{Binding CurrentVolunteer.CallingVolunteerTherapy.MaxTimeFinishCall, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
-        <Label Content=" זמן תחילת הטיפול  :" Grid.Row="20" Grid.Column="0"/>
-        <TextBlock  Grid.Row="20" Grid.Column="1"
+            <Label Content=" זמן תחילת הטיפול  :" Grid.Row="20" Grid.Column="0"/>
+            <TextBlock  Grid.Row="20" Grid.Column="1"
         Text="{Binding CurrentVolunteer.CallingVolunteerTherapy.EntryTimeForTreatment, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
-        <Label Content="סטטוס הקריאה בטיפול-בטיפול/בסיכון:" Grid.Row="22" Grid.Column="0"/>
-        <TextBlock  Grid.Row="22" Grid.Column="1"
+            <Label Content="סטטוס הקריאה בטיפול-בטיפול/בסיכון:" Grid.Row="22" Grid.Column="0"/>
+            <TextBlock  Grid.Row="22" Grid.Column="1"
          Text="{Binding CurrentVolunteer.CallingVolunteerTherapy.StatusCalling, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
         </StackPanel>
         <Button Grid.Row="23" Grid.Column="1" Height="50" Margin="50,50,200,20"
                 Content="{Binding ButtonText}" Click="btnAddUpdate_Click"/>
+        <Button Grid.Row="13" Grid.Column="1" Height="50" Margin="50,50,200,20"
+        Content="בחירת קריאה" Click="ChooseCall_Btn_Click"/>
     </Grid>
 </Window>

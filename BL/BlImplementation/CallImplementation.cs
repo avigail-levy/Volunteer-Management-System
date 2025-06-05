@@ -93,21 +93,22 @@ internal class CallImplementation : ICall
     /// <param name="filterByAttribute">The ENUM value of the call type by which the list will be filtered.</param>
     /// <param name="sortByAttribute">A parameter that is an ENUM value of a field in the "Open Read in List"
     /// entity, by which the list is sorted.</param>
-    /// <returns>A sorted collection of a logical data entity "Open Reads in List" that includes the distance
-    /// of each read from the volunteer</returns>
+    /// <returns>A sorted collection of a logical data entity "Open Calls in List" that includes the distance
+    /// of each call from the volunteer</returns>
     public IEnumerable<BO.OpenCallInList> OpenCallsListSelectedByVolunteer(int idVolunteer, BO.CallType? filterByAttribute, BO.OpenCallInListAttributes? sortByAttribute)
     {
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
         var vol = _dal.Volunteer.Read(idVolunteer) ??
            throw new BO.BlDoesNotExistException($"The volunteer with id:{idVolunteer} does not exist");
 
-        var openCalls = from c in calls
+        var openCalls = (from c in calls
                         where CallManager.GetStatusCall(c) == BO.StatusCall.Open || 
                         CallManager.GetStatusCall(c) == BO.StatusCall.OpenAtRisk && 
                         vol.MaxDistanceForCall>= VolunteerManager.CalcDistance(vol.Address, c.CallAddress)
-                        select c;
+                        select c).ToList();
 
         openCalls = CallManager.FilterAndSortCalls(openCalls, filterByAttribute, sortByAttribute);
+        
         return openCalls.Select(c => new BO.OpenCallInList
         {
             Id = c.Id,
@@ -130,10 +131,10 @@ internal class CallImplementation : ICall
     {
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
         var assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == idVolunteer);
-        var closeCalls = from c in calls
+        var closeCalls = (from c in calls
                          from a in assignments
                          where c.Id == a.CallId && CallManager.GetStatusCall(c) == BO.StatusCall.Closed
-                         select c;
+                         select c).ToList();
 
         closeCalls = CallManager.FilterAndSortCalls(closeCalls, filterByAttribute, sortByAttribute);
         return closeCalls.Select(c =>

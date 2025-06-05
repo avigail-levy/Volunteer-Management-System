@@ -12,5 +12,6 @@
         <local:ConvertUpdateToVisible x:Key="ConvertUpdateToVisibleKey"/>
         <!--<local:ConvertMax x:Key="ConvertMaxKey"/>-->
         <local:ConvertManagerToVisible x:Key="ConvertManagerToVisibleKey"/>
+        <local:ConvertCallInProgressToVisible x:Key="ConvertCallInProgressToVisibleKey"/>
     </Application.Resources>
 </Application>

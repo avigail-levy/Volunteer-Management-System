@@ -3,9 +3,9 @@
   <Call>
     <Id>2</Id>
     <CallType>Shopping</CallType>
-    <CallAddress>Bialik Street 10, Ra'anana</CallAddress>
-    <Latitude>32.184289</Latitude>
-    <Longitude>34.873586</Longitude>
+    <CallAddress>אהרונסון 9, בני ברק</CallAddress>
+    <Latitude>32.0820584</Latitude>
+    <Longitude>34.8273464</Longitude>
     <OpeningTime>2025-03-26T21:55:54</OpeningTime>
     <CallDescription>Bialik Street 10, Ra'anana 34.873586 32.184289 call</CallDescription>
     <MaxTimeFinishCall>2025-03-27T21:55:54</MaxTimeFinishCall>
@@ -530,4 +530,14 @@
     <CallDescription>ironing</CallDescription>
     <MaxTimeFinishCall>2025-07-07T06:02:55</MaxTimeFinishCall>
   </Call>
+	<Call>
+		<Id>60</Id>
+		<CallType>Ironing</CallType>
+		<CallAddress>אהרונסון 9, בני ברק</CallAddress>
+		<Latitude>32.0820584</Latitude>
+		<Longitude>34.8273464</Longitude>
+		<OpeningTime>2025-04-01T06:02:55</OpeningTime>
+		<CallDescription>ironing</CallDescription>
+		<MaxTimeFinishCall>2025-07-07T06:02:55</MaxTimeFinishCall>
+	</Call>
 </ArrayOfCall>

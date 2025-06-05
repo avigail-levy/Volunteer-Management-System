@@ -22,7 +22,7 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        public string UserName { get; set; }
+        public int Id { get; set; }
         public string Password { get; set; }
         public static readonly DependencyProperty RoleProperty =
         DependencyProperty.Register("Role", typeof(BO.Role), typeof(Login), new PropertyMetadata(BO.Role.Volunteer));
@@ -39,24 +39,24 @@ namespace PL
         private void Login_Button_Click(object sender, RoutedEventArgs e)
         {
 
-            if (string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(Password))
+            if (string.IsNullOrWhiteSpace(Password))
             {
                 MessageBox.Show("Values ​​must be entered");
                 return;
             }
 
-            if (!IsManager(UserName, Password))
+            if (!IsManager(Id , Password))
             {
-                new VolunteerWindow().Show();
+                new VolunteerWindow(Id).Show();
                 Close();
             }
             
         }
-        private bool IsManager(string username, string password)
+        private bool IsManager(int Id, string password)
         {
             try
             {
-                Role = s_bl.Volunteer.Login(username, password);
+                Role = s_bl.Volunteer.Login(Id, password);
                 return Role == BO.Role.Manager;
             }
             catch (BO.BlDoesNotExistException ex)
@@ -75,7 +75,7 @@ namespace PL
 
         private void volunteerWindow_Button_Click(object sender, RoutedEventArgs e)
         {
-            new VolunteerWindow().Show();
+            new VolunteerWindow(Id).Show();
             Close();
         }
     }

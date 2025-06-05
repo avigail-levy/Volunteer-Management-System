@@ -14,15 +14,15 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        
+
         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-            
-        <Label Content="שם משתמש:"/>
-            <TextBox Text="{Binding UserName, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+
+            <Label Content="ת.ז משתמש:"/>
+            <TextBox Text="{Binding Id, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
 
             <Label Content="סיסמא:"/>
             <TextBox Text="{Binding Password, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
-            
+
             <Button Content="אישור" Margin="0,10" Click="Login_Button_Click"/>
         </StackPanel>
 
@@ -31,4 +31,4 @@
             <Button Content="הכנס כמתנדב" Click="volunteerWindow_Button_Click"/>
         </StackPanel>
     </Grid>
-</Window> 
+</Window>

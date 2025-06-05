@@ -108,13 +108,13 @@ namespace Helpers
         /// <param name="filterByAttribute">CallType attribute</param>
         /// <param name="sortByAttributeObj">Attribute</param>
         /// <returns>filtered and sort list call</returns>
-        internal static IEnumerable<DO.Call> FilterAndSortCalls(IEnumerable<DO.Call> calls, BO.CallType? filterByAttribute,
+        internal static List<DO.Call> FilterAndSortCalls(List<DO.Call> calls, BO.CallType? filterByAttribute,
                                                                 object? sortByAttributeObj)
         {
             calls = filterByAttribute != null ?
-                  from c in calls
-                  where c.CallType == (DO.CallType)filterByAttribute
-                  select c
+                  (from c in calls
+                   where c.CallType == (DO.CallType)filterByAttribute
+                   select c).ToList()
                   :
                   calls;
 
@@ -122,13 +122,13 @@ namespace Helpers
             {
                 var propertySort = sortByAttributeObj?.GetType().GetProperty(sortByAttributeObj.ToString()!);
                 calls = propertySort != null ?
-                    from c in calls
+                    (from c in calls
                     orderby propertySort.GetValue(c, null)
-                    select c
+                    select c).ToList()
                     :
-                    from c in calls
+                    (from c in calls
                     orderby c.Id
-                    select c;
+                    select c).ToList();
 
             }
             return calls;

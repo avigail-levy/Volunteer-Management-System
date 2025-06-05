@@ -55,32 +55,34 @@
         <Label Content="כתובת קריאה:" Grid.Row="3" Grid.Column="0"/>
         <TextBox Grid.Row="3" Grid.Column="1"
               Text="{Binding CurrentCall.CallAddress, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
-
-        <!--<Label Content="קו רוחב:" Grid.Row="4" Grid.Column="0" Style="{StaticResource myLabelStyle}"/>
+        
+        <Label Content="זמן פתיחת קריאה:" Grid.Row="4" Grid.Column="0"/>
         <TextBlock Grid.Row="4" Grid.Column="1"
-              Style="{StaticResource myTextBlockStyle}"
-              Text="{Binding CurrentCall.Latitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
-
-        <Label Content="קו אורך:" Grid.Row="5" Grid.Column="0" Style="{StaticResource myLabelStyle}"/>
-        <TextBlock Grid.Row="5" Grid.Column="1"
-              Style="{StaticResource myTextBlockStyle}"
-              Text="{Binding CurrentCall.Longitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>-->
-
-        <Label Content="זמן פתיחת קריאה:" Grid.Row="6" Grid.Column="0"/>
-        <TextBlock Grid.Row="6" Grid.Column="1"
          Text="{Binding CurrentCall.OpeningTime, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
            />
-        <Label Content="זמן מקסימלי לסיום:" Grid.Row="7" Grid.Column="0"/>
-        <TextBox Grid.Row="7" Grid.Column="1"
+        <Label Content="זמן מקסימלי לסיום:" Grid.Row="5" Grid.Column="0"/>
+        <TextBox Grid.Row="5" Grid.Column="1"
          Text="{Binding CurrentCall.MaxTimeFinishCall, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
          />
         
-        <Label Content="סטטוס קריאה:" Grid.Row="8" Grid.Column="0"/>
-        <TextBlock Grid.Row="8" Grid.Column="1"
+        <Label Content="סטטוס קריאה:" Grid.Row="6" Grid.Column="0"/>
+        <TextBlock Grid.Row="6" Grid.Column="1"
         Text="{Binding CurrentCall.StatusCall, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
          />
 
-        <Button Grid.Row="9" Grid.Column="1" Height="50" Margin="50,20,200,20"
+        <Button Grid.Row="7" Grid.Column="1" Height="50" Margin="50,20,200,20"
              Content="{Binding ButtonText}" Click="btnAddUpdate_Click"/>
+        <TextBlock Text="הקצאות של קריאה:" Grid.Row="8"/>
+
+        <DataGrid Grid.Row="8" Grid.ColumnSpan="2" ItemsSource="{Binding Path=CurrentCall.CallAssignInList}" IsReadOnly ="True" AutoGenerateColumns="False"
+            EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding VolunteerId}" Header="Volunteer Id" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding EntryTimeForTreatment}" Header="Entry Time For Treatment" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding EndOfTreatmentTime}" Header="End Of Treatment Time" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding TypeOfTreatmentTermination}" Header="Type Of Treatment Termination" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

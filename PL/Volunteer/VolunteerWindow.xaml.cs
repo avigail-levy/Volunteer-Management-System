@@ -1,4 +1,5 @@
 ﻿using BO;
+using PL.Call;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -102,6 +103,12 @@ namespace PL.Volunteer
         {
             if (CurrentVolunteer != null && CurrentVolunteer.Id != 0)
                 s_bl.Volunteer.RemoveObserver(CurrentVolunteer.Id, RefreshVolunteer);
+        }
+
+        private void ChooseCall_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            new ChooseCallWindow(CurrentVolunteer!.Id).Show();
+
         }
     }
 }
