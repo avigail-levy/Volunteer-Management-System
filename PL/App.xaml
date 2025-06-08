@@ -13,5 +13,6 @@
         <!--<local:ConvertMax x:Key="ConvertMaxKey"/>-->
         <local:ConvertManagerToVisible x:Key="ConvertManagerToVisibleKey"/>
         <local:ConvertCallInProgressToVisible x:Key="ConvertCallInProgressToVisibleKey"/>
+        <local:ConvertCallInProgressToEnable x:Key="ConvertCallInProgressToEnableKey"/>
     </Application.Resources>
 </Application>

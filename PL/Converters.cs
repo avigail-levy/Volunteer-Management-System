@@ -27,7 +27,7 @@ namespace PL
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value?.ToString() == "Update"
-                ?Visibility.Visible
+                ? Visibility.Visible
                 :
                 Visibility.Hidden;
         }
@@ -67,11 +67,26 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is null?Visibility.Hidden:Visibility.Visible;
+
+            return value is  null ? Visibility.Hidden : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             => throw new NotImplementedException();
     }
 
+    public class ConvertCallInProgressToEnable : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is null;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            => throw new NotImplementedException();
+    }
 }
+
+
+
+

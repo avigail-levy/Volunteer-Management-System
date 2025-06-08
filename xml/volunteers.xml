@@ -208,6 +208,6 @@
     <Longitude>34.8343787</Longitude>
     <Password>avigail147852369</Password>
     <Address>שלוש השעות 30, בני ברק</Address>
-    <MaxDistanceForCall>10</MaxDistanceForCall>
+    <MaxDistanceForCall>1000</MaxDistanceForCall>
   </Volunteer>
 </ArrayOfVolunteer>

@@ -20,10 +20,7 @@ namespace PL.Call
     public partial class ChooseCallWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
-        public BO.CallInList? ChoosedCall { get; set; }
         public int currentId { get; set; }
-
         public BO.CallType CallType { get; set; } = BO.CallType.None;
         public IEnumerable<BO.OpenCallInList> OpenCallList
         {
@@ -53,56 +50,29 @@ namespace PL.Call
           => s_bl.Call.AddObserver(openCallListObserver);
 
         private void Window_Closed(object sender, EventArgs e)
-           => s_bl.Volunteer.RemoveObserver(openCallListObserver);
-
-        //private void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    new CallWindow().Show();
-        //}
-        //private void lsvCallsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        //{
-        //    var s = SelectedCall;
-        //    if (SelectedCall?.CallId != null)
-        //        new CallWindow(SelectedCall.CallId).Show();
-        //}
-        //private void delete_btnClick(object sender, RoutedEventArgs e)
-        //{
-        //    MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to delete the call", "its ok?",
-        //    MessageBoxButton.OK,
-        //    MessageBoxImage.Information);
-        //    if (messageResult == MessageBoxResult.OK)
-        //    {
-        //        var button = sender as Button;
-        //        BO.CallInList? call = button?.DataContext as BO.CallInList;
-        //        if (call?.Id != null)
-        //            try
-        //            {
-        //                s_bl.Call.DeleteCall(call.Id.Value);
-        //            }
-        //            catch (BO.BlCantDeleteException ex)
-        //            {
-        //                MessageBox.Show(ex.Message, "Error");
-        //            }
-        //    }
-        //}
+           => s_bl.Call.RemoveObserver(openCallListObserver);
 
         private void Choose_Button_Click(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            BO.OpenCallInList? call = button?.DataContext as BO.OpenCallInList;
-            if (call?.Id != null)
-                try
-                {
-                    s_bl.Call.ChooseTreatmentCall(currentId, call.Id);
-                }
-                catch (BO.BlDoesNotExistException ex)
-                {
-                    MessageBox.Show(ex.Message, "Error");
-                }
-        }
 
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+            MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to choose this call", "its ok?",
+          MessageBoxButton.OKCancel,
+          MessageBoxImage.Information);
+            if (messageResult == MessageBoxResult.OK)
+            {
+                var button = sender as Button;
+                BO.OpenCallInList? call = button?.DataContext as BO.OpenCallInList;
+                if (call?.Id != null)
+                    try
+                    {
+                        s_bl.Call.ChooseTreatmentCall(currentId, call.Id);
+                    }
+                    catch (BO.BlDoesNotExistException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error");
+                    }
+            }
+
 
         }
     }

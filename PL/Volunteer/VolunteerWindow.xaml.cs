@@ -23,7 +23,6 @@ namespace PL.Volunteer
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-
         public VolunteerWindow(int id = 0)
         {
             ButtonText = id == 0 ? "Add" : "Update";
@@ -108,7 +107,11 @@ namespace PL.Volunteer
         private void ChooseCall_Btn_Click(object sender, RoutedEventArgs e)
         {
             new ChooseCallWindow(CurrentVolunteer!.Id).Show();
+        }
 
+        private void callHistory_Btn_Click(object sender, RoutedEventArgs e)
+        {
+            new CallsHistory(CurrentVolunteer!.Id).Show();
         }
     }
 }
