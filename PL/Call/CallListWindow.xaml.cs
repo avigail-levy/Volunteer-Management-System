@@ -52,7 +52,7 @@ namespace PL.Call
           => s_bl.Call.AddObserver(callListObserver);
 
         private void Window_Closed(object sender, EventArgs e)
-           => s_bl.Volunteer.RemoveObserver(callListObserver);
+           => s_bl.Call.RemoveObserver(callListObserver);
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
