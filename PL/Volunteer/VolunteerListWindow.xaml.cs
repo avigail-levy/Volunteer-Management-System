@@ -23,7 +23,7 @@ namespace PL.Volunteer
         public BO.VolunteerInList? SelectedVolunteer { get; set; }
 
         public BO.CallType CallType { get; set; } = BO.CallType.None;
-
+        public BO.VolunteerInListAttributes Attribute { get; set; } = BO.VolunteerInListAttributes.Id;
         public IEnumerable<BO.VolunteerInList> VolunteerList
         {
             get { return (IEnumerable<BO.VolunteerInList>)GetValue(VolunteerListProperty); }
@@ -43,7 +43,7 @@ namespace PL.Volunteer
 
         private void queryVolunteerList()
          => VolunteerList = (CallType == BO.CallType.None) ?
-                s_bl?.Volunteer.GetVolunteersList(null,null, null)! : s_bl?.Volunteer.GetVolunteersList(BO.VolunteerInListAttributes.CallType, CallType, null)!;
+                s_bl?.Volunteer.GetVolunteersList(null,null, Attribute)! : s_bl?.Volunteer.GetVolunteersList(BO.VolunteerInListAttributes.CallType, CallType, Attribute)!;
 
         private void volunteerListObserver()
            => queryVolunteerList();
@@ -64,17 +64,23 @@ namespace PL.Volunteer
                 new VolunteerWindow(SelectedVolunteer.Id).Show();
 
         }
+        
         private void delete_btnClick(object sender, RoutedEventArgs e)
         {
             MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to delete the volunteer", "its ok?",
-            MessageBoxButton.OK,
+            MessageBoxButton.OKCancel,
             MessageBoxImage.Information);
             if (messageResult == MessageBoxResult.OK)
             {
-                var button = sender as Button;
-                BO.VolunteerInList? volunteer = button?.DataContext as BO.VolunteerInList;
-                if (volunteer != null)
-                    s_bl.Volunteer.DeleteVolunteer(volunteer.Id);
+                if (SelectedVolunteer != null)
+                    try
+                    {
+                        s_bl.Volunteer.DeleteVolunteer(SelectedVolunteer.Id);
+                    }
+                    catch (BO.BlCantDeleteException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Can't delete thr volunteer");
+                    }
             }
         }
     }

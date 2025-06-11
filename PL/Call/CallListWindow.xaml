@@ -21,13 +21,22 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0"/>
+            <StackPanel>
+            <Label Grid.Column="0" Content="סנן לפי:"/>
             <ComboBox SelectedValue="{Binding CallType, Mode=TwoWay}"
                   ItemsSource="{Binding Source= {StaticResource CallTypeCollectionKey}}"
                   SelectionChanged="filterBySelect_SelectionChanged"
-                  Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                  Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             </ComboBox>
-
+            </StackPanel>
+            <StackPanel>
+                <Label Grid.Column="1" Content="מיין לפי:"/>
+                <ComboBox SelectedValue="{Binding Attribute, Mode=TwoWay}"
+      ItemsSource="{Binding Source= {StaticResource CallInListAttributesCollectionKey}}"
+      SelectionChanged="filterBySelect_SelectionChanged"
+      Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                </ComboBox>
+            </StackPanel>
         </Grid>
         <DataGrid Grid.Row="1" ItemsSource="{Binding Path=CallList}" IsReadOnly ="True" AutoGenerateColumns="False"
      EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected"

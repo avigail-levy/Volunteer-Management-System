@@ -133,13 +133,13 @@ internal class CallImplementation : ICall
         var assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == idVolunteer);
         var closeCalls = (from c in calls
                          from a in assignments
-                         where c.Id == a.CallId && CallManager.GetStatusCall(c) == BO.StatusCall.Closed
-                         select c).ToList();
+                         where c.Id == a.CallId && a.TypeOfTreatmentTermination is not null
+                         select c).Distinct().ToList();
 
         closeCalls = CallManager.FilterAndSortCalls(closeCalls, filterByAttribute, sortByAttribute);
         return closeCalls.Select(c =>
         {
-            DO.Assignment assign = _dal.Assignment.Read(a => { return c.Id == a.CallId && a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.Handled; })!;
+            DO.Assignment assign = _dal.Assignment.Read(a => c.Id == a.CallId && a.TypeOfTreatmentTermination is not null) !;
             return new BO.ClosedCallInList
             {
                 Id = c.Id,

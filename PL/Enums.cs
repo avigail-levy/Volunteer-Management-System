@@ -35,7 +35,37 @@ namespace PL
 
         public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
-    internal class Enums
+
+
+    internal class VolunteerInListAttributesCollection : IEnumerable
     {
+        static readonly IEnumerable<BO.VolunteerInListAttributes> s_enums =
+        (Enum.GetValues(typeof(BO.VolunteerInListAttributes)) as IEnumerable<BO.VolunteerInListAttributes>)!;
+
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    }
+
+    internal class OpenCallInListAttributesCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.OpenCallInListAttributes> s_enums =
+        (Enum.GetValues(typeof(BO.OpenCallInListAttributes)) as IEnumerable<BO.OpenCallInListAttributes>)!;
+
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    }
+
+    internal class ClosedCallInListAttributesCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.ClosedCallInListAttributes> s_enums =
+        (Enum.GetValues(typeof(BO.ClosedCallInListAttributes)) as IEnumerable<BO.ClosedCallInListAttributes>)!;
+
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
+    }
+
+    internal class CallInListAttributesCollection : IEnumerable
+    {
+        static readonly IEnumerable<BO.CallInListAttributes> s_enums =
+        (Enum.GetValues(typeof(BO.CallInListAttributes)) as IEnumerable<BO.CallInListAttributes>)!;
+
+        public IEnumerator GetEnumerator() => s_enums.GetEnumerator();
     }
 }

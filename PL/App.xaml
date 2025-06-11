@@ -14,5 +14,9 @@
         <local:ConvertManagerToVisible x:Key="ConvertManagerToVisibleKey"/>
         <local:ConvertCallInProgressToVisible x:Key="ConvertCallInProgressToVisibleKey"/>
         <local:ConvertCallInProgressToEnable x:Key="ConvertCallInProgressToEnableKey"/>
+        <local:VolunteerInListAttributesCollection x:key="VolunteerInListAttributesCollectionKey"/>
+        <local:ClosedCallInListAttributesCollection x:key="ClosedCallInListAttributesCollectionKey"/>
+        <local:OpenCallInListAttributesCollection x:key="OpenCallInListAttributesCollectionKey"/>
+        <local:CallInListAttributesCollection x:key="CallInListAttributesCollectionKey"/>
     </Application.Resources>
 </Application>

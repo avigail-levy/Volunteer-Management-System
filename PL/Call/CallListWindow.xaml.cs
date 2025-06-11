@@ -25,6 +25,8 @@ namespace PL.Call
         public BO.CallInList? SelectedCall { get; set; }
 
         public BO.CallType CallType { get; set; } = BO.CallType.None;
+        public BO.CallInListAttributes Attribute { get; set; } = BO.CallInListAttributes.Id;
+
         public IEnumerable<BO.CallInList> CallList
         {
             get { return (IEnumerable<BO.CallInList>)GetValue(CallListProperty); }
@@ -43,7 +45,7 @@ namespace PL.Call
 
         private void queryCallList()
          => CallList = (CallType == BO.CallType.None) ?
-                s_bl?.Call.GetCallsList(null, null, null)! : s_bl?.Call.GetCallsList(BO.CallInListAttributes.CallType, CallType, null)!;
+                s_bl?.Call.GetCallsList(null, null, Attribute)! : s_bl?.Call.GetCallsList(BO.CallInListAttributes.CallType, CallType, Attribute)!;
 
         private void callListObserver()
            => queryCallList();
@@ -67,20 +69,18 @@ namespace PL.Call
         private void delete_btnClick(object sender, RoutedEventArgs e)
         {
             MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to delete the call", "its ok?",
-            MessageBoxButton.OK,
+            MessageBoxButton.OKCancel,
             MessageBoxImage.Information);
             if (messageResult == MessageBoxResult.OK)
             {
-                var button = sender as Button;
-                BO.CallInList? call = button?.DataContext as BO.CallInList;
-                if (call?.Id != null)
+                if (SelectedCall != null)
                     try
                     {
-                        s_bl.Call.DeleteCall(call.Id.Value);
+                        s_bl.Call.DeleteCall(SelectedCall.CallId);
                     }
-                    catch(BO.BlCantDeleteException ex)
+                    catch (BO.BlCantDeleteException ex)
                     {
-                        MessageBox.Show(ex.Message, "Error");
+                        MessageBox.Show(ex.Message, "Can't delete thr call");
                     }
             }
         }

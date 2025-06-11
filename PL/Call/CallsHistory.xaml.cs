@@ -22,14 +22,15 @@ namespace PL.Call
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         public int CurrentId { get; set; }
         public BO.CallType CallType { get; set; } = BO.CallType.None;
-        public IEnumerable<BO.ClosedCallInList> ClosedCallList
+        public BO.ClosedCallInListAttributes Atrribute { get; set; } = BO.ClosedCallInListAttributes.Id;
+        public IEnumerable<BO.ClosedCallInList> ClosedCallsList
         {
-            get { return (IEnumerable<BO.ClosedCallInList>)GetValue(ClosedCallListProperty); }
-            set { SetValue(ClosedCallListProperty, value); }
+            get { return (IEnumerable<BO.ClosedCallInList>)GetValue(ClosedCallsListProperty); }
+            set { SetValue(ClosedCallsListProperty, value); }
         }
 
-        public static readonly DependencyProperty ClosedCallListProperty =
-            DependencyProperty.Register("ClosedCallList", typeof(IEnumerable<BO.ClosedCallInList>), typeof(CallsHistory), new PropertyMetadata(null));
+        public static readonly DependencyProperty ClosedCallsListProperty =
+            DependencyProperty.Register("ClosedCallsList", typeof(IEnumerable<BO.ClosedCallInList>), typeof(CallsHistory), new PropertyMetadata(null));
 
         public CallsHistory(int id)
         {
@@ -40,8 +41,8 @@ namespace PL.Call
            => queryClosedCallList();
 
         private void queryClosedCallList()
-         => ClosedCallList = (CallType == BO.CallType.None) ?
-                s_bl?.Call.ClosedCallsListHandledByVolunteer(CurrentId, null, null)! : s_bl?.Call.ClosedCallsListHandledByVolunteer(CurrentId, CallType, null)!;
+         => ClosedCallsList = (CallType == BO.CallType.None) ?
+                s_bl?.Call.ClosedCallsListHandledByVolunteer(CurrentId, null, Atrribute)! : s_bl?.Call.ClosedCallsListHandledByVolunteer(CurrentId, CallType, Atrribute)!;
 
         private void ClosedCallListObserver()
            => queryClosedCallList();
@@ -51,7 +52,6 @@ namespace PL.Call
 
         private void Window_Closed(object sender, EventArgs e)
            => s_bl.Call.RemoveObserver(ClosedCallListObserver);
-
 
     }
 }

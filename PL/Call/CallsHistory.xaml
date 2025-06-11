@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Loaded="Window_Loaded"
         Closed="Window_Closed"
-        Title="CallsHistory" Height="450" Width="800">
+        Title="CallsHistory" Height="450" Width="800"
+         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
@@ -19,15 +20,24 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0"/>
-            <ComboBox SelectedValue="{Binding CallType, Mode=TwoWay}"
+            <StackPanel>
+                <Label Grid.Column="0" Content="סנן לפי:"/>
+                <ComboBox SelectedValue="{Binding CallType, Mode=TwoWay}"
          ItemsSource="{Binding Source= {StaticResource CallTypeCollectionKey}}"
          SelectionChanged="filterBySelect_SelectionChanged"
          Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            </ComboBox>
-
+                </ComboBox>
+            </StackPanel>
+            <StackPanel>
+                <Label Grid.Column="0" Content="מיין לפי:"/>
+                <ComboBox SelectedValue="{Binding CallType, Mode=TwoWay}"
+ItemsSource="{Binding Source= {StaticResource ClosedCallInListAttributesCollectionKey}}"
+SelectionChanged="filterBySelect_SelectionChanged"
+Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                </ComboBox>
+            </StackPanel>
         </Grid>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Path=OpenCallList}" IsReadOnly ="True" AutoGenerateColumns="False"
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Path=ClosedCallsList}" IsReadOnly ="True" AutoGenerateColumns="False"
     EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected"
     SelectedItem="{Binding SelectedCall}">
             <DataGrid.Columns>

@@ -22,6 +22,8 @@ namespace PL.Call
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         public int currentId { get; set; }
         public BO.CallType CallType { get; set; } = BO.CallType.None;
+        public BO.OpenCallInListAttributes Attribute { get; set; } = BO.OpenCallInListAttributes.Id;
+
         public IEnumerable<BO.OpenCallInList> OpenCallList
         {
             get { return (IEnumerable<BO.OpenCallInList>)GetValue(OpenCallListProperty); }
@@ -41,7 +43,7 @@ namespace PL.Call
 
         private void queryOpenCallList()
          => OpenCallList = (CallType == BO.CallType.None) ?
-                s_bl?.Call.OpenCallsListSelectedByVolunteer(currentId, null, null)! : s_bl?.Call.OpenCallsListSelectedByVolunteer(currentId, CallType, null)!;
+                s_bl?.Call.OpenCallsListSelectedByVolunteer(currentId, null, Attribute)! : s_bl?.Call.OpenCallsListSelectedByVolunteer(currentId, CallType, Attribute)!;
 
         private void openCallListObserver()
            => queryOpenCallList();

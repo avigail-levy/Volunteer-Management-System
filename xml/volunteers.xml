@@ -57,20 +57,6 @@
     <MaxDistanceForCall>12.449506810197464</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>344147452</Id>
-    <Name>Dina Klein</Name>
-    <Phone>0504160838</Phone>
-    <Email>Dina Klein@gmail.com</Email>
-    <Role>Volunteer</Role>
-    <Active>true</Active>
-    <DistanceType>walking</DistanceType>
-    <Latitude>32.017102</Latitude>
-    <Longitude>34.747173</Longitude>
-    <Password>Dina Klein0504160838</Password>
-    <Address>Ben Gurion Boulevard 25, Bat Yam</Address>
-    <MaxDistanceForCall>17.79219814971036</MaxDistanceForCall>
-  </Volunteer>
-  <Volunteer>
     <Id>383118703</Id>
     <Name>Shira Israelof</Name>
     <Phone>0504156891</Phone>

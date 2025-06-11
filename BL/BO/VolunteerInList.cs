@@ -3,7 +3,7 @@ using Helpers;
 public class VolunteerInList
 {
     /// <summary>
-    /// ID: automatic
+    /// ID: volunteer id
     /// Name: name of volunteer
     /// Active: if volunteer is active
     /// TotalCallsHandledByVolunteer: Total calls handled by volunteer
