@@ -108,27 +108,41 @@ namespace Helpers
         /// <param name="filterByAttribute">CallType attribute</param>
         /// <param name="sortByAttributeObj">Attribute</param>
         /// <returns>filtered and sort list call</returns>
-        internal static List<DO.Call> FilterAndSortCalls(List<DO.Call> calls, BO.CallType? filterByAttribute,
+        internal static IEnumerable<T> FilterAndSortCalls<T>(IEnumerable<T> calls, BO.CallType? filterByAttribute,
                                                                 object? sortByAttributeObj)
         {
-            calls = filterByAttribute != null ?
-                  (from c in calls
-                   where c.CallType == (DO.CallType)filterByAttribute
-                   select c).ToList()
-                  :
-                  calls;
+            //calls = filterByAttribute != null ?
+            //      (from c in calls
+            //       where c.CallType == (DO.CallType)filterByAttribute
+            //       select c).ToList()
+            //      :
+            //      calls;
+            if (filterByAttribute != null)
+            {
+
+                var callTypeProperty = filterByAttribute != null ? typeof(T).GetProperty(filterByAttribute.ToString()!) : null;
+
+                if (callTypeProperty != null)
+                {
+                    calls = calls
+                        .Where(item => callTypeProperty.GetValue(item)?.Equals((DO.CallType)filterByAttribute!) == true)
+                        .ToList();
+                }
+            }
 
             if (sortByAttributeObj != null)
             {
-                var propertySort = sortByAttributeObj?.GetType().GetProperty(sortByAttributeObj.ToString()!);
+                var propertySort = sortByAttributeObj != null ? typeof(T).GetProperty(sortByAttributeObj.ToString()!) : null;
+
+                //var propertySort = sortByAttributeObj?.GetType().GetProperty(sortByAttributeObj.ToString()!);
                 calls = propertySort != null ?
                     (from c in calls
                     orderby propertySort.GetValue(c, null)
                     select c).ToList()
                     :
                     (from c in calls
-                    orderby c.Id
-                    select c).ToList();
+                     orderby typeof(T).GetProperty("Id")!.GetValue(c, null)
+                     select c).ToList();
 
             }
             return calls;

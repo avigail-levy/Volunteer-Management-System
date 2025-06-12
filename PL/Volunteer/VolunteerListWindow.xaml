@@ -19,24 +19,23 @@
         </Grid.RowDefinitions>
         <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="8*"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel>
-                <Label Grid.Column="0" Content="סנן לפי סוג קריאה:"/>
+            <StackPanel Grid.Column="0" >
+                <Label Content="סנן לפי סוג קריאה:"/>
                 <ComboBox SelectedValue="{Binding CallType, Mode=TwoWay}"
                       ItemsSource="{Binding Source= {StaticResource CallTypeCollectionKey}}"
                       SelectionChanged="filterBySelect_SelectionChanged"
-                      Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 </ComboBox>
             </StackPanel>
-            <StackPanel>
-                <Label Grid.Column="1" Content="מיין לפי:"/>
+            <StackPanel Grid.Column="1">
+                <Label  Content="מיין לפי:"/>
                 <ComboBox SelectedValue="{Binding Attribute, Mode=TwoWay}"
            ItemsSource="{Binding Source= {StaticResource VolunteerInListAttributesCollectionKey}}"
            SelectionChanged="filterBySelect_SelectionChanged"
-           Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 </ComboBox>
             </StackPanel>
         </Grid>

@@ -22,7 +22,7 @@ namespace PL.Call
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         public int CurrentId { get; set; }
         public BO.CallType CallType { get; set; } = BO.CallType.None;
-        public BO.ClosedCallInListAttributes Atrribute { get; set; } = BO.ClosedCallInListAttributes.Id;
+        public BO.ClosedCallInListAttributes Attribute { get; set; } = BO.ClosedCallInListAttributes.Id;
         public IEnumerable<BO.ClosedCallInList> ClosedCallsList
         {
             get { return (IEnumerable<BO.ClosedCallInList>)GetValue(ClosedCallsListProperty); }
@@ -42,7 +42,7 @@ namespace PL.Call
 
         private void queryClosedCallList()
          => ClosedCallsList = (CallType == BO.CallType.None) ?
-                s_bl?.Call.ClosedCallsListHandledByVolunteer(CurrentId, null, Atrribute)! : s_bl?.Call.ClosedCallsListHandledByVolunteer(CurrentId, CallType, Atrribute)!;
+                s_bl?.Call.ClosedCallsListHandledByVolunteer(CurrentId, null, Attribute)! : s_bl?.Call.ClosedCallsListHandledByVolunteer(CurrentId, CallType, Attribute)!;
 
         private void ClosedCallListObserver()
            => queryClosedCallList();

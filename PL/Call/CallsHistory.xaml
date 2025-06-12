@@ -30,7 +30,7 @@
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <Label  Content="מיין לפי:"/>
-                <ComboBox SelectedValue="{Binding CallType, Mode=TwoWay}"
+                <ComboBox SelectedValue="{Binding Attribute, Mode=TwoWay}"
 ItemsSource="{Binding Source= {StaticResource ClosedCallInListAttributesCollectionKey}}"
 SelectionChanged="filterBySelect_SelectionChanged"
  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

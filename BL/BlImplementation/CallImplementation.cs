@@ -2,6 +2,7 @@
 using Helpers;
 using System.Text;
 using System;
+using BO;
 namespace BlImplementation;
 
 internal class CallImplementation : ICall
@@ -106,10 +107,7 @@ internal class CallImplementation : ICall
                         CallManager.GetStatusCall(c) == BO.StatusCall.OpenAtRisk && 
                         vol.MaxDistanceForCall>= VolunteerManager.CalcDistance(vol.Address, c.CallAddress)
                         select c).ToList();
-
-        openCalls = CallManager.FilterAndSortCalls(openCalls, filterByAttribute, sortByAttribute);
-        
-        return openCalls.Select(c => new BO.OpenCallInList
+        var openCallsList= openCalls.Select(c => new BO.OpenCallInList
         {
             Id = c.Id,
             CallType = (BO.CallType)c.CallType,
@@ -119,6 +117,9 @@ internal class CallImplementation : ICall
             MaxTimeFinishCall = c.MaxTimeFinishCall,
             CallingDistanceFromTreatingVolunteer = VolunteerManager.CalcDistance(vol.Address, c.CallAddress)
         });
+        openCallsList = CallManager.FilterAndSortCalls(openCallsList, filterByAttribute, sortByAttribute);
+
+        return openCallsList;
     }
     /// <summary>
     /// Sorts and filters the calls by ID and by the attributes received as parameters.
@@ -127,19 +128,19 @@ internal class CallImplementation : ICall
     /// <param name="filterByAttribute">call filtering attribute</param>
     /// <param name="sortByAttribute">call sorting attribute</param>
     /// <returns>A sorted and filtered list of the volunteer</returns>
-    public IEnumerable<BO.ClosedCallInList> ClosedCallsListHandledByVolunteer(int idVolunteer, BO.CallType? filterByAttribute = null, BO.ClosedCallInListAttributes? sortByAttribute = null)
+    public IEnumerable<BO.ClosedCallInList> ClosedCallsListHandledByVolunteer(int idVolunteer,  
+        BO.CallType? filterByAttribute = null, BO.ClosedCallInListAttributes? sortByAttribute = null)
     {
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
         var assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == idVolunteer);
+       
         var closeCalls = (from c in calls
                          from a in assignments
                          where c.Id == a.CallId && a.TypeOfTreatmentTermination is not null
                          select c).Distinct().ToList();
-
-        closeCalls = CallManager.FilterAndSortCalls(closeCalls, filterByAttribute, sortByAttribute);
-        return closeCalls.Select(c =>
+        var closeCallsInlist= closeCalls.Select(c =>
         {
-            DO.Assignment assign = _dal.Assignment.Read(a => c.Id == a.CallId && a.TypeOfTreatmentTermination is not null) !;
+            DO.Assignment assign = _dal.Assignment.Read(a => c.Id == a.CallId && a.TypeOfTreatmentTermination is not null)!;
             return new BO.ClosedCallInList
             {
                 Id = c.Id,
@@ -151,6 +152,8 @@ internal class CallImplementation : ICall
                 TypeOfTreatmentTermination = (BO.TypeOfTreatmentTermination)assign.TypeOfTreatmentTermination!
             };
         });
+        closeCallsInlist = CallManager.FilterAndSortCalls<ClosedCallInList>(closeCallsInlist, filterByAttribute, sortByAttribute);
+        return closeCallsInlist;
     }
     /// <summary>
     /// delete call
