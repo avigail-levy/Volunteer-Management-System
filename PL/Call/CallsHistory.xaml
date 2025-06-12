@@ -20,20 +20,20 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel>
-                <Label Grid.Column="0" Content="סנן לפי:"/>
+            <StackPanel Grid.Column="0">
+                <Label  Content="סנן לפי:"/>
                 <ComboBox SelectedValue="{Binding CallType, Mode=TwoWay}"
          ItemsSource="{Binding Source= {StaticResource CallTypeCollectionKey}}"
          SelectionChanged="filterBySelect_SelectionChanged"
-         Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+         HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 </ComboBox>
             </StackPanel>
-            <StackPanel>
-                <Label Grid.Column="0" Content="מיין לפי:"/>
+            <StackPanel Grid.Column="1">
+                <Label  Content="מיין לפי:"/>
                 <ComboBox SelectedValue="{Binding CallType, Mode=TwoWay}"
 ItemsSource="{Binding Source= {StaticResource ClosedCallInListAttributesCollectionKey}}"
 SelectionChanged="filterBySelect_SelectionChanged"
-Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+ HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 </ComboBox>
             </StackPanel>
         </Grid>
