@@ -108,7 +108,7 @@ namespace Helpers
         /// <param name="filterByAttribute">CallType attribute</param>
         /// <param name="sortByAttributeObj">Attribute</param>
         /// <returns>filtered and sort list call</returns>
-        internal static IEnumerable<T> FilterAndSortCalls<T>(IEnumerable<T> calls, BO.CallType? filterByAttribute,
+        internal static IEnumerable<T> FilterAndSortCalls<T>(IEnumerable<T> calls, BO.CallType? filterValue,
                                                                 object? sortByAttributeObj)
         {
             //calls = filterByAttribute != null ?
@@ -117,17 +117,14 @@ namespace Helpers
             //       select c).ToList()
             //      :
             //      calls;
-            if (filterByAttribute != null)
+            if (filterValue != null)
             {
 
-                var callTypeProperty = filterByAttribute != null ? typeof(T).GetProperty(filterByAttribute.ToString()!) : null;
+                var callTypeProperty = typeof(T).GetProperty("CallType") ;
 
-                if (callTypeProperty != null)
-                {
                     calls = calls
-                        .Where(item => callTypeProperty.GetValue(item)?.Equals((DO.CallType)filterByAttribute!) == true)
+                        .Where(item => callTypeProperty!.GetValue(item)?.Equals((BO.CallType)filterValue!) == true)
                         .ToList();
-                }
             }
 
             if (sortByAttributeObj != null)
