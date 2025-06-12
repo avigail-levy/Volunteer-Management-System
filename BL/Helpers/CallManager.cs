@@ -142,7 +142,7 @@ namespace Helpers
                     :
                     (from c in calls
                      orderby typeof(T).GetProperty("Id")!.GetValue(c, null)
-                     select c).ToList();
+                     select c).ToList() ;
 
             }
             return calls;
