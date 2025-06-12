@@ -111,7 +111,7 @@ namespace PL.Volunteer
 
         private void callHistory_Btn_Click(object sender, RoutedEventArgs e)
         {
-            new CallsHistory(CurrentVolunteer!.Id).Show();
+            new CallsHistory(CurrentVolunteer!.Id). Show();
         }
     }
 }
