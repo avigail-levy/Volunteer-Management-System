@@ -111,12 +111,6 @@ namespace Helpers
         internal static IEnumerable<T> FilterAndSortCalls<T>(IEnumerable<T> calls, BO.CallType? filterValue,
                                                                 object? sortByAttributeObj)
         {
-            //calls = filterByAttribute != null ?
-            //      (from c in calls
-            //       where c.CallType == (DO.CallType)filterByAttribute
-            //       select c).ToList()
-            //      :
-            //      calls;
             if (filterValue != null)
             {
 

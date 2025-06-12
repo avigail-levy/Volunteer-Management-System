@@ -26,6 +26,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <!--Date Time Grid-->
         <Grid Grid.Column="1">
@@ -60,6 +61,11 @@
             <Button Content="Handle Volunteer"  Width="200" Margin="10" Style="{StaticResource myButtonStyle}" Click="btnViewVolunteerList_Click"/>
             <!--view call list-->
             <Button Content="Handle Call" Width="200" Margin="10"  Style="{StaticResource myButtonStyle}" Click="btnViewCallList_Click"/>
+        </StackPanel>
+        <StackPanel>
+            <Button/>
+            <Button/>
+            <Button/>
         </StackPanel>
     </Grid>
 </Window>
