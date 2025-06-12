@@ -63,9 +63,16 @@
             <Button Content="Handle Call" Width="200" Margin="10"  Style="{StaticResource myButtonStyle}" Click="btnViewCallList_Click"/>
         </StackPanel>
         <StackPanel>
-            <Button/>
-            <Button/>
-            <Button/>
+            <ItemsControl ItemsSource="{Binding MyProperty}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="{Binding StatusCallCollectionKey}" />
+                            <TextBlock Text="{Binding MyProperty}"  />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
     </Grid>
 </Window>

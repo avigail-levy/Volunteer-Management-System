@@ -1,5 +1,6 @@
 ﻿using PL.Call;
 using PL.Volunteer;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,11 +34,25 @@ namespace PL
             set { SetValue(CurrentRiskRangeProperty, value); }
         }
         public static readonly DependencyProperty CurrentRiskRangeProperty =
-       DependencyProperty.Register("CurrentRiskRange", typeof(TimeSpan), typeof(MainWindow));
+        DependencyProperty.Register("CurrentRiskRange", typeof(TimeSpan), typeof(MainWindow));
+        public ObservableCollection<Tuple<string, int>> CallsByStatus { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
+            int[] quantities = s_bl.Call.GetCallQuantitiesByStatus();
+
+            var enumNames = Enum.GetNames(typeof(BO.StatusCall));
+            CallsByStatus = new ObservableCollection<Tuple<string, int>>();
+
+            for (int i = 0; i < enumNames.Length; i++)
+            {
+                string statusName = enumNames[i];
+                int quantity = quantities[i];
+                CallsByStatus.Add(new Tuple<string, int>(statusName, quantity));
+            }
+
+            DataContext = this;
         }
 
         private void clockObserver()

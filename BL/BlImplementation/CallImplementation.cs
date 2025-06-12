@@ -227,9 +227,7 @@ internal class CallImplementation : ICall
             .ToDictionary(group => (int)group.Key, group => group.Count());
 
         callCounts = callCounts
-    .Select((value, index) => callsByStatus.ContainsKey(index) ? callsByStatus[index] : value)
-    .ToArray();
-
+            .Select((value, index) => callsByStatus.ContainsKey(index) ? callsByStatus[index] : value).ToArray();
         return callCounts;
     }
     /// <summary>
