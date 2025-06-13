@@ -21,7 +21,8 @@ namespace PL.Call
     public partial class CallListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-
+         
+        public int IdRequest {  get;  }
         public BO.CallInList? SelectedCall { get; set; }
 
         public BO.CallType CallType { get; set; } = BO.CallType.None;
@@ -36,8 +37,9 @@ namespace PL.Call
         public static readonly DependencyProperty CallListProperty =
             DependencyProperty.Register("CallList", typeof(IEnumerable<BO.CallInList>), typeof(CallListWindow), new PropertyMetadata(null));
 
-        public CallListWindow()
+        public CallListWindow(int id)
         {
+            IdRequest=id;
             InitializeComponent();
         }
         private void filterBySelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -82,6 +84,37 @@ namespace PL.Call
                     {
                         MessageBox.Show(ex.Message, "Can't delete thr call");
                     }
+            }
+        }
+
+        private void CancelTreatCall_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to cancel the assignment of this call", "its ok?",
+           MessageBoxButton.OKCancel,
+           MessageBoxImage.Information);
+            if (messageResult == MessageBoxResult.OK)
+            {
+                if (SelectedCall.Id != null)
+                    try
+                    {
+                        s_bl.Call.UpdateCancelTreatmentOnCall(IdRequest, SelectedCall.Id.Value);
+                    }
+                    catch (BO.BlDoesNotExistException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Can't cancel the assignment");
+                    }
+                    catch (BO.BlUnauthorizedException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Can't cancel the assignment");
+                    }
+                    catch (BO.BlCantUpdateException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Can't cancel the assignment");
+                    }
+                else
+                {
+                    MessageBox.Show("this call is open now");
+                }
             }
         }
     }

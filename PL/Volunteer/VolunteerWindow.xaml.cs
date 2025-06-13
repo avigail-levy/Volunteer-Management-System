@@ -113,5 +113,68 @@ namespace PL.Volunteer
         {
             new CallsHistory(CurrentVolunteer!.Id). Show();
         }
+
+        private void cancelTreatmentBtn_click(object sender, RoutedEventArgs e)
+        {
+               MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to cancel the assignment of this call", "its ok?",
+               MessageBoxButton.OKCancel,
+               MessageBoxImage.Information);
+                if (messageResult == MessageBoxResult.OK)
+                {
+                    if (CurrentVolunteer.CallingVolunteerTherapy.Id != null)
+                        try
+                        {
+                            s_bl.Call.UpdateCancelTreatmentOnCall(CurrentVolunteer.Id, CurrentVolunteer.CallingVolunteerTherapy.Id);
+                        }
+                        catch (BO.BlDoesNotExistException ex)
+                        {
+                            MessageBox.Show(ex.Message, "Can't cancel the assignment");
+                        }
+                        catch (BO.BlUnauthorizedException ex)
+                        {
+                            MessageBox.Show(ex.Message, "Can't cancel the assignment");
+                        }
+                        catch (BO.BlCantUpdateException ex)
+                        {
+                            MessageBox.Show(ex.Message, "Can't cancel the assignment");
+                        }
+                    else
+                    {
+                        MessageBox.Show("you dony have a call now");
+                    }
+                }
+            }
+
+        private void endTreatmentBtn_click(object sender, RoutedEventArgs e)
+        {
+
+            MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to finish treatment at this call", "its ok?",
+            MessageBoxButton.OKCancel,
+            MessageBoxImage.Information);
+            if (messageResult == MessageBoxResult.OK)
+            {
+                if (CurrentVolunteer.CallingVolunteerTherapy.Id != null)
+                    try
+                    {
+                        s_bl.Call.UpdateEndTreatmentOnCall(CurrentVolunteer.Id, CurrentVolunteer.CallingVolunteerTherapy.Id);
+                    }
+                    catch (BO.BlDoesNotExistException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Can't update finish this call treatment");
+                    }
+                    catch (BO.BlCantUpdateException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Can't update finish this call treatment");
+                    }
+                    catch (BO.BlUnauthorizedException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Can't update finish this call treatment");
+                    }
+                else
+                {
+                    MessageBox.Show("you d'ont have a call now");
+                }
+            }
+        }
     }
 }

@@ -20,6 +20,7 @@ namespace PL
     public partial class MainWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        public int Id { get; }
         public DateTime CurrentTime
         {
             get { return (DateTime)GetValue(CurrentTimeProperty); }
@@ -37,8 +38,9 @@ namespace PL
         DependencyProperty.Register("CurrentRiskRange", typeof(TimeSpan), typeof(MainWindow));
         public ObservableCollection<Tuple<string, int>> CallsByStatus { get; set; }
 
-        public MainWindow()
+        public MainWindow(int id)
         {
+            Id= id;
             InitializeComponent();
             int[] quantities = s_bl.Call.GetCallQuantitiesByStatus();
 
@@ -109,7 +111,7 @@ namespace PL
         }
         private void btnViewCallList_Click(object sender, RoutedEventArgs e)
         {
-            new CallListWindow().Show();
+            new CallListWindow(Id).Show();
         }
 
         private void resetDB_Click(object sender, RoutedEventArgs e)

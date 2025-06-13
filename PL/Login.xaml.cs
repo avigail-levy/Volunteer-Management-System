@@ -69,7 +69,7 @@ namespace PL
 
         private void mainWindow_Button_Click(object sender, RoutedEventArgs e)
         {
-            new MainWindow().Show();
+            new MainWindow(Id).Show();
             Close();
         }
 
