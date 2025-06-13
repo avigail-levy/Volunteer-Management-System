@@ -117,7 +117,7 @@ namespace Helpers
                throw new BO.BlInvalidValueException("the value of volunteer address can not be null");
             double []? volunteerLonLat = CalcCoordinates(addressVol);
             double[]? callLonLat = CalcCoordinates(addressCall);
-            if (volunteerLonLat?[0] == null || volunteerLonLat?[1] == null) 
+            if (volunteerLonLat?[0] == null || volunteerLonLat?[1] == null || callLonLat?[1]==null || callLonLat?[0]==null) 
                 return 0;
             const double R = 6371; // רדיוס כדור הארץ בק"מ
             double dLat = DegreesToRadians(volunteerLonLat[0] - callLonLat[0]);

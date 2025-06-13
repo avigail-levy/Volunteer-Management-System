@@ -196,4 +196,18 @@
     <Address>שלוש השעות 30, בני ברק</Address>
     <MaxDistanceForCall>1000</MaxDistanceForCall>
   </Volunteer>
+  <Volunteer>
+    <Id>325383529</Id>
+    <Name>חיה</Name>
+    <Phone>0541236598</Phone>
+    <Email>c@gmail.com</Email>
+    <Role>Volunteer</Role>
+    <Active>false</Active>
+    <DistanceType>walking</DistanceType>
+    <Latitude>32.0988842</Latitude>
+    <Longitude>34.8343787</Longitude>
+    <Password>12345678</Password>
+    <Address>שלוש השעות 30, בני ברק</Address>
+	 <MaxDistanceForCall>1000</MaxDistanceForCall>
+  </Volunteer>
 </ArrayOfVolunteer>
