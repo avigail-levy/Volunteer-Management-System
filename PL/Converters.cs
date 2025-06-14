@@ -85,6 +85,21 @@ namespace PL
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             => throw new NotImplementedException();
     }
+
+    public class MultiValueToStringConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            BO.Volunteer? connect = (BO.Volunteer)values[0] ?? null;
+            BO.Volunteer? updated =(BO.Volunteer) values[1]??null;
+            return connect?.Role == BO.Role.Volunteer ? false : true;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
 
 

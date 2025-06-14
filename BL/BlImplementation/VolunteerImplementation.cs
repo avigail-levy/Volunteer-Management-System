@@ -78,12 +78,6 @@ internal class VolunteerImplementation : IVolunteer
             throw new BO.BlCantDeleteException("It is not possible to delete the volunteer", ex);
         }
     }
-    /// <summary>
-    /// Sorts and filters the collection according to the request received.
-    /// </summary>
-    /// <param name="active">A Boolean value that will filter the list by active and inactive volunteers.</param>
-    /// <param name="sortByAttribute">A field in the "Volunteer on List" entity, by which the list is sorted</param>
-    /// <returns>Sorted and filtered threshold of logical data entity "Volunteer in list"</returns>
   
     /// <summary>
     /// Please refer to the data layer (Read) to obtain details about the volunteer and the read he/she is handling (if any).

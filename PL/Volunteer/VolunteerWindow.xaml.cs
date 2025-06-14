@@ -26,6 +26,7 @@ namespace PL.Volunteer
         public VolunteerWindow(int id = 0)
         {
             ButtonText = id == 0 ? "Add" : "Update";
+            ConnectVolunteer=s_bl.Volunteer.GetVolunteerDetails(id);
             InitializeComponent();
 
             try
@@ -46,6 +47,7 @@ namespace PL.Volunteer
             get { return (BO.Volunteer?)GetValue(CurrentVolunteerProperty); }
             set { SetValue(CurrentVolunteerProperty, value); }
         }
+        public BO.Volunteer? ConnectVolunteer { get; set; }
 
         public static readonly DependencyProperty CurrentVolunteerProperty =
             DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerWindow), new PropertyMetadata(null));
