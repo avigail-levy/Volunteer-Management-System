@@ -14,7 +14,7 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value?.ToString() == "Update";
+            return value?.ToString() ==  "Update";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
