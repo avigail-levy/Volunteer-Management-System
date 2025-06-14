@@ -172,6 +172,10 @@ namespace PL.Volunteer
                     {
                         MessageBox.Show(ex.Message, "Can't update finish this call treatment");
                     }
+                catch(BO.BlInvalidValueException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Can't update with invalid value");
+                    }
                 else
                 {
                     MessageBox.Show("you d'ont have a call now");
