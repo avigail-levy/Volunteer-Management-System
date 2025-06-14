@@ -62,17 +62,33 @@
             <!--view call list-->
             <Button Content="Handle Call" Width="200" Margin="10"  Style="{StaticResource myButtonStyle}" Click="btnViewCallList_Click"/>
         </StackPanel>
-        <StackPanel>
-            <ItemsControl ItemsSource="{Binding MyProperty}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="5">
-                            <TextBlock Text="{Binding StatusCallCollectionKey}" />
-                            <TextBlock Text="{Binding MyProperty}"  />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+        <StackPanel Grid.Row="1" Grid.Column="2">
+            <Label Content="call by status quantities:" />
+            <StackPanel Orientation="Horizontal">
+                <Button Tag="0" Content="Open" Click="showCallsByStatus_Click"/>
+                <TextBlock Text="{Binding CallByStatus[0]}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Tag="1" Content="In Treatment" Click="showCallsByStatus_Click"/>
+                <TextBlock Text="{Binding CallByStatus[1]}"/>
+            </StackPanel>
+            <StackPanel  Orientation="Horizontal">
+                <Button Tag="2" Content="Closed" Click="showCallsByStatus_Click"/>
+                <TextBlock Text="{Binding CallByStatus[2]}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Tag="3" Content="Expired" Click="showCallsByStatus_Click"/>
+                <TextBlock Text="{Binding CallByStatus[3]}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Tag="4" Content="Open At Risk" Click="showCallsByStatus_Click"/>
+                <TextBlock Text="{Binding CallByStatus[4]}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Tag="5" Content="In Treatment At Risk" Click="showCallsByStatus_Click"/>
+                <TextBlock Text="{Binding CallByStatus[5]}"/>
+            </StackPanel>
         </StackPanel>
+        
     </Grid>
 </Window>

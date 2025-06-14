@@ -36,25 +36,21 @@ namespace PL
         }
         public static readonly DependencyProperty CurrentRiskRangeProperty =
         DependencyProperty.Register("CurrentRiskRange", typeof(TimeSpan), typeof(MainWindow));
-        public ObservableCollection<Tuple<string, int>> CallsByStatus { get; set; }
+
+        public int[] CallByStatus
+        {
+            get { return (int[])GetValue(CallByStatusProperty); }
+            set { SetValue(CallByStatusProperty, value); }
+        }
+
+        public static readonly DependencyProperty CallByStatusProperty =
+            DependencyProperty.Register("CallByStatus", typeof(int[]), typeof(MainWindow));
 
         public MainWindow(int id)
         {
-            Id= id;
+            CallByStatus = s_bl.Call.GetCallQuantitiesByStatus();
+            Id = id;
             InitializeComponent();
-            int[] quantities = s_bl.Call.GetCallQuantitiesByStatus();
-
-            var enumNames = Enum.GetNames(typeof(BO.StatusCall));
-            CallsByStatus = new ObservableCollection<Tuple<string, int>>();
-
-            for (int i = 0; i < enumNames.Length; i++)
-            {
-                string statusName = enumNames[i];
-                int quantity = quantities[i];
-                CallsByStatus.Add(new Tuple<string, int>(statusName, quantity));
-            }
-
-            DataContext = this;
         }
 
         private void clockObserver()
@@ -91,20 +87,38 @@ namespace PL
         {
             s_bl.Admin.SetRiskRange(CurrentRiskRange);
         }
+
+        private void callByStatusObserver()
+        {
+            CallByStatus = s_bl.Call.GetCallQuantitiesByStatus();
+        }
         private void window_Loaded(object sender, RoutedEventArgs e)
         {
             CurrentTime = s_bl.Admin.GetClock();
             CurrentRiskRange = s_bl.Admin.GetRiskRange();
             s_bl.Admin.AddClockObserver(clockObserver);
             s_bl.Admin.AddConfigObserver(configObserver);
+            s_bl.Call.AddObserver(callByStatusObserver);
         }
 
         private void window_Closed(object sender, EventArgs e)
         {
             s_bl.Admin.RemoveClockObserver(clockObserver);
             s_bl.Admin.RemoveConfigObserver(configObserver);
+            s_bl.Call.RemoveObserver(callByStatusObserver);
         }
 
+        private void showCallsByStatus_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is string roleTag)
+            {
+                new CallListWindow(Id, (BO.StatusCall)Enum.Parse(typeof(BO.StatusCall), roleTag)).Show();
+            }
+            else
+            {
+                new CallListWindow(Id).Show();
+            }
+        }
         private void btnViewVolunteerList_Click(object sender, RoutedEventArgs e)
         {
             new VolunteerListWindow().Show();

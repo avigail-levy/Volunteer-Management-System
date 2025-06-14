@@ -20,24 +20,34 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-            <Label  Content="סנן לפי:"/>
-            <ComboBox SelectedValue="{Binding CallType, Mode=TwoWay}"
+            
+        <StackPanel Grid.Column="0">
+            <Label  Content=" סינון לפי סוג קריאה:"/>
+                <ComboBox SelectedValue="{Binding CallType, Mode=TwoWay}"
                   ItemsSource="{Binding Source= {StaticResource CallTypeCollectionKey}}"
                   SelectionChanged="filterBySelect_SelectionChanged"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            </ComboBox>
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </StackPanel>
+            
             <StackPanel Grid.Column="1">
                 <Label  Content="מיין לפי:"/>
                 <ComboBox SelectedValue="{Binding Attribute, Mode=TwoWay}"
-      ItemsSource="{Binding Source= {StaticResource CallInListAttributesCollectionKey}}"
-      SelectionChanged="filterBySelect_SelectionChanged"
-       HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                </ComboBox>
+           ItemsSource="{Binding Source= {StaticResource CallInListAttributesCollectionKey}}"
+           SelectionChanged="filterBySelect_SelectionChanged"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" >
+                <Label  Content="סינון לפי סטטוס קריאה"/>
+                <ComboBox SelectedValue="{Binding Status, Mode=TwoWay}"
+                ItemsSource="{Binding Source={StaticResource StatusCallCollectionKey}}"
+                SelectionChanged="filterListByStatus"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </StackPanel>
         </Grid>
+        
         <DataGrid Grid.Row="1" ItemsSource="{Binding Path=CallList}" IsReadOnly ="True" AutoGenerateColumns="False"
      EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected"
      MouseDoubleClick="lsvCallsList_MouseDoubleClick" SelectedItem="{Binding SelectedCall}">

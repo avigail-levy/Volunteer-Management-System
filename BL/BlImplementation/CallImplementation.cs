@@ -306,7 +306,7 @@ internal class CallImplementation : ICall
         DO.TypeOfTreatmentTermination type = assignment.VolunteerId == idRequest ? DO.TypeOfTreatmentTermination.SelfCancellation
                 : DO.TypeOfTreatmentTermination.CancelAdministrator;
 
-        if ((CallManager.GetStatusCall(call) != BO.StatusCall.InTreatment && CallManager.GetStatusCall(call) != BO.StatusCall.InTreatmentAtRisk))
+        if (CallManager.GetStatusCall(call) != BO.StatusCall.InTreatment && CallManager.GetStatusCall(call) != BO.StatusCall.InTreatmentAtRisk)
             throw new BO.BlCantUpdateException("the call is not at treatment");
 
         DO.Assignment newAssignment = CallManager.CreateDoAssignment(assignment, type);

@@ -4,7 +4,7 @@ public enum DistanceType { Aerial, Walking, TraveledByCar }
 public enum CallType { HouseCleaning, CookingFood, BabysitterServices, Transportation, Ironing, Shopping,None }
 public enum StatusCallInProgress { InTreatment, InRiskTreatment }
 public enum TypeOfTreatmentTermination { Handled, SelfCancellation, CancelAdministrator, CancellationExpired }
-public enum StatusCall{Open ,InTreatment ,Closed ,Expired ,OpenAtRisk ,InTreatmentAtRisk }
+public enum StatusCall{Open ,InTreatment ,Closed ,Expired ,OpenAtRisk ,InTreatmentAtRisk ,None}
 public enum VolunteerInListAttributes { Id, Name, Active, TotalCallsHandledByVolunteer, TotalCallsCanceledByVolunteer, TotalExpiredCallingsByVolunteer, IDCallInHisCare, CallType }
 public enum CallInListAttributes { Id, CallId, CallType, OpeningTime, TotalTimeRemainingFinishCalling, LastVolunteerName, TotalTimeCompleteTreatment, StatusCall, TotalAssignments }
 public enum ClosedCallInListAttributes { Id, CallType, CallAddress, OpeningTime, EntryTimeForTreatment, EndOfTreatmentTime, TypeOfTreatmentTermination }

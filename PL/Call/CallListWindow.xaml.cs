@@ -21,8 +21,10 @@ namespace PL.Call
     public partial class CallListWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
-         
-        public int IdRequest {  get;  }
+
+        public BO.StatusCall Status { get; set; } = BO.StatusCall.None;
+
+        public int IdRequest { get; }
         public BO.CallInList? SelectedCall { get; set; }
 
         public BO.CallType CallType { get; set; } = BO.CallType.None;
@@ -37,17 +39,25 @@ namespace PL.Call
         public static readonly DependencyProperty CallListProperty =
             DependencyProperty.Register("CallList", typeof(IEnumerable<BO.CallInList>), typeof(CallListWindow), new PropertyMetadata(null));
 
-        public CallListWindow(int id)
+        public CallListWindow(int id, BO.StatusCall statusTofilter = BO.StatusCall.None)
         {
-            IdRequest=id;
+            Status = statusTofilter;
+            IdRequest = id;
             InitializeComponent();
         }
+        private void filterListByStatus(object sender, SelectionChangedEventArgs e)
+          =>
+           queryCallList();
         private void filterBySelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
            => queryCallList();
 
         private void queryCallList()
-         => CallList = (CallType == BO.CallType.None) ?
+        {
+            CallList = (CallType == BO.CallType.None) ?
                 s_bl?.Call.GetCallsList(null, null, Attribute)! : s_bl?.Call.GetCallsList(BO.CallInListAttributes.CallType, CallType, Attribute)!;
+            CallList = (Status == BO.StatusCall.None) ?
+               CallList : CallList.Where(c => c.StatusCall == Status);
+        }
 
         private void callListObserver()
            => queryCallList();
