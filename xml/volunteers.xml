@@ -24,7 +24,7 @@
 		<Phone>0556726282</Phone>
 		<Email>Eli Amar@gmail.com</Email>
 		<Role>Manager</Role>
-		<Active>false</Active>
+		<Active>true</Active>
 		<DistanceType>TraveledByCar</DistanceType>
 		<Latitude>32.818271</Latitude>
 		<Longitude>35.001148</Longitude>

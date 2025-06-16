@@ -38,13 +38,16 @@ namespace PL
 
     public class ConvertManagerToVisible : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object ConverterParameter, CultureInfo culture)
         {
+
             if (value is BO.Role role)
-                return role == BO.Role.Manager
-                    ? Visibility.Visible
-                    :
-                    Visibility.Hidden;
+            {
+                bool isManager = role == BO.Role.Manager;
+                bool invert = ConverterParameter?.ToString() == "Invert";
+
+                return (isManager ^ invert) ? Visibility.Visible : Visibility.Hidden;
+            }
 
             return Visibility.Hidden;
         }
@@ -92,6 +95,7 @@ namespace PL
             throw new NotImplementedException();
         }
     }
+    
 }
 
 

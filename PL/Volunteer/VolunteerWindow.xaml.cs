@@ -23,10 +23,10 @@ namespace PL.Volunteer
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        public VolunteerWindow(int id = 0)
+        public VolunteerWindow(int id = 0, BO.Role role = BO.Role.Manager)
         {
             ButtonText = id == 0 ? "Add" : "Update";
-            ConnectVolunteer=s_bl.Volunteer.GetVolunteerDetails(id);
+            Role = role;
             InitializeComponent();
 
             try
@@ -38,21 +38,40 @@ namespace PL.Volunteer
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message,"Error");
+                MessageBox.Show(ex.Message, "Error");
                 Close();
             }
         }
-
+        public BO.Role Role { get; set; }
         public BO.Volunteer? CurrentVolunteer
         {
             get { return (BO.Volunteer?)GetValue(CurrentVolunteerProperty); }
             set { SetValue(CurrentVolunteerProperty, value); }
         }
-        public BO.Volunteer? ConnectVolunteer { get; set; }
 
         public static readonly DependencyProperty CurrentVolunteerProperty =
             DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(VolunteerWindow), new PropertyMetadata(null));
 
+        private bool formatCheck()
+        {
+            if (CurrentVolunteer?.Id.ToString().Length != 9)
+                MessageBox.Show("id should be 9 number long");
+            if (string.IsNullOrWhiteSpace(CurrentVolunteer.Name))
+                MessageBox.Show("Name cannot be empty");
+
+            if (string.IsNullOrWhiteSpace(CurrentVolunteer.Phone) || CurrentVolunteer.Phone.ToString().Length != 10)
+                MessageBox.Show("Phone number must be exactly 10 digits");
+
+            if (string.IsNullOrWhiteSpace(CurrentVolunteer.Email) || !CurrentVolunteer.Email.Contains("@"))
+                MessageBox.Show("Invalid email format");
+
+            if (CurrentVolunteer.MaxDistanceForCall < 0)
+                MessageBox.Show("Maximum distance must be non-negative");
+
+            if (string.IsNullOrWhiteSpace(CurrentVolunteer.Address))
+                MessageBox.Show("Address cannot be empty");
+            return true;
+        }
         public string ButtonText
         {
             get => (string)GetValue(ButtonTextProperty);
@@ -68,6 +87,7 @@ namespace PL.Volunteer
             try
             {
                 if (CurrentVolunteer == null) return;
+                if (formatCheck()) ;
                 if (ButtonText == "Add")
                 {
                     s_bl.Volunteer.AddVolunteer(CurrentVolunteer!);
@@ -84,7 +104,7 @@ namespace PL.Volunteer
             {
                 MessageBox.Show(ex.Message, "Error");
             }
-            catch(BO.BlUnauthorizedException ex)
+            catch (BO.BlUnauthorizedException ex)
             {
                 MessageBox.Show(ex.Message, "Error");
             }
@@ -114,39 +134,39 @@ namespace PL.Volunteer
 
         private void callHistory_Btn_Click(object sender, RoutedEventArgs e)
         {
-            new CallsHistory(CurrentVolunteer!.Id). Show();
+            new CallsHistory(CurrentVolunteer!.Id).Show();
         }
 
         private void cancelTreatmentBtn_click(object sender, RoutedEventArgs e)
         {
-               MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to cancel the assignment of this call", "its ok?",
-               MessageBoxButton.OKCancel,
-               MessageBoxImage.Information);
-                if (messageResult == MessageBoxResult.OK)
-                {
-                    if (CurrentVolunteer.CallingVolunteerTherapy.Id != null)
-                        try
-                        {
-                            s_bl.Call.UpdateCancelTreatmentOnCall(CurrentVolunteer.Id, CurrentVolunteer.CallingVolunteerTherapy.Id);
-                        }
-                        catch (BO.BlDoesNotExistException ex)
-                        {
-                            MessageBox.Show(ex.Message, "Can't cancel the assignment");
-                        }
-                        catch (BO.BlUnauthorizedException ex)
-                        {
-                            MessageBox.Show(ex.Message, "Can't cancel the assignment");
-                        }
-                        catch (BO.BlCantUpdateException ex)
-                        {
-                            MessageBox.Show(ex.Message, "Can't cancel the assignment");
-                        }
-                    else
+            MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to cancel the assignment of this call", "its ok?",
+            MessageBoxButton.OKCancel,
+            MessageBoxImage.Information);
+            if (messageResult == MessageBoxResult.OK)
+            {
+                if (CurrentVolunteer.CallingVolunteerTherapy.Id != null)
+                    try
                     {
-                        MessageBox.Show("you dony have a call now");
+                        s_bl.Call.UpdateCancelTreatmentOnCall(CurrentVolunteer.Id, CurrentVolunteer.CallingVolunteerTherapy.Id);
                     }
+                    catch (BO.BlDoesNotExistException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Can't cancel the assignment");
+                    }
+                    catch (BO.BlUnauthorizedException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Can't cancel the assignment");
+                    }
+                    catch (BO.BlCantUpdateException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Can't cancel the assignment");
+                    }
+                else
+                {
+                    MessageBox.Show("you dony have a call now");
                 }
             }
+        }
 
         private void endTreatmentBtn_click(object sender, RoutedEventArgs e)
         {
@@ -173,7 +193,7 @@ namespace PL.Volunteer
                     {
                         MessageBox.Show(ex.Message, "Can't update finish this call treatment");
                     }
-                catch(BO.BlInvalidValueException ex)
+                    catch (BO.BlInvalidValueException ex)
                     {
                         MessageBox.Show(ex.Message, "Can't update with invalid value");
                     }
