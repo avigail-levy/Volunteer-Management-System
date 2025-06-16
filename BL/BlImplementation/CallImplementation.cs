@@ -3,6 +3,7 @@ using Helpers;
 using System.Text;
 using System;
 using BO;
+using DO;
 namespace BlImplementation;
 
 internal class CallImplementation : ICall
@@ -79,6 +80,10 @@ internal class CallImplementation : ICall
         {
             _dal.Assignment.Create(newAssignment);
             CallManager.Observers.NotifyListUpdated();
+            VolunteerManager.Observers.NotifyItemUpdated(vol.Id);
+            VolunteerManager.Observers.NotifyListUpdated(); //stage 5
+
+
         }
         catch (DO.DalAlreadyExistsException ex)
         {
@@ -316,6 +321,9 @@ internal class CallImplementation : ICall
             _dal.Assignment.Update(newAssignment);
             CallManager.Observers.NotifyItemUpdated(newAssignment.Id);
             CallManager.Observers.NotifyListUpdated();
+            VolunteerManager.Observers.NotifyItemUpdated(assignment.VolunteerId);
+            VolunteerManager.Observers.NotifyListUpdated(); //stage 5
+            CallManager.Observers.NotifyListUpdated(); //stage 5
 
         }
         catch (DO.DalDoesNotExistException ex)
@@ -345,6 +353,9 @@ internal class CallImplementation : ICall
             _dal.Assignment.Update(newAssignment);
             CallManager.Observers.NotifyItemUpdated(newAssignment.Id);
             CallManager.Observers.NotifyListUpdated();
+            VolunteerManager.Observers.NotifyItemUpdated(assignment.VolunteerId);
+            VolunteerManager.Observers.NotifyListUpdated(); //stage 5
+
         }
         catch (DO.DalDoesNotExistException ex)
         {

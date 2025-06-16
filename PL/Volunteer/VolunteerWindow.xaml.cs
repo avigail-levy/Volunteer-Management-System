@@ -42,6 +42,7 @@ namespace PL.Volunteer
                 Close();
             }
         }
+
         public BO.Volunteer? CurrentVolunteer
         {
             get { return (BO.Volunteer?)GetValue(CurrentVolunteerProperty); }
