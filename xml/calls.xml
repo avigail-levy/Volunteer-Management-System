@@ -11,6 +11,16 @@
 		<MaxTimeFinishCall>2025-03-28T21:55:54</MaxTimeFinishCall>
 	</Call>
 	<Call>
+		<Id>3</Id>
+		<CallType>CookingFood</CallType>
+		<CallAddress>אלנבי 1, תל אביב</CallAddress>
+		<Latitude>32.0740412</Latitude>
+		<Longitude>34.7654992</Longitude>
+		<OpeningTime>2025-03-27T21:55:54</OpeningTime>
+		<CallDescription>Hertzel Street 60, Hadera 34.918386 32.434046 call</CallDescription>
+		<MaxTimeFinishCall>2026-03-28T21:55:54</MaxTimeFinishCall>
+	</Call>
+	<Call>
 		<Id>4</Id>
 		<CallType>Shopping</CallType>
 		<CallAddress>הכנסת 1, ירושלים</CallAddress>

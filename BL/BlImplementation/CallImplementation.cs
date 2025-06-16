@@ -1,9 +1,11 @@
-﻿using BlApi;
+﻿using BO;
+using Helpers;
+
+using BlApi;
 using Helpers;
 using System.Text;
 using System;
 using BO;
-using DO;
 namespace BlImplementation;
 
 internal class CallImplementation : ICall
@@ -82,8 +84,7 @@ internal class CallImplementation : ICall
             CallManager.Observers.NotifyListUpdated();
             VolunteerManager.Observers.NotifyItemUpdated(vol.Id);
             VolunteerManager.Observers.NotifyListUpdated(); //stage 5
-
-
+                                                          
         }
         catch (DO.DalAlreadyExistsException ex)
         {
@@ -108,11 +109,11 @@ internal class CallImplementation : ICall
            throw new BO.BlDoesNotExistException($"The volunteer with id:{idVolunteer} does not exist");
 
         var openCalls = (from c in calls
-                        where CallManager.GetStatusCall(c) == BO.StatusCall.Open || 
-                        CallManager.GetStatusCall(c) == BO.StatusCall.OpenAtRisk && 
-                        vol.MaxDistanceForCall>= VolunteerManager.CalcDistance(vol.Address, c.CallAddress)
-                        select c).ToList();
-        var openCallsList= openCalls.Select(c => new BO.OpenCallInList
+                         where CallManager.GetStatusCall(c) == BO.StatusCall.Open ||
+                         CallManager.GetStatusCall(c) == BO.StatusCall.OpenAtRisk &&
+                         vol.MaxDistanceForCall >= VolunteerManager.CalcDistance(vol.Address, c.CallAddress)
+                         select c).ToList();
+        var openCallsList = openCalls.Select(c => new BO.OpenCallInList
         {
             Id = c.Id,
             CallType = (BO.CallType)c.CallType,
@@ -133,17 +134,17 @@ internal class CallImplementation : ICall
     /// <param name="filterByAttribute">call filtering attribute</param>
     /// <param name="sortByAttribute">call sorting attribute</param>
     /// <returns>A sorted and filtered list of the volunteer</returns>
-    public IEnumerable<BO.ClosedCallInList> ClosedCallsListHandledByVolunteer(int idVolunteer,  
+    public IEnumerable<BO.ClosedCallInList> ClosedCallsListHandledByVolunteer(int idVolunteer,
         BO.CallType? filterByAttribute = null, BO.ClosedCallInListAttributes? sortByAttribute = null)
     {
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
         var assignments = _dal.Assignment.ReadAll(a => a.VolunteerId == idVolunteer);
-       
+
         var closeCalls = (from c in calls
-                         from a in assignments
-                         where c.Id == a.CallId && a.TypeOfTreatmentTermination is not null
-                         select c).Distinct().ToList();
-        var closeCallsInlist= closeCalls.Select(c =>
+                          from a in assignments
+                          where c.Id == a.CallId && a.TypeOfTreatmentTermination is not null
+                          select c).Distinct().ToList();
+        var closeCallsInlist = closeCalls.Select(c =>
         {
             DO.Assignment assign = _dal.Assignment.Read(a => c.Id == a.CallId && a.TypeOfTreatmentTermination is not null)!;
             return new BO.ClosedCallInList
@@ -216,7 +217,7 @@ internal class CallImplementation : ICall
                                                          TypeOfTreatmentTermination = (BO.TypeOfTreatmentTermination?)a.TypeOfTreatmentTermination
                                                      }).ToList()
                                                         : null
-        }; 
+        };
         return newBOCall;
     }
 
@@ -245,11 +246,11 @@ internal class CallImplementation : ICall
     public IEnumerable<BO.CallInList> GetCallsList(BO.CallInListAttributes? filterByAttribute = null, object? filterValue = null, BO.CallInListAttributes? sortByAttribute = null)
     {
         IEnumerable<DO.Call> calls = _dal.Call.ReadAll();
-       var callsInList= calls.Select(c =>
+        var callsInList = calls.Select(c =>
         {
             var allAssign = _dal.Assignment.ReadAll(a => a.CallId == c.Id);
             var lastAssign =
-            allAssign.FirstOrDefault(a => a.EndOfTreatmentTime == null)??
+            allAssign.FirstOrDefault(a => a.EndOfTreatmentTime == null) ??
             allAssign
                .OrderByDescending(a => a.EndOfTreatmentTime)
                .FirstOrDefault();
@@ -284,11 +285,11 @@ internal class CallImplementation : ICall
         callsInList = sortByAttribute != null ?
                 (from c in callsInList
                  orderby propertySort!.GetValue(c, null)
-                select c).ToList()
+                 select c).ToList()
                 :
                 (from c in callsInList
                  orderby c.Id
-                select c).ToList();
+                 select c).ToList();
 
         return callsInList;
     }
@@ -323,8 +324,6 @@ internal class CallImplementation : ICall
             CallManager.Observers.NotifyListUpdated();
             VolunteerManager.Observers.NotifyItemUpdated(assignment.VolunteerId);
             VolunteerManager.Observers.NotifyListUpdated(); //stage 5
-            CallManager.Observers.NotifyListUpdated(); //stage 5
-
         }
         catch (DO.DalDoesNotExistException ex)
         {
@@ -355,7 +354,6 @@ internal class CallImplementation : ICall
             CallManager.Observers.NotifyListUpdated();
             VolunteerManager.Observers.NotifyItemUpdated(assignment.VolunteerId);
             VolunteerManager.Observers.NotifyListUpdated(); //stage 5
-
         }
         catch (DO.DalDoesNotExistException ex)
         {
@@ -372,5 +370,6 @@ internal class CallImplementation : ICall
     public void RemoveObserver(int id, Action observer) =>
     CallManager.Observers.RemoveObserver(id, observer); //stage 5
     #endregion Stage 5
+
 
 }

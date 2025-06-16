@@ -14,7 +14,7 @@ namespace PL
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value?.ToString() ==  "Update";
+            return value?.ToString() == "Update";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -35,16 +35,6 @@ namespace PL
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             => throw new NotImplementedException();
     }
-    //public class ConvertMax : IValueConverter
-    //{
-    //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    //    {
-    //        return value?.ToString() == "InTreatment" || value?.ToString() == "InRiskTreatment";
-    //    }
-
-    //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    //        => throw new NotImplementedException();
-    //}
 
     public class ConvertManagerToVisible : IValueConverter
     {
@@ -68,21 +58,23 @@ namespace PL
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
 
-            return value is  null ? Visibility.Hidden : Visibility.Visible;
+            return value is null ? Visibility.Hidden : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             => throw new NotImplementedException();
     }
 
-    public class ConvertCallInProgressToEnable : IValueConverter
+    public class ConvertCallInProgressAndActiveToEnable : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is null;
+
+            return values[0] is bool b && b && values[1] == null;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+
             => throw new NotImplementedException();
     }
 
@@ -91,7 +83,7 @@ namespace PL
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             BO.Volunteer? connect = (BO.Volunteer)values[0] ?? null;
-            BO.Volunteer? updated =(BO.Volunteer) values[1]??null;
+            BO.Volunteer? updated = (BO.Volunteer)values[1] ?? null;
             return connect?.Role == BO.Role.Volunteer ? false : true;
         }
 

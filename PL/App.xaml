@@ -10,10 +10,9 @@
         <local:StatusCallCollection x:Key="StatusCallCollectionKey"/>
         <local:ConvertUpdateToTrue x:Key="ConvertUpdateToTrueKey" />
         <local:ConvertUpdateToVisible x:Key="ConvertUpdateToVisibleKey"/>
-        <!--<local:ConvertMax x:Key="ConvertMaxKey"/>-->
         <local:ConvertManagerToVisible x:Key="ConvertManagerToVisibleKey"/>
         <local:ConvertCallInProgressToVisible x:Key="ConvertCallInProgressToVisibleKey"/>
-        <local:ConvertCallInProgressToEnable x:Key="ConvertCallInProgressToEnableKey"/>
+        <local:ConvertCallInProgressAndActiveToEnable x:Key="ConvertCallInProgressAndActiveToEnableKey"/>
         <local:VolunteerInListAttributesCollection x:Key="VolunteerInListAttributesCollectionKey"/>
         <local:ClosedCallInListAttributesCollection x:Key="ClosedCallInListAttributesCollectionKey"/>
         <local:OpenCallInListAttributesCollection x:Key="OpenCallInListAttributesCollectionKey"/>
