@@ -38,33 +38,29 @@ namespace PL
         }
         private void Login_Button_Click(object sender, RoutedEventArgs e)
         {
-
-            if (string.IsNullOrWhiteSpace(Password))
-            {
-                MessageBox.Show("Values ​​must be entered");
-                return;
-            }
-
-            if (!IsManager(Id , Password))
-            {
-                new VolunteerWindow(Id).Show();
-                Close();
-            }
-            
-        }
-        private bool IsManager(int Id, string password)
-        {
             try
             {
-                Role = s_bl.Volunteer.Login(Id, password);
-                return Role == BO.Role.Manager;
+                if (Id == null || Id < 100000000 || Id > 999999999)
+                {
+                    MessageBox.Show("enter correct id");
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(Password))
+                {
+                    MessageBox.Show("enter corrert password");
+                    return;
+                }
+
+                Role = s_bl.Volunteer.Login(Id, Password);
+                if (Role == BO.Role.Volunteer)
+                {
+                    new VolunteerWindow(Id, Role).Show();
+                }
             }
-            catch (BO.BlDoesNotExistException ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                return false;
             }
-
         }
 
         private void mainWindow_Button_Click(object sender, RoutedEventArgs e)

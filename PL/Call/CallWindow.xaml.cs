@@ -21,12 +21,11 @@ namespace PL.Call
     public partial class CallWindow : Window
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
+        public BO.StatusCall StatusCall { get; set; } = BO.StatusCall.None;
 
         public CallWindow(int id = 0)
         {
             ButtonText = id == 0 ? "Add" : "Update";
-            InitializeComponent();
-
             try
             {
                 CurrentCall = id != 0
@@ -39,6 +38,8 @@ namespace PL.Call
                 MessageBox.Show(ex.Message, "Error");
                 Close();
             }
+            StatusCall = CurrentCall!.StatusCall;
+            InitializeComponent();
         }
         public BO.Call? CurrentCall
         {

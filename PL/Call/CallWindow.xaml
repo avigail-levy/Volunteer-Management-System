@@ -46,15 +46,18 @@
         <Label Content="סוג קריאה:" Grid.Row="1" Grid.Column="0"/>
         <ComboBox Grid.Row="1" Grid.Column="1"
           SelectedValue="{Binding CurrentCall.CallType, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-          ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" Height="26" Grid.RowSpan="2" VerticalAlignment="Top"/>
+          ItemsSource="{Binding Source={StaticResource CallTypeCollectionKey}}" Height="26" Grid.RowSpan="2" VerticalAlignment="Top"
+          IsEnabled="{Binding StatusCall, Converter={StaticResource ConverterOpenOrOpenAtRiskToEnableKey}}"/>
 
         <Label Content="תאור קריאה:" Grid.Row="2" Grid.Column="0"/>
         <TextBox Grid.Row="2" Grid.Column="1"
-              Text="{Binding CurrentCall.CallDescription, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+              Text="{Binding CurrentCall.CallDescription, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                 IsEnabled="{Binding StatusCall, Converter={StaticResource ConverterOpenOrOpenAtRiskToEnableKey}}"/>
 
         <Label Content="כתובת קריאה:" Grid.Row="3" Grid.Column="0"/>
         <TextBox Grid.Row="3" Grid.Column="1"
-              Text="{Binding CurrentCall.CallAddress, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+              Text="{Binding CurrentCall.CallAddress, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+              IsEnabled="{Binding StatusCall, Converter={StaticResource ConverterOpenOrOpenAtRiskToEnableKey}}"/>
         
         <Label Content="זמן פתיחת קריאה:" Grid.Row="4" Grid.Column="0"/>
         <TextBlock Grid.Row="4" Grid.Column="1"
@@ -63,7 +66,7 @@
         <Label Content="זמן מקסימלי לסיום:" Grid.Row="5" Grid.Column="0"/>
         <TextBox Grid.Row="5" Grid.Column="1"
          Text="{Binding CurrentCall.MaxTimeFinishCall, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-         />
+         IsEnabled="{Binding StatusCall, Converter={StaticResource ConverterInTreatmentOrInTreatmentAtRiskToEnableKey}}"/>
         
         <Label Content="סטטוס קריאה:" Grid.Row="6" Grid.Column="0"/>
         <TextBlock Grid.Row="6" Grid.Column="1"

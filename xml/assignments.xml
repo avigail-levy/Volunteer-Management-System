@@ -166,7 +166,7 @@
     <VolunteerId>516784023</VolunteerId>
     <EntryTimeForTreatment>2025-03-22T15:22:54</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>CancelAdministrator</TypeOfTreatmentTermination>
-	  <EndOfTreatmentTime>2025-03-23T15:22:54</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-03-23T15:22:54</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>26</Id>
@@ -174,7 +174,7 @@
     <VolunteerId>311374845</VolunteerId>
     <EntryTimeForTreatment>2025-03-20T01:43:54</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>CancelAdministrator</TypeOfTreatmentTermination>
-	  <EndOfTreatmentTime>2025-03-23T15:22:54</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-03-23T15:22:54</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>27</Id>
@@ -336,4 +336,20 @@
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
     <EndOfTreatmentTime>2025-07-01T06:02:55</EndOfTreatmentTime>
   </Assignment>
+  <Assignment>
+    <Id>45</Id>
+    <CallId>62</CallId>
+    <VolunteerId>857362149</VolunteerId>
+    <EntryTimeForTreatment>2025-07-01T06:02:55</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-01T06:02:55</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>46</Id>
+    <CallId>63</CallId>
+    <VolunteerId>251378496</VolunteerId>
+    <EntryTimeForTreatment>2025-07-01T06:02:55</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination xsi:nil="true"/>
+    <EndOfTreatmentTime xsi:nil="true" />
+</Assignment>
 </ArrayOfAssignment>

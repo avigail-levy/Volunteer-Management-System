@@ -20,6 +20,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" >
             <Label Content="סנן לפי:"/>
@@ -36,11 +37,17 @@
       SelectionChanged="filterBySelect_SelectionChanged"
        HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 </ComboBox>
+    
+            </StackPanel>
+            <StackPanel Grid.Column="3">
+                <Label Content="update your address:"/>
+                <TextBox Text="{Binding UpdateAddress}" Width="150" ></TextBox>
+                <Button Content="Submit" Click="UpdateAddress_click"/>
             </StackPanel>
         </Grid>
         <DataGrid Grid.Row="1" ItemsSource="{Binding Path=OpenCallList}" IsReadOnly ="True" AutoGenerateColumns="False"
             EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected"
-            SelectedItem="{Binding SelectedCall}">
+            SelectedItem="{Binding SelectedCall}" MouseDoubleClick="DisplayCallDescription">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Choose call" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
@@ -50,7 +57,14 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Binding="{Binding Id}" Header="CallId" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding CallType}" Header="Call Type" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding CallType}" Header="Call Type" Width="Auto">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Background" 
+                      Value="{Binding CallType, Converter={StaticResource ConverterEnumCallTypeToColorKey}}" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding CallDescription}" Header="Call Description" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding CallAddress}" Header="Call Address" Width="Auto"/>
 

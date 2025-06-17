@@ -134,7 +134,7 @@ internal class VolunteerImplementation : IVolunteer
     public BO.Role Login(int id,string password)
     {
         DO.Volunteer vol = _dal.Volunteer.Read(vol => vol.Id == id && vol.Password==password) ??
-        throw new BO.BlDoesNotExistException($"Volunteer with Name ={id} does Not exist");
+        throw new BO.BlDoesNotExistException($"Volunteer with Id {id} and password {password} does Not exist");
         return (BO.Role)vol.Role;
     }
     /// <summary>

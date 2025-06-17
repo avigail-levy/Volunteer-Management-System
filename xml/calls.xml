@@ -520,4 +520,24 @@
     <CallDescription>Har Hatzofim Street 3, Jerusalem 35.241553 31.793755 call</CallDescription>
     <MaxTimeFinishCall>2025-04-09T21:55:54</MaxTimeFinishCall>
   </Call>
+  <Call>
+    <Id>62</Id>
+    <CallType>Transportation</CallType>
+    <CallAddress>שלוש השעות 30,בני ברק</CallAddress>
+    <Latitude>32.0988842</Latitude>
+    <Longitude>34.8343787</Longitude>
+    <OpeningTime>2025-07-01T06:02:55</OpeningTime>
+    <CallDescription>טראנסס</CallDescription>
+    <MaxTimeFinishCall>2026-07-01T06:02:55</MaxTimeFinishCall>
+  </Call>
+  <Call>
+    <Id>63</Id>
+    <CallType>HouseCleaning</CallType>
+    <CallAddress>שלוש השעות 30,בני ברק</CallAddress>
+    <Latitude>32.0988842</Latitude>
+    <Longitude>34.8343787</Longitude>
+    <OpeningTime>2025-07-01T06:02:55</OpeningTime>
+    <CallDescription>נקיון בית</CallDescription>
+    <MaxTimeFinishCall>2025-07-10T06:02:55</MaxTimeFinishCall>
+  </Call>
 </ArrayOfCall>

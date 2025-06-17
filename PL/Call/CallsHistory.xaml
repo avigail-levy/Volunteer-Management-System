@@ -42,7 +42,14 @@ SelectionChanged="filterBySelect_SelectionChanged"
     SelectedItem="{Binding SelectedCall}">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Header="CallId" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding CallType}" Header="Call Type" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding CallType}" Header="Call Type" Width="Auto">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Background" 
+                Value="{Binding CallType, Converter={StaticResource ConverterEnumCallTypeToColorKey}}" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding CallAddress}" Header="Call Address" Width="Auto"/>
 
                 <DataGridTemplateColumn Header="Opening Time" Width="Auto">

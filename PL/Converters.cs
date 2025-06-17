@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -21,7 +22,69 @@ namespace PL
             => throw new NotImplementedException();
     }
 
+    class ConverterEnumCallTypeToColor : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null) return Brushes.White;
+            BO.CallType CallType = (BO.CallType)value;
 
+            switch (CallType)
+            {
+                case BO.CallType.CookingFood:
+                    return Brushes.Pink;
+                case BO.CallType.BabysitterServices:
+                    return Brushes.Orange;
+                case BO.CallType.Transportation:
+                    return Brushes.Yellow;
+                case BO.CallType.Shopping:
+                    return Brushes.YellowGreen;
+                case BO.CallType.HouseCleaning:
+                    return Brushes.Aqua;
+                case BO.CallType.Ironing:
+                    return Brushes.White;
+                default:
+                    return Brushes.White;
+
+            }
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class ConverterEnumStatusCallToColor : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value == null) return Brushes.White;
+            BO.StatusCall statusCall = (BO.StatusCall)value;
+
+            switch (statusCall)
+            {
+                case BO.StatusCall.Closed:
+                    return Brushes.Pink;
+                case BO.StatusCall.Open:
+                    return Brushes.Yellow;
+                case BO.StatusCall.InTreatment:
+                    return Brushes.GreenYellow;
+                case BO.StatusCall.InTreatmentAtRisk:
+                    return Brushes.Gray;
+                case BO.StatusCall.Expired:
+                    return Brushes.LightBlue;
+                case BO.StatusCall.OpenAtRisk:
+                    return Brushes.LightCoral;
+                default:
+                    return Brushes.White;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
     public class ConvertUpdateToVisible : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -56,6 +119,20 @@ namespace PL
             => throw new NotImplementedException();
     }
 
+    public class ConvertManagerToIsEnabled : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object ConverterParameter, CultureInfo culture)
+        {
+
+            if (value is BO.Role role && role == BO.Role.Manager)
+                return true;
+            return false;
+
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            => throw new NotImplementedException();
+    }
     public class ConvertCallInProgressToVisible : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -95,7 +172,42 @@ namespace PL
             throw new NotImplementedException();
         }
     }
-    
+    class ConverterOpenOrOpenAtRiskToEnable : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is BO.StatusCall.OpenAtRisk || value is BO.StatusCall.Open;
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+    class ConverterInTreatmentOrInTreatmentAtRiskToEnable : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is BO.StatusCall.OpenAtRisk || value is BO.StatusCall.Open|| value is BO.StatusCall.InTreatment||
+                value is BO.StatusCall.InTreatmentAtRisk ;
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+    public class ConvertCallInProgressToEnable : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+
+            return value is null;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            => throw new NotImplementedException();
+    }
 }
 
 

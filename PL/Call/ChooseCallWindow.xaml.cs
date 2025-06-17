@@ -21,8 +21,18 @@ namespace PL.Call
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         public int currentId { get; set; }
+        public string UpdateAddress { get; set; } = "";
         public BO.CallType CallType { get; set; } = BO.CallType.None;
         public BO.OpenCallInListAttributes Attribute { get; set; } = BO.OpenCallInListAttributes.Id;
+
+        public BO.OpenCallInList? SelectedCall
+        {
+            get { return (BO.OpenCallInList?)GetValue(SelectedCallProperty); }
+            set { SetValue(SelectedCallProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedCallProperty =
+            DependencyProperty.Register("SelectedCall", typeof(BO.OpenCallInList), typeof(ChooseCallWindow), new PropertyMetadata(null));
 
         public IEnumerable<BO.OpenCallInList> OpenCallList
         {
@@ -31,10 +41,21 @@ namespace PL.Call
         }
 
         public static readonly DependencyProperty OpenCallListProperty =
-            DependencyProperty.Register("OpenCallList", typeof(IEnumerable<BO.OpenCallInList>), typeof(ChooseCallWindow), new PropertyMetadata(null));
+        DependencyProperty.Register("OpenCallList", typeof(IEnumerable<BO.OpenCallInList>), typeof(ChooseCallWindow), new PropertyMetadata(null));
+
+        public BO.Volunteer? CurrentVolunteer
+        {
+            get { return (BO.Volunteer?)GetValue(CurrentVolunteerProperty); }
+            set { SetValue(CurrentVolunteerProperty, value); }
+        }
+
+        public static readonly DependencyProperty CurrentVolunteerProperty =
+            DependencyProperty.Register("CurrentVolunteer", typeof(BO.Volunteer), typeof(ChooseCallWindow), new PropertyMetadata(null));
+
         public ChooseCallWindow(int id)
         {
             currentId = id;
+            CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
             InitializeComponent();
         }
 
@@ -56,26 +77,57 @@ namespace PL.Call
 
         private void Choose_Button_Click(object sender, RoutedEventArgs e)
         {
-
             MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to choose this call", "its ok?",
-          MessageBoxButton.OKCancel,
-          MessageBoxImage.Information);
+            MessageBoxButton.OKCancel,
+            MessageBoxImage.Information);
             if (messageResult == MessageBoxResult.OK)
             {
-                var button = sender as Button;
-                BO.OpenCallInList? call = button?.DataContext as BO.OpenCallInList;
-                if (call?.Id != null)
-                    try
+                try
+                {
+                    if (SelectedCall != null && CurrentVolunteer != null && CurrentVolunteer.CallingVolunteerTherapy == null)
                     {
-                        s_bl.Call.ChooseTreatmentCall(currentId, call.Id);
+                        s_bl.Call.ChooseTreatmentCall(CurrentVolunteer!.Id, SelectedCall!.Id);
+                        MessageBox.Show($"choosen call succesfully:{CurrentVolunteer.CallingVolunteerTherapy}");
                     }
-                    catch (BO.BlDoesNotExistException ex)
-                    {
-                        MessageBox.Show(ex.Message, "Error");
-                    }
+                    else
+                        MessageBox.Show("you cant take another call, first finish with your current call");
+                }
+                catch (BO.BlDoesNotExistException ex)
+                {
+                    MessageBox.Show($"error:{ex}");
+                }
             }
 
+        }
 
+        private void UpdateAddress_click(object sender, RoutedEventArgs e)
+        {
+            s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer!.Id,
+            new BO.Volunteer()
+            {
+                Id = CurrentVolunteer.Id,
+                Name = CurrentVolunteer.Name,
+                Phone = CurrentVolunteer.Phone,
+                Email = CurrentVolunteer.Email,
+                Role = CurrentVolunteer.Role,
+                Password = CurrentVolunteer.Password,
+                Active = CurrentVolunteer.Active,
+                Address = UpdateAddress,
+                Latitude = CurrentVolunteer.Latitude,
+                Longitude = CurrentVolunteer.Longitude,
+                MaxDistanceForCall = CurrentVolunteer.MaxDistanceForCall,
+                DistanceType = CurrentVolunteer.DistanceType,
+                TotalCallsCanceled = CurrentVolunteer.TotalCallsCanceled,
+                TotalCallsHandled = CurrentVolunteer.TotalCallsHandled,
+                TotalCallsChoseHandleHaveExpired = CurrentVolunteer.TotalCallsChoseHandleHaveExpired,
+                CallingVolunteerTherapy = CurrentVolunteer?.CallingVolunteerTherapy,
+
+            });
+            queryOpenCallList();
+        }
+        private void DisplayCallDescription(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show($"Description Call:{SelectedCall!.CallDescription}");
         }
     }
 }

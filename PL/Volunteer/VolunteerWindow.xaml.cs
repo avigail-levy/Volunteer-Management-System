@@ -55,21 +55,36 @@ namespace PL.Volunteer
         private bool formatCheck()
         {
             if (CurrentVolunteer?.Id.ToString().Length != 9)
+            {
                 MessageBox.Show("id should be 9 number long");
+                return false;
+            }
             if (string.IsNullOrWhiteSpace(CurrentVolunteer.Name))
+            {
                 MessageBox.Show("Name cannot be empty");
-
+                return false;
+            }
             if (string.IsNullOrWhiteSpace(CurrentVolunteer.Phone) || CurrentVolunteer.Phone.ToString().Length != 10)
-                MessageBox.Show("Phone number must be exactly 10 digits");
-
+            {
+                MessageBox.Show("Phone number must be exactly 10 digits"); 
+                return false;
+            }
             if (string.IsNullOrWhiteSpace(CurrentVolunteer.Email) || !CurrentVolunteer.Email.Contains("@"))
+            {
                 MessageBox.Show("Invalid email format");
-
+                return false;
+            }
             if (CurrentVolunteer.MaxDistanceForCall < 0)
+            {
                 MessageBox.Show("Maximum distance must be non-negative");
-
+                return false;
+            }
             if (string.IsNullOrWhiteSpace(CurrentVolunteer.Address))
+            {
                 MessageBox.Show("Address cannot be empty");
+                return false;
+            }
+                
             return true;
         }
         public string ButtonText

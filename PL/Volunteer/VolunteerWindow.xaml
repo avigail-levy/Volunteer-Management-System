@@ -20,41 +20,44 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <!--<RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>-->
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="10">
+            <!-- שמירה על ההגדרות הקיימות -->
+            <Grid.RowDefinitions>
+                <!-- במקום 23+ שורות Auto, נשתמש בגובה קבוע ואז שורה אחרונה מתרחבת -->
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <Label Content="תעודת זהות:" Grid.Row="0" Grid.Column="0"/>
+            <Label Content="תעודת זהות:" Grid.Row="0" Grid.Column="0"/>
         <TextBox Grid.Row="0" Grid.Column="1"
                  Text="{Binding CurrentVolunteer.Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
                  IsReadOnly="{Binding ButtonText, Converter={StaticResource ConvertUpdateToTrueKey}}"/>
@@ -82,12 +85,13 @@
         <Label Content="תפקיד:" Grid.Row="6" Grid.Column="0"/>
         <ComboBox Grid.Row="6" Grid.Column="1"
                   SelectedValue="{Binding CurrentVolunteer.Role, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-                  ItemsSource="{Binding Source={StaticResource RoleCollectionKey}}"/>
+                  ItemsSource="{Binding Source={StaticResource RoleCollectionKey}}" IsEnabled="{Binding Role,Converter={StaticResource ConvertManagerToIsEnabledKey }}"/>
 
         <Label Content="לא פעיל/פעיל:" Grid.Row="7" Grid.Column="0"/>
         <CheckBox Grid.Row="7" Grid.Column="1"
                   VerticalAlignment="Center"
-                  IsChecked="{Binding CurrentVolunteer.Active, Mode=TwoWay}"/>
+                  IsChecked="{Binding CurrentVolunteer.Active, Mode=TwoWay}"
+                  IsEnabled="{Binding CurrentVolunteer.CallingVolunteerTherapy, Converter={StaticResource ConvertCallInProgressToEnableKey} }"/>
 
         <Label Content="מרחק מקסימלי לקריאה:" Grid.Row="8" Grid.Column="0"/>
         <TextBox Grid.Row="8" Grid.Column="1"
@@ -150,7 +154,9 @@
         </StackPanel>
         <Button Grid.Row="23" Grid.Column="1" Height="50" Margin="50,50,200,20"
                 Content="{Binding ButtonText}" Click="btnAddUpdate_Click"/>
-        <Button Grid.Row="13" Grid.Column="1" Height="50" Margin="50,50,200,20" Content="בחירת קריאה" Click="ChooseCall_Btn_Click" Visibility="{Binding Role, Converter={StaticResource ConvertManagerToVisibleKey}, ConverterParameter='Invert'}">
+
+        <StackPanel Grid.Column="1" Visibility="{Binding Role, Converter={StaticResource ConvertManagerToVisibleKey}, ConverterParameter='Invert'}">
+        <Button Grid.Row="13"  Height="50" Margin="50,50,200,20" Content="בחירת קריאה" Click="ChooseCall_Btn_Click" >
             <Button.IsEnabled>
                 <MultiBinding Converter="{StaticResource ConvertCallInProgressAndActiveToEnableKey}">
                     <Binding Path="CurrentVolunteer.Active"/>
@@ -158,14 +164,15 @@
                 </MultiBinding>
             </Button.IsEnabled>
         </Button>
+
+            <Button Grid.Row="15"  Content="ביטול טיפול" Click="cancelTreatmentBtn_click" 
+                Visibility="{Binding CurrentVolunteer.CallingVolunteerTherapy,Converter={StaticResource ConvertCallInProgressToVisibleKey}}"/>
+
+            <Button Grid.Row="16"  Content="סיום טיפול" Click="endTreatmentBtn_click"
+                Visibility="{Binding CurrentVolunteer.CallingVolunteerTherapy,Converter={StaticResource ConvertCallInProgressToVisibleKey}}"/>
+        </StackPanel>
         <Button Content="הסטוריית קריאות" Click="callHistory_Btn_Click"  Grid.Row="14" Grid.Column="1"/>
-        <Button Grid.Row="15" Grid.Column="1" Content="ביטול טיפול" Click="cancelTreatmentBtn_click" 
-                Visibility="{Binding CurrentVolunteer.CallingVolunteerTherapy,Converter={StaticResource ConvertCallInProgressToVisibleKey}}"/>
 
-
-        <Button Grid.Row="16" Grid.Column="1" Content="סיום טיפול" Click="endTreatmentBtn_click"
-                Visibility="{Binding CurrentVolunteer.CallingVolunteerTherapy,Converter={StaticResource ConvertCallInProgressToVisibleKey}}"/>
-
-
-    </Grid>
-</Window> 
+</Grid>
+</ScrollViewer>
+</Window>

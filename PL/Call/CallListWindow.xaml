@@ -69,7 +69,14 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTextColumn Binding="{Binding CallId}" Header="CallId" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding CallType}" Header="Call Type" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding CallType}" Header="Call Type" Width="Auto">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Background" 
+                                Value="{Binding CallType, Converter={StaticResource ConverterEnumCallTypeToColorKey}}" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridTemplateColumn Header="OpeningTime" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -96,7 +103,14 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Binding="{Binding TotalCallsCanceledByVolunteer}" Header="Total Calls Canceled By Volunteer" Width="Auto"/>
-                <DataGridTextColumn Binding="{Binding StatusCall}" Header="Status Call" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding StatusCall}" Header="Status Call" Width="Auto">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Background" 
+                                Value="{Binding StatusCall, Converter={StaticResource ConverterEnumStatusCallToColorKey}}" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding TotalAssignments}" Header="Total Assignments" Width="Auto"/>
 
             </DataGrid.Columns>
