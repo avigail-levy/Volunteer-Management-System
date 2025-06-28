@@ -133,14 +133,13 @@ namespace PL
             MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to reset?", "its ok?",
             MessageBoxButton.OK,
             MessageBoxImage.Information);
-            if (messageResult == MessageBoxResult.Yes)
+            if (messageResult == MessageBoxResult.OK)
             {
                 Mouse.OverrideCursor = Cursors.Wait;
                 s_bl.Admin.ResetDB();
                 Mouse.OverrideCursor = null;
 
             }
-
 
         }
         private void initDB_Click(object sender, RoutedEventArgs e)

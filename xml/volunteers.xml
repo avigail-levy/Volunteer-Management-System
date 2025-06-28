@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfVolunteer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Volunteer>
-    <Id>
-			037472641
-		</Id>
+    <Id>037472641</Id>
     <Name>Dani Levy</Name>
     <Phone>0504133382</Phone>
     <Email>Dani Levy@gmail.com</Email>
@@ -41,9 +39,7 @@
     <Latitude>32.174547</Latitude>
     <Longitude>34.905562</Longitude>
     <Password>Ariela Levin0527175820</Password>
-    <Address>
-			שדרות משה דיין 2, אשקלון
-		</Address>
+    <Address>שדרות משה דיין 2, אשקלון</Address>
     <MaxDistanceForCall>12.449506810197464</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
@@ -57,9 +53,7 @@
     <Latitude>32.068588</Latitude>
     <Longitude>34.769863</Longitude>
     <Password>Shira Israelof0504156891</Password>
-    <Address>
-			הרצל 91, נתניה
-		</Address>
+    <Address>הרצל 91, נתניה</Address>
     <MaxDistanceForCall>41.491179120388</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
@@ -73,10 +67,8 @@
     <Latitude>32.084027</Latitude>
     <Longitude>34.812335</Longitude>
     <Password>David Gold0503133382</Password>
-    <Address>
-			שדרות בן גוריון 2, חיפה
-		</Address>
-    <MaxDistanceForCall>31.55202783377656</MaxDistanceForCall>
+    <Address>שדרות בן גוריון 2, חיפה</Address>
+    <MaxDistanceForCall>200</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>639872145</Id>

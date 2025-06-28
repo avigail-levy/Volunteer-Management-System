@@ -109,8 +109,8 @@ internal class CallImplementation : ICall
            throw new BO.BlDoesNotExistException($"The volunteer with id:{idVolunteer} does not exist");
 
         var openCalls = (from c in calls
-                         where CallManager.GetStatusCall(c) == BO.StatusCall.Open ||
-                         CallManager.GetStatusCall(c) == BO.StatusCall.OpenAtRisk &&
+                         where (CallManager.GetStatusCall(c) == BO.StatusCall.Open ||
+                         CallManager.GetStatusCall(c) == BO.StatusCall.OpenAtRisk )&&
                          vol.MaxDistanceForCall >= VolunteerManager.CalcDistance(vol.Address, c.CallAddress)
                          select c).ToList();
         var openCallsList = openCalls.Select(c => new BO.OpenCallInList

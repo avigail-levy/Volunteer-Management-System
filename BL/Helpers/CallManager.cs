@@ -50,7 +50,10 @@ namespace Helpers
         {
             DateTime now = AdminManager.Now;
             IEnumerable<DO.Assignment> assignmentsCall = s_dal.Assignment.ReadAll(assignment => assignment.CallId == call.Id);
-            if (AdminManager.Now > call.MaxTimeFinishCall && assignmentsCall.Any(a => a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.Handled))
+
+            if (now > call.MaxTimeFinishCall && !assignmentsCall.Any())
+                return BO.StatusCall.Expired;
+            if (now > call.MaxTimeFinishCall && assignmentsCall.Any(a => a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.Handled))
                 return BO.StatusCall.Expired;//Expired
             if (assignmentsCall.Any(a => a.TypeOfTreatmentTermination == DO.TypeOfTreatmentTermination.Handled))
                 return BO.StatusCall.Closed;//Closed

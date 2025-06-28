@@ -17,7 +17,7 @@ namespace DalTest
         {
             return new List<AddAddress>()
             {
-                                new AddAddress() {StringAddress="Herzl Street 1, Tel Aviv", Latitude=32.070446, Longitude=34.794667},
+                new AddAddress() {StringAddress="Herzl Street 1, Tel Aviv", Latitude=32.070446, Longitude=34.794667},
                 new AddAddress() {StringAddress="Rothschild Boulevard 16, Tel Aviv", Latitude=32.062819, Longitude=34.774061},
                 new AddAddress() {StringAddress="Ben Gurion Street 22, Ramat Gan", Latitude=32.084027, Longitude=34.812335},
                 new AddAddress() {StringAddress="Jaffa Street 31, Jerusalem", Latitude=31.785704, Longitude=35.211248},
