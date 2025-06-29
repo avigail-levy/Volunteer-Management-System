@@ -24,13 +24,15 @@ public static class Initialization
         string[] phones = { "0504133382", "0556726282", "0527175821", "0527175820", "0504160838", "0504156891",
         "0503133382", "0556724282", "0527175221", "0528175820", "0504160837", "0504756891",
         "0504113382", "0556723282", "0527575821"};
+        int[] ids = { 328462635, 327773271, 327883591, 327887048, 327934857, 328115522,
+            328118245, 328119425, 328128061, 328159801, 328177191, 328178371,328183934,328184304,328216437};
         // יצירת מתנדבים ושמירתם ב-DAL
         for (int i = 0; i < valunteerNames.Length; i++)
         {
             AddAddress randAddress = addresses[s_rand.Next(addresses.Count)];
             Volunteer newVolunteer = new ()
             {
-                Id = s_rand.Next(MIN_ID, MAX_ID), // מזהה אקראי
+                Id = ids[i], // מזהה אקראי
                 Name = valunteerNames[i], // שם המתנדב
                 Phone = phones[i], // טלפון המתנדב
                 Email = valunteerNames[i] + "@gmail.com", // אימייל אקראי
@@ -96,12 +98,15 @@ public static class Initialization
                 // זמן סיום טיפול (בין 30 דקות ל-48 שעות לאחר תחילת הטיפול)
                 endTimeOfTreatment = entryTimeOfTreatment.AddMinutes(s_rand.Next(30, 2880));
                 // אם זמן סיום הטיפול חורג מזמן הסיום המקסימלי, מוסיפים חריגה קטנה
-                endTimeOfTreatment = endTimeOfTreatment ?? call.MaxTimeFinishCall;
-                endTimeOfTreatment = endTimeOfTreatment!.Value.AddMinutes(s_rand.Next(30, 1440));
+                //endTimeOfTreatment = endTimeOfTreatment ?? call.MaxTimeFinishCall;
+                //endTimeOfTreatment = endTimeOfTreatment!.Value.AddMinutes(s_rand.Next(30, 1440));
             }
 
             // קביעה של סוג סיום הטיפול
-            TypeOfTreatmentTermination typeOfEndTreatment;
+            TypeOfTreatmentTermination? typeOfEndTreatment;
+            if(endTimeOfTreatment==null)
+                typeOfEndTreatment = null;
+            else 
             if (!isCompleted)
             {
                 // אם הקריאה לא טופלה, סוג הסיום יהיה "ביטול מנהל"
@@ -110,7 +115,8 @@ public static class Initialization
             else
             {
                 // אם הקריאה טופלה, סוג הסיום ייבחר באופן אקראי
-                typeOfEndTreatment = (TypeOfTreatmentTermination)s_rand.Next(0, Enum.GetValues(typeof(TypeOfTreatmentTermination)).Length);
+                //typeOfEndTreatment = (TypeOfTreatmentTermination)s_rand.Next(0, Enum.GetValues(typeof(TypeOfTreatmentTermination)).Length);
+                typeOfEndTreatment= TypeOfTreatmentTermination.Handled;
             }
 
             // יצירת אובייקט הקצאה חדש

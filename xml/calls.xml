@@ -331,16 +331,6 @@
     <MaxTimeFinishCall>2025-07-07T06:02:55</MaxTimeFinishCall>
   </Call>
   <Call>
-    <Id>59</Id>
-    <CallType>Ironing</CallType>
-    <CallAddress>בן גוריון 5, באר שבע</CallAddress>
-    <Latitude>31.2594802</Latitude>
-    <Longitude>34.8102351</Longitude>
-    <OpeningTime>2025-07-01T06:02:55</OpeningTime>
-    <CallDescription>ironing</CallDescription>
-    <MaxTimeFinishCall>2025-07-07T06:02:55</MaxTimeFinishCall>
-  </Call>
-  <Call>
     <Id>43</Id>
     <CallType>BabysitterServices</CallType>
     <CallAddress>שדרות טוביהו 125, באר שבע</CallAddress>
@@ -539,5 +529,15 @@
     <OpeningTime>2025-07-01T06:02:55</OpeningTime>
     <CallDescription>נקיון בית</CallDescription>
     <MaxTimeFinishCall>2025-07-10T06:02:55</MaxTimeFinishCall>
+  </Call>
+  <Call>
+    <Id>59</Id>
+    <CallType>Transportation</CallType>
+    <CallAddress>בן גוריון 5, באר שבע</CallAddress>
+    <Latitude>31.2594802</Latitude>
+    <Longitude>34.8102351</Longitude>
+    <OpeningTime>2025-07-01T06:02:55</OpeningTime>
+    <CallDescription>ironing</CallDescription>
+    <MaxTimeFinishCall>2025-07-07T06:02:55</MaxTimeFinishCall>
   </Call>
 </ArrayOfCall>

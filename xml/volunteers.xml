@@ -115,15 +115,11 @@
     <Latitude>32.084027</Latitude>
     <Longitude>34.812335</Longitude>
     <Password>Yael Harel0504756891</Password>
-    <Address>
-			הרצל 90, פתח תקווה
-		</Address>
+    <Address>הרצל 90, פתח תקווה</Address>
     <MaxDistanceForCall>39.56208495545746</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>
-			173645289
-		</Id>
+    <Id>173645289</Id>
     <Name>avigail levy</Name>
     <Phone>0556723282</Phone>
     <Email>avigail levy@gmail.com</Email>
@@ -133,9 +129,7 @@
     <Latitude>32.174547</Latitude>
     <Longitude>34.905562</Longitude>
     <Password>avigail levy0556723282</Password>
-    <Address>
-			יגאל אלון 37, תל אביב
-		</Address>
+    <Address>יגאל אלון 37, תל אביב</Address>
     <MaxDistanceForCall>17.25196002499853</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
@@ -149,9 +143,7 @@
     <Latitude>32.818271</Latitude>
     <Longitude>35.001148</Longitude>
     <Password>yaeli shushan0527575821</Password>
-    <Address>
-			העצמאות 63, בת ים
-		</Address>
+    <Address>העצמאות 63, בת ים</Address>
     <MaxDistanceForCall>40.50431861892058</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
@@ -198,16 +190,16 @@
   </Volunteer>
   <Volunteer>
     <Id>857362149</Id>
-    <Name>Miriam Azulay</Name>
+    <Name>Miri Azulay</Name>
     <Phone>0527175221</Phone>
     <Email>Miriam Azulay@gmail.com</Email>
     <Role>Volunteer</Role>
     <Active>true</Active>
     <DistanceType>TraveledByCar</DistanceType>
-    <Latitude>32.3325609</Latitude>
-    <Longitude>34.8588592</Longitude>
+    <Latitude />
+    <Longitude />
     <Password>Miriam Azulay0527175221</Password>
-    <Address>ויצמן 35, נתניה</Address>
+    <Address />
     <MaxDistanceForCall>20.920008077642482</MaxDistanceForCall>
   </Volunteer>
 </ArrayOfVolunteer>
