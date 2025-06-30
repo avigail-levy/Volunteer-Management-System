@@ -47,11 +47,16 @@ public class BlUnauthorizedException:Exception
 {
     public BlUnauthorizedException(string? message):base(message) { }
 }
+[Serializable]
 public class BlInvalidRequestException : Exception
 {
     public BlInvalidRequestException(string? message) : base(message) { }
     public BlInvalidRequestException(string? message, Exception ex) : base(message, ex) { }
 
 }
-
+[Serializable]
+public class BLTemporaryNotAvailableException : Exception
+{
+    public BLTemporaryNotAvailableException(string? message) : base(message) { }
+}
 

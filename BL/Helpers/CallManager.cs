@@ -8,9 +8,9 @@ namespace Helpers
         /// <summary>
         /// A function that updates assignments that expired of their calls so that the termination type is expired
         /// </summary>
-        internal static void PeriodicCallsUpdates()
+        internal static void PeriodicCallsUpdates(DateTime oldClock,DateTime newClock)
         {
-            var calls = s_dal.Call.ReadAll().Where(c => c.MaxTimeFinishCall > AdminManager.Now
+            var calls = s_dal.Call.ReadAll().Where(c => c.MaxTimeFinishCall > newClock
                    && GetStatusCall(c) != BO.StatusCall.Closed && GetStatusCall(c) != BO.StatusCall.Expired)
                   .Select(
                 call =>
@@ -32,9 +32,9 @@ namespace Helpers
                          0,
                          call.Id,
                          0,
-                         AdminManager.Now,
+                         newClock,
                          DO.TypeOfTreatmentTermination.CancellationExpired,
-                         AdminManager.Now);
+                         newClock);
                         s_dal.Assignment.Create(newDoAssign);
                     }
                     return 1;

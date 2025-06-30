@@ -40,18 +40,22 @@ internal class AdminImplementation : IAdmin
     /// <summary>
     /// Initialize the database.
     /// </summary>
-    public void InitializeDB()
+    public void InitializeDB() //stage 4
     {
-        AdminManager.InitializeDB();
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        AdminManager.InitializeDB(); //stage 7
     }
+
     /// <summary>
     /// Reset all configuration data (reset all configuration data to its initial value)
     /// Clear all entity data(clear all data lists)
     /// </summary>
-    public void ResetDB()
+    public void ResetDB() //stage 4
     {
-        AdminManager.ResetDB();
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        AdminManager.ResetDB(); //stage 7
     }
+
     /// <summary>
     /// Updates the value of the configuration variable "Risk Time Range" to the value received as a parameter
     /// </summary>

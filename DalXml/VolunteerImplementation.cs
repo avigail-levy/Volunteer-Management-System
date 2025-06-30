@@ -4,16 +4,18 @@ using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 internal class VolunteerImplementation : IVolunteer
 {/// <summary>
-/// help method
-/// </summary>
-/// <param name="v">volunteer</param>
-/// <returns>new volunteer</returns>
-/// <exception cref="FormatException"></exception>
+ /// help method
+ /// </summary>
+ /// <param name="v">volunteer</param>
+ /// <returns>new volunteer</returns>
+ /// <exception cref="FormatException"></exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     static Volunteer getVolunteer(XElement v)
     {
         return new DO.Volunteer()
@@ -39,6 +41,8 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="item">volunteer to create</param>
     /// <exception cref="Exception"></exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+
     public void Create(Volunteer item)
     {
 
@@ -68,6 +72,8 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="id">volunteer's id to delete</param>
     /// <exception cref="DO.DalDoesNotExistException"></exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+
     public void Delete(int id)
     {
 
@@ -83,6 +89,8 @@ internal class VolunteerImplementation : IVolunteer
     /// <summary>
     /// method to delete all the volunteers
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+
     public void DeleteAll()
     {
        XMLTools.SaveListToXMLSerializer(new List<Volunteer>(), Config.s_volunteers_xml);
@@ -93,6 +101,8 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="filter">boolian function to filter the data to be returned</param>
     /// <returns>the volunteer</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+
     public Volunteer? Read(Func<Volunteer, bool> filter)
     {
         return XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml).Elements().Select(v => getVolunteer(v)).FirstOrDefault(filter);
@@ -103,6 +113,8 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="id">volunteer's id to read</param>
     /// <returns>volunteer</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+
     public Volunteer? Read(int id)
     {
         XElement? volunteerElem =
@@ -115,6 +127,8 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="filter">boolian function to filter the data to be returned</param>
     /// <returns>all the volunteers</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+
     public IEnumerable<Volunteer> ReadAll(Func<Volunteer, bool>? filter = null)
     {
         List<Volunteer> Volunteers = XMLTools.LoadListFromXMLSerializer<Volunteer>(Config.s_volunteers_xml);
@@ -128,6 +142,8 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="item">item to update</param>
     /// <exception cref="DO.DalDoesNotExistException"></exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+
     public void Update(Volunteer item)
     {
         XElement volunteersRootElem = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);

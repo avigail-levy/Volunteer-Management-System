@@ -4,12 +4,14 @@ using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 internal class AssignmentImplementation : IAssignment
 {    /// <summary>
      /// method to create new assignment 
      /// </summary>
      /// <param name="item">new assignment to create</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
     public void Create(Assignment item)
     {
         List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
@@ -24,6 +26,8 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="id">assignment id</param>
     /// <exception cref="Exception"></exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+
     public void Delete(int id)
     {
         List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
@@ -35,6 +39,8 @@ internal class AssignmentImplementation : IAssignment
     /// <summary>
     /// method to delete all assignments
     /// </summary>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+
     public void DeleteAll()
     {
         XMLTools.SaveListToXMLSerializer(new List<Assignment>(), Config.s_assignments_xml );
@@ -45,6 +51,8 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="filter">boolian function to filter the data to be returned</param>
     /// <returns>one data</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+
     public Assignment? Read(Func<Assignment, bool> filter)
       => XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml).FirstOrDefault(filter);
 
@@ -53,6 +61,8 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="id">assignment id</param>
     /// <returns>the assignment</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+
     public Assignment? Read(int id)
     {
         return XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml).FirstOrDefault(assignment => assignment.Id == id);
@@ -63,6 +73,8 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="filter">boolian function to filter the data to be returned</param>
     /// <returns>all or part of the data</returns>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+
     public IEnumerable<Assignment> ReadAll(Func<Assignment, bool>? filter = null)
     {
         List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
@@ -76,6 +88,8 @@ internal class AssignmentImplementation : IAssignment
     /// </summary>
     /// <param name="item">call object to assignment</param>
     /// <exception cref="Exception"></exception>
+    [MethodImpl(MethodImplOptions.Synchronized)]
+
     public void Update(Assignment item)
     {
         List<Assignment> Assignments = XMLTools.LoadListFromXMLSerializer<Assignment>(Config.s_assignments_xml);
