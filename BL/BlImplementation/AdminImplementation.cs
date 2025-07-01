@@ -12,6 +12,7 @@ internal class AdminImplementation : IAdmin
     /// <param name="timeUnit">The unit of time for promotion</param>
     public void AdvanceClock(BO.TimeUnit timeUnit)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         switch (timeUnit)
         {
             case BO.TimeUnit.Minute: AdminManager.UpdateClock(AdminManager.Now.AddMinutes(1)); break;
@@ -62,6 +63,7 @@ internal class AdminImplementation : IAdmin
     /// <param name="newRiskRange">Risk time frame</param>
     public void SetRiskRange(TimeSpan newRiskRange)
     {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         AdminManager.RiskRange = newRiskRange;
     }
     #region Stage 5
@@ -74,5 +76,14 @@ internal class AdminImplementation : IAdmin
     public void RemoveConfigObserver(Action configObserver) =>
     AdminManager.ConfigUpdatedObservers -= configObserver;
     #endregion Stage 5
+
+    public void StartSimulator(int interval)  //stage 7
+    {
+        AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
+        AdminManager.Start(interval); //stage 7
+    }
+
+    public void StopSimulator()
+    => AdminManager.Stop(); //stage 7
 
 }

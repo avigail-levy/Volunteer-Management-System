@@ -48,9 +48,12 @@ namespace Helpers
         /// <returns>status call</returns>
         internal static BO.StatusCall GetStatusCall(DO.Call call)
         {
+            IEnumerable<DO.Assignment> assignmentsCall;
             DateTime now = AdminManager.Now;
-            IEnumerable<DO.Assignment> assignmentsCall = s_dal.Assignment.ReadAll(assignment => assignment.CallId == call.Id);
-
+            lock (AdminManager.BlMutex) //stage 7
+            {
+                 assignmentsCall = s_dal.Assignment.ReadAll(assignment => assignment.CallId == call.Id);
+            }
             if (now > call.MaxTimeFinishCall && !assignmentsCall.Any())
                 return BO.StatusCall.Expired;
             if (now > call.MaxTimeFinishCall && assignmentsCall.Any(a => a.TypeOfTreatmentTermination != DO.TypeOfTreatmentTermination.Handled))
