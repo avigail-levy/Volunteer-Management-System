@@ -151,7 +151,8 @@ namespace Helpers
         /// <returns>StatusCallInProgress</returns>
         internal static BO.StatusCallInProgress GetCallInProgress(DO.Call call)
         {
-            return call.MaxTimeFinishCall - AdminManager.Now > s_dal.Config.RiskRange ?
+            lock (AdminManager.BlMutex) //stage 7
+                return call.MaxTimeFinishCall - AdminManager.Now > s_dal.Config.RiskRange ?
                 BO.StatusCallInProgress.InTreatment : BO.StatusCallInProgress.InRiskTreatment;
         }
         /// <summary>
