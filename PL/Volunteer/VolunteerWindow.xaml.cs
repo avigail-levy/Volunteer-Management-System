@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Volunteer
 {
@@ -124,22 +125,36 @@ namespace PL.Volunteer
                 MessageBox.Show(ex.Message, "Error");
             }
         }
-        private void RefreshVolunteer()
+        //private void VolunteerObserver()
+        //{
+        //    int id = CurrentVolunteer!.Id;
+        //    CurrentVolunteer = null;
+        //    CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
+        //}
+
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
+        private void VolunteerObserver() //stage 7
         {
-            int id = CurrentVolunteer!.Id;
-            CurrentVolunteer = null;
-            CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    int id = CurrentVolunteer!.Id;
+                    CurrentVolunteer = null;
+                    CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
+                });
         }
+
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (CurrentVolunteer!.Id != 0)
-                s_bl.Volunteer.AddObserver(CurrentVolunteer!.Id, RefreshVolunteer);
+                s_bl.Volunteer.AddObserver(CurrentVolunteer!.Id, VolunteerObserver);
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
             if (CurrentVolunteer != null && CurrentVolunteer.Id != 0)
-                s_bl.Volunteer.RemoveObserver(CurrentVolunteer.Id, RefreshVolunteer);
+                s_bl.Volunteer.RemoveObserver(CurrentVolunteer.Id, VolunteerObserver);
         }
 
         private void ChooseCall_Btn_Click(object sender, RoutedEventArgs e)

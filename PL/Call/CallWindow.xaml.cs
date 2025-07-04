@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Call
 {
@@ -84,22 +85,36 @@ namespace PL.Call
             }
 
         }
-        private void RefreshCall()
+        //private void CallObserver()
+        //{
+        //    int id = CurrentCall!.Id;
+        //    CurrentCall = null;
+        //    CurrentCall = s_bl.Call.GetCallDetails(id);
+        //}
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
+
+        private void CallObserver() //stage 7
         {
-            int id = CurrentCall!.Id;
-            CurrentCall = null;
-            CurrentCall = s_bl.Call.GetCallDetails(id);
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+
+                    int id = CurrentCall!.Id;
+                    CurrentCall = null;
+                    CurrentCall = s_bl.Call.GetCallDetails(id);
+                });
         }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (CurrentCall!.Id != 0)
-                s_bl.Call.AddObserver(CurrentCall!.Id, RefreshCall);
+                s_bl.Call.AddObserver(CurrentCall!.Id, CallObserver);
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
             if (CurrentCall != null && CurrentCall.Id != 0)
-                s_bl.Call.RemoveObserver(CurrentCall!.Id, RefreshCall);
+                s_bl.Call.RemoveObserver(CurrentCall!.Id, CallObserver);
         }
     }
 }

@@ -13,7 +13,7 @@ internal class VolunteerImplementation : IVolunteer
     /// </summary>
     /// <param name="newBoVolunteer">An object of the logical entity type "volunteer"</param>
     /// <exception cref="BO.BlAlreadyExistsException">There is a volunteer with this id}</exception>
-    
+
     public void AddVolunteer(BO.Volunteer newBoVolunteer)
     {
         AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
@@ -29,6 +29,8 @@ internal class VolunteerImplementation : IVolunteer
         {
             throw new BO.BlAlreadyExistsException($"Volunteer with ID={newBoVolunteer.Id} already exists", ex);
         }
+        // חישוב אסינכרוני של קואורדינטות ברקע    שלב 7
+        _ = VolunteerManager.UpdateCoordinatesForVolunteerAddressAsync(doVolunteer);
     }
     /// <summary>
     /// Requests the record from the data layer and checks which fields have changed
@@ -46,14 +48,15 @@ internal class VolunteerImplementation : IVolunteer
         DO.Volunteer updatedDoVolunteer;
         lock (AdminManager.BlMutex) //stage 7
         {
-            DO.Volunteer doVolunteer
-            = _dal.Volunteer.Read(volunteer.Id) ?? throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteer.Id} does Not exist");
+            DO.Volunteer doVolunteer = _dal.Volunteer.Read(volunteer.Id) ??
+                throw new BO.BlDoesNotExistException($"Volunteer with ID={volunteer.Id} does Not exist");
+
             DO.Volunteer requester = _dal.Volunteer.Read(idRequester)!;
 
             if (requester.Role != DO.Role.Manager && idRequester != volunteer.Id)
                 throw new BO.BlUnauthorizedException("Only a manager can update the volunteer's role");
-               updatedDoVolunteer = VolunteerManager.CreateDoVolunteer(volunteer,
-                requester.Role == DO.Role.Manager ? (DO.Role)volunteer.Role : null);
+            updatedDoVolunteer = VolunteerManager.CreateDoVolunteer(volunteer,
+             requester.Role == DO.Role.Manager ? (DO.Role)volunteer.Role : null);
 
             try
             {
@@ -65,10 +68,12 @@ internal class VolunteerImplementation : IVolunteer
             {
                 throw new BO.BlCantUpdateException($"volunteer with ID={volunteer.Id} does not exists", ex);
             }
+
         }
-           
+
         VolunteerManager.Observers.NotifyItemUpdated(updatedDoVolunteer.Id); //stage 5
         VolunteerManager.Observers.NotifyListUpdated(); //stage 5
+        _ = VolunteerManager.UpdateCoordinatesForVolunteerAddressAsync(updatedDoVolunteer);
     }
     /// <summary>
     /// Requesting a request to the data layer to check if the volunteer can be deleted
@@ -87,17 +92,17 @@ internal class VolunteerImplementation : IVolunteer
             try
             {
                 _dal.Volunteer.Delete(idVolunteer);
-              
+
 
             }
             catch (DO.DalDoesNotExistException ex)
             {
                 throw new BO.BlCantDeleteException("It is not possible to delete the volunteer", ex);
             }
-        } 
+        }
         VolunteerManager.Observers.NotifyListUpdated(); //stage 5
     }
-  
+
     /// <summary>
     /// Please refer to the data layer (Read) to obtain details about the volunteer and the read he/she is handling (if any).
     /// </summary>
@@ -141,7 +146,7 @@ internal class VolunteerImplementation : IVolunteer
                     OpeningTime = call.OpeningTime,
                     MaxTimeFinishCall = call.MaxTimeFinishCall,
                     EntryTimeForTreatment = assignInTreatment.EntryTimeForTreatment,
-                    CallingDistanceFromTreatingVolunteer = VolunteerManager.CalcDistance(vol.Address, call.CallAddress),
+                    CallingDistanceFromTreatingVolunteer = Tools.CalcDistance(vol, call),
                     StatusCalling = VolunteerManager.GetCallInProgress(call),
                 } : null,
 
@@ -156,7 +161,7 @@ internal class VolunteerImplementation : IVolunteer
     /// <param name="username">user name</param>
     /// <returns>the role of volunteer</returns>
     /// <exception cref="BO.BlDoesNotExistException">the volunteer does not exist</exception>
-    public BO.Role Login(int id,string password) 
+    public BO.Role Login(int id, string password)
     {
         lock (AdminManager.BlMutex)
         { //stage 7
@@ -179,30 +184,30 @@ internal class VolunteerImplementation : IVolunteer
         lock (AdminManager.BlMutex) //stage 7
             volunteers = _dal.Volunteer.ReadAll();
 
-          var volsInList = volunteers.Select(v =>
-          {
-              IEnumerable<DO.Assignment> assignVol;
-              DO.Assignment? assignInTreatment;
-              DO.Call? call;
-              lock (AdminManager.BlMutex) //stage 7
-              {
-                   assignVol = _dal.Assignment.ReadAll(a => a.VolunteerId == v.Id);
-                  assignInTreatment = VolunteerManager.GetCallInTreatment(v.Id);
-                  call = AssignmentManager.GetCallByAssignment(assignInTreatment);
-              }
-              return new BO.VolunteerInList
-              {
-                  Id = v.Id,
-                  Name = v.Name,
-                  Active = v.Active,
-                  TotalCallsHandledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.Handled, assignVol),
-                  TotalCallsCanceledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.SelfCancellation, assignVol)
-                  + VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancelAdministrator, assignVol),
-                  TotalExpiredCallingsByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancellationExpired, assignVol),
-                  IDCallInHisCare = call?.Id,
-                  CallType = (BO.CallType?)call?.CallType ?? BO.CallType.None
-              };
-          });
+        var volsInList = volunteers.Select(v =>
+        {
+            IEnumerable<DO.Assignment> assignVol;
+            DO.Assignment? assignInTreatment;
+            DO.Call? call;
+            lock (AdminManager.BlMutex) //stage 7
+            {
+                assignVol = _dal.Assignment.ReadAll(a => a.VolunteerId == v.Id);
+                assignInTreatment = VolunteerManager.GetCallInTreatment(v.Id);
+                call = AssignmentManager.GetCallByAssignment(assignInTreatment);
+            }
+            return new BO.VolunteerInList
+            {
+                Id = v.Id,
+                Name = v.Name,
+                Active = v.Active,
+                TotalCallsHandledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.Handled, assignVol),
+                TotalCallsCanceledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.SelfCancellation, assignVol)
+                + VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancelAdministrator, assignVol),
+                TotalExpiredCallingsByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancellationExpired, assignVol),
+                IDCallInHisCare = call?.Id,
+                CallType = (BO.CallType?)call?.CallType ?? BO.CallType.None
+            };
+        });
 
         var propertyFilter = filterByAttribute != null ? typeof(BO.VolunteerInList).GetProperty(filterByAttribute.ToString()!) : null;
 
@@ -218,12 +223,12 @@ internal class VolunteerImplementation : IVolunteer
 
         volsInList = sortByAttribute != null ?
                 (from v in volsInList
-                orderby propertySort!.GetValue(v, null)
-                select v).ToList()
+                 orderby propertySort!.GetValue(v, null)
+                 select v).ToList()
                 :
                 (from v in volsInList
-                orderby v.Id
-                select v).ToList();
+                 orderby v.Id
+                 select v).ToList();
 
         return volsInList;
     }

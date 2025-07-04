@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Call
 {
@@ -44,8 +45,19 @@ namespace PL.Call
          => ClosedCallsList = (CallType == BO.CallType.None) ?
                 s_bl?.Call.ClosedCallsListHandledByVolunteer(CurrentId, null, Attribute)! : s_bl?.Call.ClosedCallsListHandledByVolunteer(CurrentId, CallType, Attribute)!;
 
-        private void ClosedCallListObserver()
-           => queryClosedCallList();
+        //private void ClosedCallListObserver()
+        //   => queryClosedCallList();
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
+
+        private void ClosedCallListObserver() //stage 7
+        {
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    queryClosedCallList();
+                });
+        }
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
           => s_bl.Call.AddObserver(ClosedCallListObserver);

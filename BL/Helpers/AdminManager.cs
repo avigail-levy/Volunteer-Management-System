@@ -144,6 +144,7 @@
 
 //}
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Helpers;
@@ -187,7 +188,7 @@ internal static class AdminManager //stage 4
         {
             s_dal.ResetDB();
             AdminManager.UpdateClock(AdminManager.Now); //stage 5 - needed since we want the label on Pl to be updated
-            AdminManager.RiskRange = AdminManager.RiskRange; // stage 5 - needed to update PL 
+            AdminManager.RiskRange = AdminManager.RiskRange; // stage 5 - needed to update PL
         }
     }
 
@@ -197,7 +198,7 @@ internal static class AdminManager //stage 4
         {
             DalTest.Initialization.Do();
             AdminManager.UpdateClock(AdminManager.Now);  //stage 5 - needed since we want the label on Pl to be updated
-            AdminManager.RiskRange = AdminManager.RiskRange; // stage 5 - needed for update the PL 
+            AdminManager.RiskRange = AdminManager.RiskRange; // stage 5 - needed for update the PL
         }
     }
 
@@ -246,18 +247,18 @@ internal static class AdminManager //stage 4
     private static int s_interval = 1;
     /// <summary>
     /// The flag that signs whether simulator is running
-    /// 
+    ///
     private static volatile bool s_stop = false;
 
 
-    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7                                                 
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7                                                
     public static void ThrowOnSimulatorIsRunning()
     {
         if (s_thread is not null)
             throw new BO.BLTemporaryNotAvailableException("Cannot perform the operation since Simulator is running");
     }
 
-    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7                                                 
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7                                                
     internal static void Start(int interval)
     {
         if (s_thread is null)
@@ -269,7 +270,7 @@ internal static class AdminManager //stage 4
         }
     }
 
-    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7                                                 
+    [MethodImpl(MethodImplOptions.Synchronized)] //stage 7                                                
     internal static void Stop()
     {
         if (s_thread is not null)
@@ -293,7 +294,7 @@ internal static class AdminManager //stage 4
             //Add calls here to any logic simulation that was required in stage 7
             //for example: course registration simulation
             if (_simulateTask is null || _simulateTask.IsCompleted)//stage 7
-                _simulateTask = Task.Run(() => StudentManager.SimulateCourseRegistrationAndGrade());
+                _simulateTask = Task.Run(() => VolunteerManager.VolunteerActivitySimulation());
 
             //etc...
 

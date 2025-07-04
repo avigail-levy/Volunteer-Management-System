@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Call
 {
@@ -59,8 +60,19 @@ namespace PL.Call
                CallList : CallList.Where(c => c.StatusCall == Status);
         }
 
-        private void callListObserver()
-           => queryCallList();
+        //private void callListObserver()
+        //   => queryCallList();
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
+
+        private void callListObserver() //stage 7
+        {
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    queryCallList();
+                });
+        }
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
           => s_bl.Call.AddObserver(callListObserver);
@@ -72,7 +84,7 @@ namespace PL.Call
         {
             new CallWindow().Show();
         }
-        private void lsvCallsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void callsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var s = SelectedCall;
             if (SelectedCall?.CallId != null)

@@ -28,7 +28,7 @@
         ///call update in data layer
         /// </summary>
         /// <param name="call">Object of the logical entity type "Call" BO.Call</param>
-        void UpdateCallDetails( BO.Call call);
+        Task UpdateCallDetails(BO.Call call);
         /// <summary>
         /// call deletion request
         /// </summary>
@@ -39,7 +39,7 @@
         ///Attempts to request the addition of the new call to the data layer
         /// </summary>
         /// <param name="newBoCall">Object of the logical entity type "Call" BO.Call</param>
-        void AddCall(BO.Call newBoCall);
+        Task AddCall(BO.Call newBoCall);
         /// <summary>
         /// Returns a list filtered by the ID of that volunteer - all closed calls for that volunteer
         ///Calls closed for any type of treatment termination

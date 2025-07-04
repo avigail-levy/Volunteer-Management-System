@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Volunteer
 {
@@ -45,8 +46,19 @@ namespace PL.Volunteer
          => VolunteerList = (CallType == BO.CallType.None) ?
                 s_bl?.Volunteer.GetVolunteersList(null,null, Attribute)! : s_bl?.Volunteer.GetVolunteersList(BO.VolunteerInListAttributes.CallType, CallType, Attribute)!;
 
-        private void volunteerListObserver()
-           => queryVolunteerList();
+        //private void volunteerListObserver()
+        //   => queryVolunteerList();
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
+
+        private void volunteerListObserver() //stage 7
+        {
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    queryVolunteerList();
+                });
+        }
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
           => s_bl.Volunteer.AddObserver(volunteerListObserver);

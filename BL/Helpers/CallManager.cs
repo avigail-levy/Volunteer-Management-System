@@ -1,6 +1,7 @@
 ﻿using DalApi;
-namespace Helpers
-{
+using System;
+namespace Helpers {
+
     internal static class CallManager
     {
         internal static ObserverManager Observers = new(); //stage 5
@@ -8,39 +9,93 @@ namespace Helpers
         /// <summary>
         /// A function that updates assignments that expired of their calls so that the termination type is expired
         /// </summary>
-        internal static void PeriodicCallsUpdates(DateTime oldClock,DateTime newClock)
+        //internal static void PeriodicCallsUpdates(DateTime oldClock,DateTime newClock)
+        //{
+        //    var calls = s_dal.Call.ReadAll().Where(c => c.MaxTimeFinishCall < newClock
+        //           && GetStatusCall(c) != BO.StatusCall.Closed && GetStatusCall(c) != BO.StatusCall.Expired)
+        //          .Select(
+        //        call =>
+        //        {
+        //            var assin = (from a in s_dal.Assignment.ReadAll(a => a.CallId == call.Id)
+        //                         where a.TypeOfTreatmentTermination is null
+        //                         select a).FirstOrDefault();
+        //            DO.Assignment newDoAssign;
+        //            if (assin is not null)
+        //            {
+        //                s_dal.Assignment.Update(CreateDoAssignment(assin, DO.TypeOfTreatmentTermination.CancellationExpired));
+        //                Observers.NotifyItemUpdated(assin.Id);
+        //                Observers.NotifyListUpdated();
+        //            }
+        //            else
+        //            {
+        //                newDoAssign = new(
+        //                 0,
+        //                 call.Id,
+        //                 0,
+        //                 newClock,
+        //                 DO.TypeOfTreatmentTermination.CancellationExpired,
+        //                 newClock);
+        //                s_dal.Assignment.Create(newDoAssign);
+        //            }
+        //            return 1;
+        //        }
+        //        );
+        //}
+        internal static void PeriodicCallsUpdates(DateTime oldClock, DateTime newClock)
         {
-            var calls = s_dal.Call.ReadAll().Where(c => c.MaxTimeFinishCall > newClock
-                   && GetStatusCall(c) != BO.StatusCall.Closed && GetStatusCall(c) != BO.StatusCall.Expired)
-                  .Select(
-                call =>
+            var calls = new List<DO.Call>();
+            lock (AdminManager.BlMutex)
+            {
+                calls = s_dal.Call.ReadAll()
+                    .Where(c => c.MaxTimeFinishCall < newClock &&
+                                GetStatusCall(c) != BO.StatusCall.Closed &&
+                                GetStatusCall(c) != BO.StatusCall.Expired)
+                    .ToList();
+            }
+
+            calls.Select(call =>
+            {
+                DO.Assignment? assin = null;
+                bool updated = false;
+                int? updatedId = null;
+
+                lock (AdminManager.BlMutex)
                 {
-                    var assin = (from a in s_dal.Assignment.ReadAll(a => a.CallId == call.Id)
-                                 where a.TypeOfTreatmentTermination is null
-                                 select a).FirstOrDefault();
-                    DO.Assignment newDoAssign;
+                    assin = s_dal.Assignment
+                        .ReadAll(a => a.CallId == call.Id)
+                        .FirstOrDefault(a => a.TypeOfTreatmentTermination is null);
+
                     if (assin is not null)
                     {
                         s_dal.Assignment.Update(CreateDoAssignment(assin, DO.TypeOfTreatmentTermination.CancellationExpired));
-                        Observers.NotifyItemUpdated(assin.Id);
-                        Observers.NotifyListUpdated();
-
+                        updated = true;
+                        updatedId = assin.Id;
                     }
                     else
                     {
-                        newDoAssign = new(
-                         0,
-                         call.Id,
-                         0,
-                         newClock,
-                         DO.TypeOfTreatmentTermination.CancellationExpired,
-                         newClock);
+                        DO.Assignment newDoAssign = new(
+                            0,
+                            call.Id,
+                            0,
+                            newClock,
+                            DO.TypeOfTreatmentTermination.CancellationExpired,
+                            newClock);
+
                         s_dal.Assignment.Create(newDoAssign);
+                        updated = false;
                     }
-                    return 1;
                 }
-                );
+
+                if (updated && updatedId.HasValue)
+                {
+                    Observers.NotifyItemUpdated(updatedId.Value);
+                    Observers.NotifyListUpdated();
+                }
+
+                return 1;
+            }).ToList();
         }
+
         /// <summary>
         /// A function that finds and returns the status of a specific call.
         /// </summary>
@@ -52,7 +107,7 @@ namespace Helpers
             DateTime now = AdminManager.Now;
             lock (AdminManager.BlMutex) //stage 7
             {
-                 assignmentsCall = s_dal.Assignment.ReadAll(assignment => assignment.CallId == call.Id);
+                assignmentsCall = s_dal.Assignment.ReadAll(assignment => assignment.CallId == call.Id);
             }
             if (now > call.MaxTimeFinishCall && !assignmentsCall.Any())
                 return BO.StatusCall.Expired;
@@ -90,11 +145,15 @@ namespace Helpers
         /// <param name="add">Boolean parameter if the object to be added is true or updated is false</param>
         /// <returns>DO.Call type call</returns>
         /// <exception cref="BO.BlInvalidValueException">address is invalid</exception>
-        internal static DO.Call CreateDoCall(BO.Call call, bool add = false)
+        internal static async Task<DO.Call> CreateDoCall(BO.Call call, bool add = false)
         {
-            double[]? latlon = VolunteerManager.CalcCoordinates(call.CallAddress) ?? throw new BO.BlInvalidValueException("invalid address");
+            double[]? latlon = await Tools.CalcCoordinates(call.CallAddress)
+                ?? throw new BO.BlInvalidValueException("invalid address");
+
             ValidCall(call);
+
             DateTime openingTime = add ? AdminManager.Now : call.OpeningTime;
+
             DO.Call doCall = new(
                 call.Id,
                 (DO.CallType)call.CallType,
@@ -105,8 +164,10 @@ namespace Helpers
                 call.CallDescription,
                 call.MaxTimeFinishCall
             );
+
             return doCall;
         }
+
         /// <summary>
         /// A function that sorts and filters a call list
         /// </summary>
@@ -120,11 +181,11 @@ namespace Helpers
             if (filterValue != null)
             {
 
-                var callTypeProperty = typeof(T).GetProperty("CallType") ;
+                var callTypeProperty = typeof(T).GetProperty("CallType");
 
-                    calls = calls
-                        .Where(item => callTypeProperty!.GetValue(item)?.Equals((BO.CallType)filterValue!) == true)
-                        .ToList();
+                calls = calls
+                    .Where(item => callTypeProperty!.GetValue(item)?.Equals((BO.CallType)filterValue!) == true)
+                    .ToList();
             }
 
             if (sortByAttributeObj != null)
@@ -134,12 +195,12 @@ namespace Helpers
                 //var propertySort = sortByAttributeObj?.GetType().GetProperty(sortByAttributeObj.ToString()!);
                 calls = propertySort != null ?
                     (from c in calls
-                    orderby propertySort.GetValue(c, null)
-                    select c).ToList()
+                     orderby propertySort.GetValue(c, null)
+                     select c).ToList()
                     :
                     (from c in calls
                      orderby typeof(T).GetProperty("Id")!.GetValue(c, null)
-                     select c).ToList() ;
+                     select c).ToList();
 
             }
             return calls;
@@ -152,7 +213,7 @@ namespace Helpers
         /// <returns>DO assignment</returns>
         internal static DO.Assignment CreateDoAssignment(DO.Assignment assignment, DO.TypeOfTreatmentTermination type)
         {
-            DateTime? endTime = type == DO.TypeOfTreatmentTermination.CancellationExpired ?null:AdminManager.Now;
+            DateTime? endTime = type == DO.TypeOfTreatmentTermination.CancellationExpired ? null : AdminManager.Now;
             return new(
                 assignment.Id,
                 assignment.CallId,
@@ -161,6 +222,23 @@ namespace Helpers
                 type,
                 endTime
                 );
+        }
+
+        public static async Task UpdateCoordinatesForCallAddressAsync(DO.Call doCall)
+        {
+            if (doCall.CallAddress is not null)
+            {
+                double[]? loc = await Tools.CalcCoordinates(doCall.CallAddress);
+                if (loc is not null)
+                {
+                    doCall = doCall with { Latitude = loc[0], Longitude = loc[1] };
+                    lock (AdminManager.BlMutex)
+                        s_dal.Call.Update(doCall);
+                    Observers.NotifyListUpdated();
+                    Observers.NotifyItemUpdated(doCall.Id);
+                }
+
+            }
         }
     }
 }

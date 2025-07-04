@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL.Call
 {
@@ -66,8 +67,20 @@ namespace PL.Call
          => OpenCallList = (CallType == BO.CallType.None) ?
                 s_bl?.Call.OpenCallsListSelectedByVolunteer(currentId, null, Attribute)! : s_bl?.Call.OpenCallsListSelectedByVolunteer(currentId, CallType, Attribute)!;
 
-        private void openCallListObserver()
-           => queryOpenCallList();
+        //private void openCallListObserver()
+        //   => queryOpenCallList();
+
+        private volatile DispatcherOperation? _observerOperation = null; //stage 7
+
+        private void openCallListObserver() //stage 7
+        {
+            if (_observerOperation is null || _observerOperation.Status == DispatcherOperationStatus.Completed)
+                _observerOperation = Dispatcher.BeginInvoke(() =>
+                {
+                    queryOpenCallList();
+                });
+        }
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
           => s_bl.Call.AddObserver(openCallListObserver);
@@ -99,7 +112,6 @@ namespace PL.Call
             }
 
         }
-
         private void UpdateAddress_click(object sender, RoutedEventArgs e)
         {
             s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer!.Id,

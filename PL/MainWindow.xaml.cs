@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace PL
 {
@@ -53,14 +54,48 @@ namespace PL
             InitializeComponent();
         }
 
-        private void clockObserver()
+        //private void clockObserver()
+        //{
+        //    CurrentTime = s_bl.Admin.GetClock();
+        //}
+        //private void configObserver()
+        //{
+        //    CurrentRiskRange = s_bl.Admin.GetRiskRange();
+        //}
+        //private void callByStatusObserver()
+        //{
+        //    CallByStatus = s_bl.Call.GetCallQuantitiesByStatus();
+        //}
+        private volatile DispatcherOperation? _observerOperationClock = null; //stage 7
+        private volatile DispatcherOperation? _observerOperationConfig = null; //stage 7
+        private volatile DispatcherOperation? _observerOperationCallByStatus = null; //stage 7
+
+        private void clockObserver() //stage 7
         {
-            CurrentTime = s_bl.Admin.GetClock();
+            if (_observerOperationClock is null || _observerOperationClock.Status == DispatcherOperationStatus.Completed)
+                _observerOperationClock = Dispatcher.BeginInvoke(() =>
+                {
+                    CurrentTime = s_bl.Admin.GetClock();
+                });
         }
-        private void configObserver()
+
+        private void configObserver() //stage 7
         {
-            CurrentRiskRange = s_bl.Admin.GetRiskRange();
+            if (_observerOperationConfig is null || _observerOperationConfig.Status == DispatcherOperationStatus.Completed)
+                _observerOperationConfig = Dispatcher.BeginInvoke(() =>
+                {
+                    CurrentRiskRange = s_bl.Admin.GetRiskRange();
+                });
         }
+        private void callByStatusObserver() //stage 7
+        {
+            if (_observerOperationCallByStatus is null || _observerOperationCallByStatus.Status == DispatcherOperationStatus.Completed)
+                _observerOperationCallByStatus = Dispatcher.BeginInvoke(() =>
+                {
+                    CallByStatus = s_bl.Call.GetCallQuantitiesByStatus();
+                });
+        }
+
         //functions to advnce time
         private void btnAddOneMinute_Click(object sender, RoutedEventArgs e)
         {
@@ -88,10 +123,6 @@ namespace PL
             s_bl.Admin.SetRiskRange(CurrentRiskRange);
         }
 
-        private void callByStatusObserver()
-        {
-            CallByStatus = s_bl.Call.GetCallQuantitiesByStatus();
-        }
         private void window_Loaded(object sender, RoutedEventArgs e)
         {
             CurrentTime = s_bl.Admin.GetClock();

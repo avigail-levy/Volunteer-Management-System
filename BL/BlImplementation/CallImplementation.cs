@@ -1,11 +1,8 @@
-﻿using BO;
-using Helpers;
-
+﻿using Helpers;
 using BlApi;
 using Helpers;
 using System.Text;
 using System;
-using BO;
 namespace BlImplementation;
 
 internal class CallImplementation : ICall
@@ -16,12 +13,12 @@ internal class CallImplementation : ICall
     ///Attempts to request the addition of the new call to the data layer
     /// </summary>
     /// <param name="newBoCall">Object of the logical entity type "Call" BO.Call</param>
-    public void AddCall(BO.Call newBoCall)
+    public async Task AddCall(BO.Call newBoCall)
     {
         AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
         if (newBoCall.MaxTimeFinishCall < AdminManager.Now || newBoCall.MaxTimeFinishCall < newBoCall.OpeningTime)
             throw new BO.BlInvalidValueException("OpeningTime value of call is not valid");
-        DO.Call doCall = CallManager.CreateDoCall(newBoCall, true);
+        DO.Call doCall = await CallManager.CreateDoCall(newBoCall, true);
         try
         {
             lock (AdminManager.BlMutex) //stage 7
@@ -33,6 +30,8 @@ internal class CallImplementation : ICall
         {
             throw new BO.BlAlreadyExistsException($"Call with ID={newBoCall.Id} already exists", ex);
         }
+        //_ = CallManager.UpdateCoordinatesForCallAddressAsync(doCall);
+
     }
     /// <summary>
     /// update call details
@@ -40,10 +39,11 @@ internal class CallImplementation : ICall
     /// <param name="call">Object of the logical entity type "Call" BO.Call</param>
     /// <exception cref="BO.BlInvalidValueException">Invalid value exception</exception>
     /// <exception cref="BO.BlDoesNotExistException">Call does not exist exception</exception>
-    public void UpdateCallDetails(BO.Call call)
+    public async Task UpdateCallDetails(BO.Call call)
     {
         AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
-        DO.Call doCall = CallManager.CreateDoCall(call);
+        DO.Call doCall = await CallManager.CreateDoCall(call);
+
         try
         {
             lock (AdminManager.BlMutex) //stage 7
@@ -135,7 +135,7 @@ internal class CallImplementation : ICall
         var openCalls = (from c in calls
                          where (CallManager.GetStatusCall(c) == BO.StatusCall.Open ||
                                 CallManager.GetStatusCall(c) == BO.StatusCall.OpenAtRisk) &&
-                               vol.MaxDistanceForCall >= VolunteerManager.CalcDistance(vol.Address, c.CallAddress)
+                               vol.MaxDistanceForCall >= Tools.CalcDistance(vol, c)
                          select c).ToList();
 
         var openCallsList = openCalls.Select(c => new BO.OpenCallInList
@@ -146,7 +146,7 @@ internal class CallImplementation : ICall
             CallAddress = c.CallAddress,
             OpeningTime = c.OpeningTime,
             MaxTimeFinishCall = c.MaxTimeFinishCall,
-            CallingDistanceFromTreatingVolunteer = VolunteerManager.CalcDistance(vol.Address, c.CallAddress)
+            CallingDistanceFromTreatingVolunteer = Tools.CalcDistance(vol, c)
         });
 
         openCallsList = CallManager.FilterAndSortCalls(openCallsList, filterByAttribute, sortByAttribute);
@@ -197,7 +197,7 @@ internal class CallImplementation : ICall
             };
         });
 
-        closeCallsInlist = CallManager.FilterAndSortCalls<ClosedCallInList>(closeCallsInlist, filterByAttribute, sortByAttribute);
+        closeCallsInlist = CallManager.FilterAndSortCalls<BO.ClosedCallInList>(closeCallsInlist, filterByAttribute, sortByAttribute);
         return closeCallsInlist;
     }
 
@@ -278,7 +278,7 @@ internal class CallImplementation : ICall
         int[] callCounts = new int[Enum.GetValues(typeof(BO.StatusCall)).Length];
         IEnumerable<DO.Call> calls;
         lock (AdminManager.BlMutex) //stage 7
-             calls = _dal.Call.ReadAll();
+            calls = _dal.Call.ReadAll();
         var callsByStatus = calls.GroupBy(CallManager.GetStatusCall)
             .ToDictionary(group => (int)group.Key, group => group.Count());
 
@@ -316,7 +316,7 @@ internal class CallImplementation : ICall
                              allAssign.OrderByDescending(a => a.EndOfTreatmentTime).FirstOrDefault();
 
                 volunteerName = _dal.Volunteer.Read(lastAssign?.VolunteerId ?? 0)?.Name;
-                statusCall = CallManager.GetStatusCall(c); // אם ניגש ל־DAL
+                statusCall = CallManager.GetStatusCall(c);
             }
 
             return new BO.CallInList
@@ -472,6 +472,5 @@ internal class CallImplementation : ICall
     public void RemoveObserver(int id, Action observer) =>
     CallManager.Observers.RemoveObserver(id, observer); //stage 5
     #endregion Stage 5
-
 
 }

@@ -1,4 +1,9 @@
-﻿using DalApi;
+﻿using BlApi;
+using DalApi;
+using DO;
+using Helpers;
+using System;
+using System.ComponentModel.Design;
 using System.Net;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -7,17 +12,20 @@ namespace Helpers
     internal static class VolunteerManager
     {
         internal static ObserverManager Observers = new(); //stage 5
+
+        private static IDal s_dal = DalApi.Factory.Get; //stage 4
+        private static IBl s_bl = BlApi.Factory.Get();
         private class OSMGeocodeResponse
         {
             public string display_name { get; set; }
         }
-        private static IDal s_dal = Factory.Get; //stage 4
         /// <summary>
         /// Function to check the correctness of volunteer details
         /// </summary>
         /// <param name="volunteer">Volunteer for testing</param>
         /// <returns>true if correct</returns>
         /// <exception cref="BO.BlInvalidValueException">Invalid volunteer details</exception>
+
         public static bool IntegrityCheck(BO.Volunteer volunteer)
         {
             if (volunteer.MaxDistanceForCall < 0)
@@ -57,77 +65,7 @@ namespace Helpers
             }
             return sum % 10 == 0;
         }
-        /// <summary>
-        /// Function to convert degrees to radians
-        /// </summary>
-        /// <param name="degrees">Degrees to convert: double</param>
-        /// <returns>Degrees in radians</returns>
-        internal static double DegreesToRadians(double degrees)
-        {
-            return degrees * Math.PI / 180;
-        }
-        /// <summary>
-        /// Function that calculates the longitude and latitude of an address
-        /// </summary>
-        /// <param name="address">Address for calculation: string</param>
-        /// <returns>An array of length 2 where the first index is width and the second index is length</returns>
-        public static double[]? CalcCoordinates(string address)
-        {
-            if (string.IsNullOrWhiteSpace(address))
-            {
-                return null;
-            }
-            string link = $"https://geocode.maps.co/search?q={Uri.EscapeDataString(address)}&api_key=679a8da6c01a6853187846vomb04142";
 
-            try
-            {
-                using (WebClient client = new WebClient())
-                {
-                    string response = client.DownloadString(link);
-                    var result = JsonSerializer.Deserialize<GeocodeResponse[]>(response);
-                    if (result == null || result.Length == 0)
-                    {
-                        throw new BO.BlInvalidValueException("Invalid address.");
-                    }
-                    double latitude = double.Parse(result[0].lat);
-                    double longitude = double.Parse(result[0].lon);
-                    return [latitude, longitude];
-                }
-            }
-            catch 
-            {
-                return null;
-            }
-        }
-        public class GeocodeResponse
-        {
-            public string lat { get; set; }
-            public string lon { get; set; }
-        }
-        /// <summary>
-        /// Function to calculate distance between volunteer and call
-        /// </summary>
-        /// <param name="addressVol">Volunteer address</param>
-        /// <param name="addressCall">Call address</param>
-        /// <returns>distance</returns>
-        /// <exception cref="BO.BlInvalidValueException">Invalid addresses</exception>
-        internal static double CalcDistance(string? addressVol,string addressCall)
-        {
-            if (addressVol == null)
-               throw new BO.BlInvalidValueException("the value of volunteer address can not be null");
-            double []? volunteerLonLat = CalcCoordinates(addressVol);
-            double[]? callLonLat = CalcCoordinates(addressCall);
-            if (volunteerLonLat?[0] == null || volunteerLonLat?[1] == null || callLonLat?[1]==null || callLonLat?[0]==null) 
-                return 0;
-            const double R = 6371; // רדיוס כדור הארץ בק"מ
-            double dLat = DegreesToRadians(volunteerLonLat[0] - callLonLat[0]);
-            double dLon = DegreesToRadians(volunteerLonLat[1] - callLonLat[1]);
-            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-                       Math.Cos(DegreesToRadians(callLonLat[0])) * Math.Cos(DegreesToRadians(volunteerLonLat[0])) *
-                       Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
-            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-            return R * c; // המרחק בקילומטרים
-        }
         /// <summary>
         /// The assignment that volunteer handles
         /// </summary>
@@ -135,14 +73,17 @@ namespace Helpers
         /// <returns>DO.Assignment</returns>
         internal static DO.Assignment? GetCallInTreatment(int idVol)
         {
-            var assignVol = s_dal.Assignment.ReadAll(a => a.VolunteerId == idVol);
-            DO.Assignment? assignInTreatment = (from a in assignVol
-                                                let call = s_dal.Call.Read(a.CallId)
-                                                where call != null &&
-                                                      (CallManager.GetStatusCall(call) == BO.StatusCall.InTreatment ||
-                                                       CallManager.GetStatusCall(call) == BO.StatusCall.InTreatmentAtRisk)
-                                                select a).FirstOrDefault();
-            return assignInTreatment;
+            lock (AdminManager.BlMutex) //stage 7
+            {
+                var assignVol = s_dal.Assignment.ReadAll(a => a.VolunteerId == idVol);
+                DO.Assignment? assignInTreatment = (from a in assignVol
+                                                    let call = s_dal.Call.Read(a.CallId)
+                                                    where call != null &&
+                                                          (CallManager.GetStatusCall(call) == BO.StatusCall.InTreatment ||
+                                                           CallManager.GetStatusCall(call) == BO.StatusCall.InTreatmentAtRisk)
+                                                    select a).FirstOrDefault();
+                return assignInTreatment;
+            }
         }
         /// <summary>
         /// Call status in treatment
@@ -176,7 +117,7 @@ namespace Helpers
         /// <returns>DO.Volunteer</returns>
         internal static DO.Volunteer CreateDoVolunteer(BO.Volunteer volunteer, DO.Role? role = null)
         {
-            double[]? latlon = CalcCoordinates(volunteer.Address ?? null);
+            //double[]? latlon = Tools.CalcCoordinates(volunteer.Address ?? null);
             IntegrityCheck(volunteer);
             DO.Volunteer doVolunteer = new(
                 volunteer.Id,
@@ -186,15 +127,100 @@ namespace Helpers
                 role == null ? (DO.Role)volunteer.Role : (DO.Role)role,
                 volunteer.Active,
                 (DO.DistanceType)volunteer.DistanceType,
-                latlon?[0],
-                latlon?[1],
+                null,null,null,
+                //latlon?[0],
+                //latlon?[1],
+                //latlon == null ? null : volunteer.Address,
                 volunteer.Password,
-                latlon==null?null: volunteer.Address,
+               
                 volunteer.MaxDistanceForCall
                  );
             return doVolunteer;
         }
+
+        private static readonly Random s_rand = new();
+        private static int s_simulatorCounter = 0;
+
+        internal static void VolunteerActivitySimulation()
+        {
+            Thread.CurrentThread.Name = $"Simulator{++s_simulatorCounter}";
+            List<BO.VolunteerInList> activeVolunteers;
+            lock (AdminManager.BlMutex) // שלב 7
+                activeVolunteers = s_bl.Volunteer.GetVolunteersList(null, null, null).ToList();
+
+            foreach (var volunteer in activeVolunteers)
+            {
+                if (volunteer.IDCallInHisCare == null)
+                {
+                    // הסתברות של 20% לבחור קריאה
+                    if (s_rand.NextDouble() < 0.2)
+                    {
+                        List<BO.OpenCallInList> openCalls;
+                        lock (AdminManager.BlMutex)
+                            openCalls = s_bl.Call.OpenCallsListSelectedByVolunteer(volunteer.Id, null, null).ToList();
+
+                        if (openCalls.Count != 0)
+                        {
+                            int callId = openCalls[s_rand.Next(openCalls.Count)].Id;
+
+                            lock (AdminManager.BlMutex)
+                                s_bl.Call.ChooseTreatmentCall(volunteer.Id, callId);
+                        }
+                    }
+                }
+                else
+                {
+                    DO.Call call;
+                    DO.Volunteer vol;
+                    DO.Assignment assignment;
+
+                    lock (AdminManager.BlMutex)
+                    {
+                        call = s_dal.Call.Read(c => c.Id == volunteer.IDCallInHisCare)!;
+                        vol = s_dal.Volunteer.Read(v => v.Id == volunteer.Id)!;
+                        assignment = s_dal.Assignment.Read(a => a.VolunteerId == volunteer.Id && a.EndOfTreatmentTime == null)!;
+                    }
+
+                    // חישוב מרחק
+                    double distance =Tools.CalcDistance(vol, call);
+
+                    // זמן טיפול מינימלי נדרש לפי המרחק + 10 דקות אקראיות
+                    double requiredMinutes = distance * 3 + s_rand.Next(7, 14);
+
+                    if (assignment.EntryTimeForTreatment.AddMinutes(requiredMinutes) < AdminManager.Now)
+                    {
+                        // עבר מספיק זמן - לסיים טיפול
+                        lock (AdminManager.BlMutex)
+                            s_bl.Call.UpdateEndTreatmentOnCall(volunteer.Id, assignment.Id);
+                    }
+                    else
+                    {
+                        // הסתברות של 10% לבטל טיפול
+                        if (s_rand.NextDouble() < 0.1)
+                        {
+                            lock (AdminManager.BlMutex)
+                                s_bl.Call.UpdateCancelTreatmentOnCall(volunteer.Id, assignment.Id);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static async Task UpdateCoordinatesForVolunteerAddressAsync(DO.Volunteer dovol)
+        {
+            if (dovol.Address is not null)
+            {
+                double[]? loc = await Tools.CalcCoordinates(dovol.Address);
+                if (loc is not null)
+                {
+                    dovol = dovol with { Latitude = loc[0], Longitude = loc[1] };
+                    lock (AdminManager.BlMutex)
+                        s_dal.Volunteer.Update(dovol);
+                    Observers.NotifyListUpdated();
+                    Observers.NotifyItemUpdated(dovol.Id);
+                }
+
+            }
+        }
     }
-
-
 }
