@@ -23,5 +23,7 @@
         <local:ConverterOpenOrOpenAtRiskToEnable x:Key="ConverterOpenOrOpenAtRiskToEnableKey"/>
         <local:ConverterInTreatmentOrInTreatmentAtRiskToEnable x:Key="ConverterInTreatmentOrInTreatmentAtRiskToEnableKey"/>
         <local:ConvertCallInProgressToEnable x:Key="ConvertCallInProgressToEnableKey"/>
+        <local:InverseBoolConverter x:Key="InverseBoolConverterKey"/>
+        <local:SimulatorButtonContentConverter x:Key="SimulatorButtonContentConverterKey"/>
     </Application.Resources>
 </Application>

@@ -89,6 +89,22 @@
                 <TextBlock Text="{Binding CallByStatus[5]}"/>
             </StackPanel>
         </StackPanel>
-        
+        <Grid Grid.Column="2" Grid.Row="0" Margin="10">
+            <GroupBox Header="Simulator" FontWeight="Bold" Padding="10">
+                <StackPanel>
+                    <!-- קצב התקדמות השעון -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label Content="Interval (minutes):" VerticalAlignment="Center"/>
+                        <TextBox Width="60" Margin="5,0,0,0" Text="{Binding Interval, Mode=TwoWay}" IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource InverseBoolConverterKey}}"/>
+                    </StackPanel>
+
+                    <!-- כפתור הפעלה/עצירה -->
+                    <Button Width="140" Height="30"
+                    Content="{Binding IsSimulatorRunning, Converter={StaticResource SimulatorButtonContentConverterKey}}"
+                    Click="SimulatorToggleButton_Click"
+                    Style="{StaticResource myButtonStyle}"/>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
     </Grid>
 </Window>

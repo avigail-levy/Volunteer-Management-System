@@ -22,6 +22,22 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
         public int Id { get; }
+
+        public bool IsSimulatorRunning
+        {
+            get => (bool)GetValue(IsSimulatorRunningProperty);
+            set => SetValue(IsSimulatorRunningProperty, value);
+        }
+        public static readonly DependencyProperty IsSimulatorRunningProperty =
+            DependencyProperty.Register(nameof(IsSimulatorRunning), typeof(bool), typeof(MainWindow));
+
+        public int Interval
+        {
+            get => (int)GetValue(IntervalProperty);
+            set => SetValue(IntervalProperty, value);
+        }
+        public static readonly DependencyProperty IntervalProperty =
+            DependencyProperty.Register(nameof(Interval), typeof(int), typeof(MainWindow));
         public DateTime CurrentTime
         {
             get { return (DateTime)GetValue(CurrentTimeProperty); }
@@ -54,6 +70,19 @@ namespace PL
             InitializeComponent();
         }
 
+        private void SimulatorToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!IsSimulatorRunning)
+            {
+                s_bl.Admin.StartSimulator(Interval);
+                IsSimulatorRunning = true;
+            }
+            else
+            {
+                s_bl.Admin.StopSimulator();
+                IsSimulatorRunning = false;
+            }
+        }
         //private void clockObserver()
         //{
         //    CurrentTime = s_bl.Admin.GetClock();
@@ -134,6 +163,12 @@ namespace PL
 
         private void window_Closed(object sender, EventArgs e)
         {
+            if (IsSimulatorRunning)
+            {
+                s_bl.Admin.StopSimulator();
+                IsSimulatorRunning = false;
+            }
+
             s_bl.Admin.RemoveClockObserver(clockObserver);
             s_bl.Admin.RemoveConfigObserver(configObserver);
             s_bl.Call.RemoveObserver(callByStatusObserver);
@@ -178,7 +213,7 @@ namespace PL
             MessageBoxResult messageResult = MessageBox.Show("Are you sure you want to init?", "its ok?",
             MessageBoxButton.OK,
             MessageBoxImage.Information);
-            if (messageResult == MessageBoxResult.Yes)
+            if (messageResult == MessageBoxResult.OK)
             {   //Changes the mouse to an hourglass shape.
                 Mouse.OverrideCursor = Cursors.Wait;
                 s_bl.Admin.InitializeDB();
