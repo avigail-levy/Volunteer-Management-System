@@ -284,20 +284,46 @@ internal static class AdminManager //stage 4
 
     private static Task? _simulateTask = null;
 
+    //private static void clockRunner()
+    //{
+    //    while (!s_stop)
+    //    {
+    //        UpdateClock(Now.AddMinutes(s_interval));
+
+    //        //TO_DO:
+    //        //Add calls here to any logic simulation that was required in stage 7
+    //        //for example: course registration simulation
+    //        if (_simulateTask is null || _simulateTask.IsCompleted)//stage 7
+    //            _simulateTask = Task.Run(() => VolunteerManager.VolunteerActivitySimulation());
+
+    //        //etc...
+
+    //        try
+    //        {
+    //            Thread.Sleep(1000); // 1 second
+    //        }
+    //        catch (ThreadInterruptedException) { }
+    //    }
+    //}
     private static void clockRunner()
     {
         while (!s_stop)
         {
             UpdateClock(Now.AddMinutes(s_interval));
-
-            //TO_DO:
-            //Add calls here to any logic simulation that was required in stage 7
-            //for example: course registration simulation
             if (_simulateTask is null || _simulateTask.IsCompleted)//stage 7
-                _simulateTask = Task.Run(() => VolunteerManager.VolunteerActivitySimulation());
+                _simulateTask = Task.Run(() => {
+                    lock (BlMutex)
+                    {
+                        try
+                        {
+                            VolunteerManager.VolunteerActivitySimulation();
 
-            //etc...
+                        }
+                        catch { }
+                    }
+                });
 
+            ClockUpdatedObservers?.Invoke();
             try
             {
                 Thread.Sleep(1000); // 1 second

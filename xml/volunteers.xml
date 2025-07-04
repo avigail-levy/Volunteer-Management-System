@@ -8,11 +8,11 @@
     <Role>Volunteer</Role>
     <Active>true</Active>
     <DistanceType>TraveledByCar</DistanceType>
-    <Latitude>32.687209</Latitude>
-    <Longitude>35.420792</Longitude>
+    <Latitude>32.068281</Latitude>
+    <Longitude>34.770236</Longitude>
     <Password>Dani Levy0504133382</Password>
-    <Address>המושבה 7, כפר תבור</Address>
-    <MaxDistanceForCall>6.012571684028151</MaxDistanceForCall>
+    <Address>השומר 10, תל אביב</Address>
+    <MaxDistanceForCall>1.826419173043925</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>327773271</Id>
@@ -21,12 +21,12 @@
     <Email>Eli Amar@gmail.com</Email>
     <Role>Manager</Role>
     <Active>false</Active>
-    <DistanceType>TraveledByCar</DistanceType>
-    <Latitude>31.965539</Latitude>
-    <Longitude>34.803267</Longitude>
+    <DistanceType>walking</DistanceType>
+    <Latitude>31.793755</Latitude>
+    <Longitude>35.241553</Longitude>
     <Password>Eli Amar0556726282</Password>
-    <Address>הרצל 77, ראשון לציון</Address>
-    <MaxDistanceForCall>1.5870551373304453</MaxDistanceForCall>
+    <Address>הר הצופים 3, ירושלים</Address>
+    <MaxDistanceForCall>36.11696844001701</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>327883591</Id>
@@ -35,12 +35,12 @@
     <Email>Yair Cohen@gmail.com</Email>
     <Role>Volunteer</Role>
     <Active>true</Active>
-    <DistanceType>Aerial</DistanceType>
-    <Latitude>32.01333</Latitude>
-    <Longitude>34.776073</Longitude>
+    <DistanceType>TraveledByCar</DistanceType>
+    <Latitude>32.016736</Latitude>
+    <Longitude>34.771445</Longitude>
     <Password>Yair Cohen0527175821</Password>
-    <Address>בר אילן 10, חולון</Address>
-    <MaxDistanceForCall>15.34619063685102</MaxDistanceForCall>
+    <Address>ביאליק 25, חולון</Address>
+    <MaxDistanceForCall>45.85869023035093</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>327887048</Id>
@@ -50,11 +50,11 @@
     <Role>Manager</Role>
     <Active>false</Active>
     <DistanceType>Aerial</DistanceType>
-    <Latitude>32.084027</Latitude>
-    <Longitude>34.812335</Longitude>
+    <Latitude>32.078932</Latitude>
+    <Longitude>34.786432</Longitude>
     <Password>Ariela Levin0527175820</Password>
-    <Address>בן גוריון 22, רמת גן</Address>
-    <MaxDistanceForCall>46.50212821544355</MaxDistanceForCall>
+    <Address>דרך בגין 132, תל אביב</Address>
+    <MaxDistanceForCall>24.265003872741957</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>327934857</Id>
@@ -63,12 +63,12 @@
     <Email>Dina Klein@gmail.com</Email>
     <Role>Volunteer</Role>
     <Active>true</Active>
-    <DistanceType>walking</DistanceType>
-    <Latitude>32.609877</Latitude>
-    <Longitude>35.288423</Longitude>
+    <DistanceType>Aerial</DistanceType>
+    <Latitude>32.051958</Latitude>
+    <Longitude>34.758285</Longitude>
     <Password>Dina Klein0504160838</Password>
-    <Address>בגין 4, עפולה</Address>
-    <MaxDistanceForCall>49.1940018814098</MaxDistanceForCall>
+    <Address>שדרות ירושלים 45, יפו</Address>
+    <MaxDistanceForCall>7.777426710771235</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>328115522</Id>
@@ -77,12 +77,12 @@
     <Email>Shira Israelof@gmail.com</Email>
     <Role>Manager</Role>
     <Active>false</Active>
-    <DistanceType>TraveledByCar</DistanceType>
-    <Latitude>32.070446</Latitude>
-    <Longitude>34.794667</Longitude>
+    <DistanceType>Aerial</DistanceType>
+    <Latitude>32.081943</Latitude>
+    <Longitude>34.768878</Longitude>
     <Password>Shira Israelof0504156891</Password>
-    <Address>הרצל 1, תל אביב</Address>
-    <MaxDistanceForCall>16.992618539409705</MaxDistanceForCall>
+    <Address>בן יהודה 34, תל אביב</Address>
+    <MaxDistanceForCall>42.50876484548144</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>328118245</Id>
@@ -91,12 +91,12 @@
     <Email>David Gold@gmail.com</Email>
     <Role>Volunteer</Role>
     <Active>true</Active>
-    <DistanceType>Aerial</DistanceType>
-    <Latitude>32.081943</Latitude>
-    <Longitude>34.768878</Longitude>
+    <DistanceType>TraveledByCar</DistanceType>
+    <Latitude>32.687209</Latitude>
+    <Longitude>35.420792</Longitude>
     <Password>David Gold0503133382</Password>
-    <Address>בן יהודה 34, תל אביב</Address>
-    <MaxDistanceForCall>48.449658751240484</MaxDistanceForCall>
+    <Address>המושבה 7, כפר תבור</Address>
+    <MaxDistanceForCall>6.213097815638075</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>328119425</Id>
@@ -106,11 +106,11 @@
     <Role>Manager</Role>
     <Active>false</Active>
     <DistanceType>TraveledByCar</DistanceType>
-    <Latitude>32.434046</Latitude>
-    <Longitude>34.918386</Longitude>
+    <Latitude>34.769863</Latitude>
+    <Longitude>32.068588</Longitude>
     <Password>Rachel Green0556724282</Password>
-    <Address>הרצל 60, חדרה</Address>
-    <MaxDistanceForCall>47.79869840866341</MaxDistanceForCall>
+    <Address>אלנבי 99, תל אביב</Address>
+    <MaxDistanceForCall>7.192876600098935</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>328128061</Id>
@@ -119,12 +119,12 @@
     <Email>Miriam Azulay@gmail.com</Email>
     <Role>Volunteer</Role>
     <Active>true</Active>
-    <DistanceType>TraveledByCar</DistanceType>
-    <Latitude>32.078932</Latitude>
-    <Longitude>34.786432</Longitude>
+    <DistanceType>Aerial</DistanceType>
+    <Latitude>32.434046</Latitude>
+    <Longitude>34.918386</Longitude>
     <Password>Miriam Azulay0527175221</Password>
-    <Address>דרך בגין 132, תל אביב</Address>
-    <MaxDistanceForCall>22.297685407511075</MaxDistanceForCall>
+    <Address>הרצל 60, חדרה</Address>
+    <MaxDistanceForCall>8.930634926967207</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>328159801</Id>
@@ -134,11 +134,11 @@
     <Role>Manager</Role>
     <Active>false</Active>
     <DistanceType>TraveledByCar</DistanceType>
-    <Latitude>32.090468</Latitude>
-    <Longitude>34.878975</Longitude>
+    <Latitude>31.960252</Latitude>
+    <Longitude>34.804289</Longitude>
     <Password>Eyal Shani0528175820</Password>
-    <Address>ז'בוטינסקי 33, פתח תקווה</Address>
-    <MaxDistanceForCall>27.57558396806835</MaxDistanceForCall>
+    <Address>רוטשילד 18, ראשון לציון</Address>
+    <MaxDistanceForCall>22.2993412284374</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>328177191</Id>
@@ -147,12 +147,12 @@
     <Email>Noa Bar@gmail.com</Email>
     <Role>Volunteer</Role>
     <Active>true</Active>
-    <DistanceType>TraveledByCar</DistanceType>
-    <Latitude>32.3320151</Latitude>
-    <Longitude>34.855212</Longitude>
+    <DistanceType>Aerial</DistanceType>
+    <Latitude>32.090468</Latitude>
+    <Longitude>34.878975</Longitude>
     <Password>Noa Bar0504160837</Password>
-    <Address>הרצל 8, נתניה</Address>
-    <MaxDistanceForCall>21.192372982356755</MaxDistanceForCall>
+    <Address>ז'בוטינסקי 33, פתח תקווה</Address>
+    <MaxDistanceForCall>42.361799201239265</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>328178371</Id>
@@ -162,11 +162,11 @@
     <Role>Manager</Role>
     <Active>false</Active>
     <DistanceType>TraveledByCar</DistanceType>
-    <Latitude>32.019664</Latitude>
-    <Longitude>34.745525</Longitude>
+    <Latitude>32.077366</Latitude>
+    <Longitude>34.78157</Longitude>
     <Password>Yael Harel0504756891</Password>
-    <Address>בלפור 14, בת ים</Address>
-    <MaxDistanceForCall>3.3933434458519485</MaxDistanceForCall>
+    <Address>אבן גבירול 22, תל אביב</Address>
+    <MaxDistanceForCall>34.00272481036255</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>328183934</Id>
@@ -176,11 +176,11 @@
     <Role>Volunteer</Role>
     <Active>true</Active>
     <DistanceType>Aerial</DistanceType>
-    <Latitude>32.111427</Latitude>
-    <Longitude>34.840487</Longitude>
+    <Latitude>31.906328</Latitude>
+    <Longitude>35.004601</Longitude>
     <Password>zipi salomon0504113382</Password>
-    <Address>ראול ולנברג 24, תל אביב</Address>
-    <MaxDistanceForCall>32.02765725998197</MaxDistanceForCall>
+    <Address>שדרות רבין 18, מודיעין</Address>
+    <MaxDistanceForCall>43.92132891535089</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>328184304</Id>
@@ -189,12 +189,12 @@
     <Email>avigail levy@gmail.com</Email>
     <Role>Manager</Role>
     <Active>false</Active>
-    <DistanceType>walking</DistanceType>
-    <Latitude>32.802379</Latitude>
-    <Longitude>34.985995</Longitude>
+    <DistanceType>Aerial</DistanceType>
+    <Latitude>31.965539</Latitude>
+    <Longitude>34.803267</Longitude>
     <Password>avigail levy0556723282</Password>
-    <Address>שדרות הנשיא 120, חיפה</Address>
-    <MaxDistanceForCall>3.099884348148507</MaxDistanceForCall>
+    <Address>הרצל 77, ראשון לציון</Address>
+    <MaxDistanceForCall>0.2602901274737057</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>328216437</Id>
@@ -203,11 +203,11 @@
     <Email>yaeli shushan@gmail.com</Email>
     <Role>Volunteer</Role>
     <Active>true</Active>
-    <DistanceType>walking</DistanceType>
-    <Latitude>33.208588</Latitude>
-    <Longitude>35.570471</Longitude>
+    <DistanceType>Aerial</DistanceType>
+    <Latitude>32.434046</Latitude>
+    <Longitude>34.918386</Longitude>
     <Password>yaeli shushan0527575821</Password>
-    <Address>שפירא 2, קריית שמונה</Address>
-    <MaxDistanceForCall>45.31649386379118</MaxDistanceForCall>
+    <Address>הרצל 60, חדרה</Address>
+    <MaxDistanceForCall>17.864254240292016</MaxDistanceForCall>
   </Volunteer>
 </ArrayOfVolunteer>
