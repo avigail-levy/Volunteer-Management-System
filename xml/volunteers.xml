@@ -26,7 +26,7 @@
     <Longitude>35.241553</Longitude>
     <Password>Eli Amar0556726282</Password>
     <Address>הר הצופים 3, ירושלים</Address>
-    <MaxDistanceForCall>36.11696844001701</MaxDistanceForCall>
+    <MaxDistanceForCall>1000.11696844001701</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
     <Id>327883591</Id>
@@ -183,20 +183,6 @@
     <MaxDistanceForCall>43.92132891535089</MaxDistanceForCall>
   </Volunteer>
   <Volunteer>
-    <Id>328184304</Id>
-    <Name>avigail levy</Name>
-    <Phone>0556723282</Phone>
-    <Email>avigail levy@gmail.com</Email>
-    <Role>Manager</Role>
-    <Active>false</Active>
-    <DistanceType>Aerial</DistanceType>
-    <Latitude>31.965539</Latitude>
-    <Longitude>34.803267</Longitude>
-    <Password>avigail levy0556723282</Password>
-    <Address>הרצל 77, ראשון לציון</Address>
-    <MaxDistanceForCall>0.2602901274737057</MaxDistanceForCall>
-  </Volunteer>
-  <Volunteer>
     <Id>328216437</Id>
     <Name>yaeli shushan</Name>
     <Phone>0527575821</Phone>
@@ -209,5 +195,19 @@
     <Password>yaeli shushan0527575821</Password>
     <Address>הרצל 60, חדרה</Address>
     <MaxDistanceForCall>17.864254240292016</MaxDistanceForCall>
+  </Volunteer>
+  <Volunteer>
+    <Id>328184304</Id>
+    <Name>avigail levy</Name>
+    <Phone>0556723282</Phone>
+    <Email>avigail levy@gmail.com</Email>
+    <Role>Manager</Role>
+    <Active>false</Active>
+    <DistanceType>Aerial</DistanceType>
+    <Latitude>31.9650847</Latitude>
+    <Longitude>34.8031056</Longitude>
+    <Password>avigail levy0556723282</Password>
+    <Address>הרצל 77, ראשון לציון</Address>
+    <MaxDistanceForCall>100</MaxDistanceForCall>
   </Volunteer>
 </ArrayOfVolunteer>

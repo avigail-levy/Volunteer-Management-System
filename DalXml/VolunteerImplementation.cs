@@ -47,11 +47,11 @@ internal class VolunteerImplementation : IVolunteer
     {
 
         XElement volunteersRootElem = XMLTools.LoadListFromXMLElement(Config.s_volunteers_xml);
-        if(volunteersRootElem.Elements().FirstOrDefault(st => (int?)st.Element("Id") == item.Id) is not null)
+        if (volunteersRootElem.Elements().FirstOrDefault(st => (int?)st.Element("Id") == item.Id) is not null)
             throw new DalAlreadyExistsException($"Volunteer with ID={item.Id} already exists");
         XElement newVol = new XElement("Volunteer",
             new XElement("Id", item.Id),
-            new XElement("Name",item.Name),
+            new XElement("Name", item.Name),
             new XElement("Phone", item.Phone),
             new XElement("Email", item.Email),
             new XElement("Role", item.Role),
@@ -93,7 +93,7 @@ internal class VolunteerImplementation : IVolunteer
 
     public void DeleteAll()
     {
-       XMLTools.SaveListToXMLSerializer(new List<Volunteer>(), Config.s_volunteers_xml);
+        XMLTools.SaveListToXMLSerializer(new List<Volunteer>(), Config.s_volunteers_xml);
     }
 
     /// <summary>
@@ -152,19 +152,20 @@ internal class VolunteerImplementation : IVolunteer
         ?? throw new DO.DalDoesNotExistException($"Volunteer with ID={item.Id} does Not exist"))
                 .Remove();
         XElement newVol = new XElement("Volunteer",
-            new XElement("Id", item.Id),
-            new XElement("Name", item.Name),
-            new XElement("Phone", item.Phone),
-            new XElement("Email", item.Email),
-            new XElement("Role", item.Role),
-            new XElement("Active", item.Active),
-            new XElement("DistanceType", item.DistanceType),
-            new XElement("Latitude", item.Latitude),
-            new XElement("Longitude", item.Longitude),
-            new XElement("Password", item.Password),
-            new XElement("Address", item.Address),
-            new XElement("MaxDistanceForCall", item.MaxDistanceForCall)
-            );
+    new XElement("Id", item.Id),
+    new XElement("Name", item.Name),
+    new XElement("Phone", item.Phone),
+    new XElement("Email", item.Email),
+    new XElement("Role", item.Role),
+    new XElement("Active", item.Active),
+    new XElement("DistanceType", item.DistanceType),
+    item.Latitude == null ? null : new XElement("Latitude", item.Latitude),
+    item.Longitude == null ? null : new XElement("Longitude", item.Longitude),
+    new XElement("Password", item.Password),
+    item.Address == null ? null : new XElement("Address", item.Address),
+    item.MaxDistanceForCall == null ? null : new XElement("MaxDistanceForCall", item.MaxDistanceForCall)
+);
+
         volunteersRootElem.Add(newVol);
         XMLTools.SaveListToXMLElement(volunteersRootElem, Config.s_volunteers_xml);
     }

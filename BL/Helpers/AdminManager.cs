@@ -319,8 +319,10 @@ internal static class AdminManager //stage 4
                             VolunteerManager.VolunteerActivitySimulation();
 
                         }
-                        catch { }
+                        catch
+                        { }
                     }
+
                 });
 
             ClockUpdatedObservers?.Invoke();

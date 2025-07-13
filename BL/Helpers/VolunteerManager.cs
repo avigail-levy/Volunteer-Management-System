@@ -127,12 +127,14 @@ namespace Helpers
                 role == null ? (DO.Role)volunteer.Role : (DO.Role)role,
                 volunteer.Active,
                 (DO.DistanceType)volunteer.DistanceType,
-                null,null,null,
+                null,
+                null,
+                volunteer.Password,
+                volunteer.Address,
                 //latlon?[0],
                 //latlon?[1],
                 //latlon == null ? null : volunteer.Address,
-                volunteer.Password,
-               
+
                 volunteer.MaxDistanceForCall
                  );
             return doVolunteer;
@@ -182,7 +184,7 @@ namespace Helpers
                     }
 
                     // חישוב מרחק
-                    double distance =Tools.CalcDistance(vol, call);
+                    double distance = Tools.CalcDistance(vol, call);
 
                     // זמן טיפול מינימלי נדרש לפי המרחק + 10 דקות אקראיות
                     double requiredMinutes = distance * 3 + s_rand.Next(7, 14);

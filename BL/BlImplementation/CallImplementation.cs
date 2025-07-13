@@ -3,6 +3,7 @@ using BlApi;
 using Helpers;
 using System.Text;
 using System;
+using System.Diagnostics;
 namespace BlImplementation;
 
 internal class CallImplementation : ICall
@@ -65,6 +66,7 @@ internal class CallImplementation : ICall
     /// <exception cref="BO.BlInvalidRequestException">Invalid Request</exception>
     public void ChooseTreatmentCall(int idVolunteer, int idCall)
     {
+
         AdminManager.ThrowOnSimulatorIsRunning();  //stage 7
 
         DO.Call call;
