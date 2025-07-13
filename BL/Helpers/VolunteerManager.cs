@@ -148,15 +148,15 @@ namespace Helpers
             Thread.CurrentThread.Name = $"Simulator{++s_simulatorCounter}";
             List<BO.VolunteerInList> activeVolunteers;
             lock (AdminManager.BlMutex) // שלב 7
-                activeVolunteers = s_bl.Volunteer.GetVolunteersList(null, null, null).ToList();
+                activeVolunteers = s_bl.Volunteer.GetVolunteersList(BO.VolunteerInListAttributes.Active, true, null).ToList();
 
             foreach (var volunteer in activeVolunteers)
             {
                 if (volunteer.IDCallInHisCare == null)
                 {
                     // הסתברות של 20% לבחור קריאה
-                    if (s_rand.NextDouble() < 0.2)
-                    {
+                    //if (s_rand.NextDouble() < 0.2)
+                    //{
                         List<BO.OpenCallInList> openCalls;
                         lock (AdminManager.BlMutex)
                             openCalls = s_bl.Call.OpenCallsListSelectedByVolunteer(volunteer.Id, null, null).ToList();
@@ -168,7 +168,7 @@ namespace Helpers
                             lock (AdminManager.BlMutex)
                                 s_bl.Call.ChooseTreatmentCall(volunteer.Id, callId);
                         }
-                    }
+                    //}
                 }
                 else
                 {
