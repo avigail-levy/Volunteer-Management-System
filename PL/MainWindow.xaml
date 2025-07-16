@@ -11,12 +11,14 @@
           Closed="window_Closed">
     
     <Window.Resources>
+        
         <Style x:Key="myButtonStyle" TargetType="Button">
             <Setter Property="FontSize" Value="15" />
             <Setter Property="FontFamily" Value="Consolas" />
             <Setter Property="Height" Value="25" />
             <Setter Property="FontWeight" Value="Bold" />
         </Style>
+        
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -30,8 +32,8 @@
         </Grid.ColumnDefinitions>
         <!--Date Time Grid-->
         <Grid Grid.Column="1">
-            <StackPanel>
-                <Label Content="{Binding CurrentTime}" Background="Yellow" HorizontalAlignment="Center"/>
+            <StackPanel  IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource InverseBoolConverterKey}}">
+                <Label Content="{Binding CurrentTime}" Background="Yellow" HorizontalAlignment="Center" />
                 <Button Style="{StaticResource myButtonStyle}" Content="Add One Minutes" Click="btnAddOneMinute_Click"/>
                 <Button  Style="{StaticResource myButtonStyle}" Content="Add One Day" Click="btnAddOneDay_Click"/>
                 <Button  Style="{StaticResource myButtonStyle}" Content="Add One Hour" Click="btnAddOneHour_Click"/>
@@ -39,7 +41,7 @@
                 <Button  Style="{StaticResource myButtonStyle}" Content="Add One Year" Click="btnAddOneYear_Click"/>
             </StackPanel>
         </Grid>
-        <WrapPanel Margin="10">
+        <WrapPanel Margin="10"  IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource InverseBoolConverterKey}}">
             <TextBlock Text="Risk Range:" VerticalAlignment="Center" Foreground="Blue"/>
             <TextBox Text="{Binding CurrentRiskRange}"  Width="40" Margin="5,0" BorderBrush="HotPink" />
             <Button Content="Update" Width="60" Margin="5,0" Style="{StaticResource myButtonStyle}" Click="btnUpdateRiskRange_click"/>
@@ -52,7 +54,7 @@
                Foreground="MediumOrchid" 
                TextWrapping="Wrap" Width="300"/>
         </WrapPanel>
-        <StackPanel Grid.Row="1" VerticalAlignment="Center">
+        <StackPanel Grid.Row="1" VerticalAlignment="Center"  IsEnabled="{Binding IsSimulatorRunning, Converter={StaticResource InverseBoolConverterKey}}">
             <Button Content="Reset DB"  Width="200" Margin="10" Style="{StaticResource myButtonStyle}" Click="resetDB_Click"/>
             <Button Content="init DB" Width="200" Margin="10"  Style="{StaticResource myButtonStyle}" Click="initDB_Click"/>
         </StackPanel>

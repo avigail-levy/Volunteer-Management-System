@@ -51,29 +51,16 @@ static class XMLTools
     #endregion
 
     #region SaveLoadWithXElement
-    //public static void SaveListToXMLElement(XElement rootElem, string xmlFileName)
-    //{
-    //    string xmlFilePath = s_xmlDir + xmlFileName;
 
-    //    try
-    //    {
-    //        rootElem.Save(xmlFilePath);
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        throw new DalXMLFileLoadCreateException($"fail to create xml file: {s_xmlDir + xmlFilePath}, {ex.Message}");
-    //    }
-    //}
     public static void SaveListToXMLElement(XElement rootElem, string xmlFileName)
     {
         string xmlFilePath = s_xmlDir + xmlFileName;
 
         try
         {
-            WaitForFile(xmlFileName); //נחחכה שהקובץ יתפנה
-
-            using FileStream file = new(xmlFilePath, FileMode.Create, FileAccess.Write, FileShare.None);
-            rootElem.Save(file);
+            WaitForFile(xmlFilePath);
+            using FileStream stream = new(xmlFilePath, FileMode.Create, FileAccess.Write, FileShare.None);
+            rootElem.Save(stream);
         }
         catch (Exception ex)
         {
@@ -81,39 +68,23 @@ static class XMLTools
         }
     }
 
-    //public static XElement LoadListFromXMLElement(string xmlFileName)
-    //{
-    //    string xmlFilePath = s_xmlDir + xmlFileName;
 
-    //    try
-    //    {
-    //        if (File.Exists(xmlFilePath))
-    //            return XElement.Load(xmlFilePath);
-    //        XElement rootElem = new(xmlFileName);
-    //        rootElem.Save(xmlFilePath);
-    //        return rootElem;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        throw new DalXMLFileLoadCreateException($"fail to load xml file: {s_xmlDir + xmlFilePath}, {ex.Message}");
-    //    }
-    //}
     public static XElement LoadListFromXMLElement(string xmlFileName)
     {
         string xmlFilePath = s_xmlDir + xmlFileName;
 
         try
         {
-            WaitForFile(xmlFileName); // נחכה שהקובץ יתפנה
-
             if (File.Exists(xmlFilePath))
             {
-                using FileStream file = new(xmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                return XElement.Load(file);
+                using FileStream fileStream = new(xmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                return XElement.Load(fileStream);
             }
 
             XElement rootElem = new(xmlFileName);
-            rootElem.Save(xmlFilePath);
+            WaitForFile(xmlFilePath);
+            using FileStream stream = new(xmlFilePath, FileMode.Create, FileAccess.Write, FileShare.None);
+            rootElem.Save(stream);
             return rootElem;
         }
         catch (Exception ex)
@@ -122,27 +93,30 @@ static class XMLTools
         }
     }
 
-    public static void WaitForFile(string xmlFileName)
+    public static void WaitForFile(string filePath, int maxAttempts = 10000, int delayMilliseconds = 100)
     {
-        string path = s_xmlDir + xmlFileName;
-        const int maxTries = 10000;
-        const int delay = 100;
+        int attempts = 0;
 
-        for (int i = 0; i < maxTries; i++)
+        while (attempts < maxAttempts)
         {
             try
             {
-                using FileStream stream = new(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
-                return; // הצליח  הקובץ באמת פנוי
+                using FileStream stream = new(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+
+                return; // הצלחנו לגשת לקובץ, אפשר להמשיך
             }
-            catch (IOException)
+            catch (Exception ex)
             {
-                Thread.Sleep(delay);
+                Thread.Sleep(delayMilliseconds);
+                attempts++;
             }
+
         }
 
-        throw new IOException("File is still locked: " + path);
+        throw new IOException($"File {filePath} is still locked after {maxAttempts} attempts.");
     }
+
+    
 
     #endregion
 

@@ -72,16 +72,25 @@ namespace PL
 
         private void SimulatorToggleButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!IsSimulatorRunning)
+            try
             {
-                s_bl.Admin.StartSimulator(Interval);
-                IsSimulatorRunning = true;
-            }
-            else
-            {
+                if (!IsSimulatorRunning)
+                {
+                    s_bl.Admin.StartSimulator(Interval);
+                    IsSimulatorRunning = true;
+                }
+                else
+                {
                 s_bl.Admin.StopSimulator();
                 IsSimulatorRunning = false;
+                }
             }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+
         }
         //private void clockObserver()
         //{

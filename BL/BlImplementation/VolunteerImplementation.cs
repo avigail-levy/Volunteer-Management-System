@@ -184,63 +184,31 @@ internal class VolunteerImplementation : IVolunteer
         lock (AdminManager.BlMutex) //stage 7
             volunteers = _dal.Volunteer.ReadAll();
 
-        //var volsInList = volunteers.Select(v =>
-        //{
-        //    IEnumerable<DO.Assignment> assignVol;
-        //    DO.Assignment? assignInTreatment;
-        //    DO.Call? call;
-        //    lock (AdminManager.BlMutex) //stage 7
-        //    {
-        //        assignVol = _dal.Assignment.ReadAll(a => a.VolunteerId == v.Id);
-        //        assignInTreatment = VolunteerManager.GetCallInTreatment(v.Id);
-        //        call = AssignmentManager.GetCallByAssignment(assignInTreatment);
-        //    }
-        //    return new BO.VolunteerInList
-        //    {
-        //        Id = v.Id,
-        //        Name = v.Name,
-        //        Active = v.Active,
-        //        TotalCallsHandledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.Handled, assignVol),
-        //        TotalCallsCanceledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.SelfCancellation, assignVol)
-        //        + VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancelAdministrator, assignVol),
-        //        TotalExpiredCallingsByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancellationExpired, assignVol),
-        //        IDCallInHisCare = call?.Id,
-        //        CallType = (BO.CallType?)call?.CallType ?? BO.CallType.None
-        //    };
-        //});
-        var list = new List<BO.VolunteerInList>();
-
-        foreach (var v in volunteers)
+        var volsInList = volunteers.Select(v =>
         {
             IEnumerable<DO.Assignment> assignVol;
             DO.Assignment? assignInTreatment;
             DO.Call? call;
-
-            lock (AdminManager.BlMutex)
+            lock (AdminManager.BlMutex) //stage 7
             {
                 assignVol = _dal.Assignment.ReadAll(a => a.VolunteerId == v.Id);
                 assignInTreatment = VolunteerManager.GetCallInTreatment(v.Id);
                 call = AssignmentManager.GetCallByAssignment(assignInTreatment);
             }
-
-            var vol = new BO.VolunteerInList
+            return new BO.VolunteerInList
             {
                 Id = v.Id,
                 Name = v.Name,
                 Active = v.Active,
                 TotalCallsHandledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.Handled, assignVol),
-                TotalCallsCanceledByVolunteer =
-                    VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.SelfCancellation, assignVol) +
-                    VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancelAdministrator, assignVol),
+                TotalCallsCanceledByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.SelfCancellation, assignVol)
+                + VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancelAdministrator, assignVol),
                 TotalExpiredCallingsByVolunteer = VolunteerManager.CountTypeOfTreatmentTermination(DO.TypeOfTreatmentTermination.CancellationExpired, assignVol),
                 IDCallInHisCare = call?.Id,
                 CallType = (BO.CallType?)call?.CallType ?? BO.CallType.None
             };
+        });
 
-            list.Add(vol);
-        }
-
-        var volsInList = list;
 
 
         var propertyFilter = filterByAttribute != null ? typeof(BO.VolunteerInList).GetProperty(filterByAttribute.ToString()!) : null;
