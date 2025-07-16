@@ -1,4 +1,5 @@
 ﻿using BlApi;
+using BO;
 using DalApi;
 using DO;
 using Helpers;
@@ -77,11 +78,13 @@ namespace Helpers
             {
                 var assignVol = s_dal.Assignment.ReadAll(a => a.VolunteerId == idVol);
                 DO.Assignment? assignInTreatment = (from a in assignVol
+                                                    where a.TypeOfTreatmentTermination == null
                                                     let call = s_dal.Call.Read(a.CallId)
-                                                    where call != null &&
+                                                    where call != null && 
                                                           (CallManager.GetStatusCall(call) == BO.StatusCall.InTreatment ||
                                                            CallManager.GetStatusCall(call) == BO.StatusCall.InTreatmentAtRisk)
                                                     select a).FirstOrDefault();
+                
                 return assignInTreatment;
             }
         }
@@ -155,8 +158,8 @@ namespace Helpers
                 if (volunteer.IDCallInHisCare == null)
                 {
                     // הסתברות של 20% לבחור קריאה
-                    //if (s_rand.NextDouble() < 0.2)
-                    //{
+                    if (s_rand.NextDouble() < 0.2)
+                    {
                         List<BO.OpenCallInList> openCalls;
                         lock (AdminManager.BlMutex)
                             openCalls = s_bl.Call.OpenCallsListSelectedByVolunteer(volunteer.Id, null, null).ToList();
@@ -168,7 +171,7 @@ namespace Helpers
                             lock (AdminManager.BlMutex)
                                 s_bl.Call.ChooseTreatmentCall(volunteer.Id, callId);
                         }
-                    //}
+                    }
                 }
                 else
                 {

@@ -22,10 +22,38 @@ namespace PL
     {
         static readonly BlApi.IBl s_bl = BlApi.Factory.Get();
 
-        public int Id { get; set; }
-        public string Password { get; set; }
+        public int Id
+        {
+            get { return (int)GetValue(IdProperty); }
+            set { SetValue(IdProperty, value); }
+        }
+
+        public static readonly DependencyProperty IdProperty =
+            DependencyProperty.Register(
+                nameof(Id),             // שם המאפיין
+                typeof(int),            // סוג המאפיין
+                typeof(Login),    // הבעלים של ה-DP
+                new PropertyMetadata(0) // ערך ברירת מחדל
+            );
+
+        // Password DependencyProperty
+        public string Password
+        {
+            get { return (string)GetValue(PasswordProperty); }
+            set { SetValue(PasswordProperty, value); }
+        }
+
+        public static readonly DependencyProperty PasswordProperty =
+            DependencyProperty.Register(
+                nameof(Password),
+                typeof(string),
+                typeof(Login),
+                new PropertyMetadata(string.Empty)
+            );
+
+
         public static readonly DependencyProperty RoleProperty =
-        DependencyProperty.Register("Role", typeof(BO.Role), typeof(Login), new PropertyMetadata(BO.Role.Volunteer));
+            DependencyProperty.Register("Role", typeof(BO.Role), typeof(Login), new PropertyMetadata(BO.Role.Volunteer));
 
         public BO.Role Role
         {
@@ -35,6 +63,10 @@ namespace PL
         public Login()
         {
             InitializeComponent();
+   #if DEBUG
+            Id = 327773271;
+            Password = "Eli Amar0556726282";
+  #endif
         }
         private void Login_Button_Click(object sender, RoutedEventArgs e)
         {
