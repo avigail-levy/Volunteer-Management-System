@@ -109,33 +109,44 @@ namespace PL.Call
                 {
                     MessageBox.Show($"error:{ex}");
                 }
+                catch (BO.BLTemporaryNotAvailableException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error");
+                }
             }
 
         }
         private void UpdateAddress_click(object sender, RoutedEventArgs e)
         {
-            s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer!.Id,
-            new BO.Volunteer()
-            {
-                Id = CurrentVolunteer.Id,
-                Name = CurrentVolunteer.Name,
-                Phone = CurrentVolunteer.Phone,
-                Email = CurrentVolunteer.Email,
-                Role = CurrentVolunteer.Role,
-                Password = CurrentVolunteer.Password,
-                Active = CurrentVolunteer.Active,
-                Address = UpdateAddress,
-                Latitude = CurrentVolunteer.Latitude,
-                Longitude = CurrentVolunteer.Longitude,
-                MaxDistanceForCall = CurrentVolunteer.MaxDistanceForCall,
-                DistanceType = CurrentVolunteer.DistanceType,
-                TotalCallsCanceled = CurrentVolunteer.TotalCallsCanceled,
-                TotalCallsHandled = CurrentVolunteer.TotalCallsHandled,
-                TotalCallsChoseHandleHaveExpired = CurrentVolunteer.TotalCallsChoseHandleHaveExpired,
-                CallingVolunteerTherapy = CurrentVolunteer?.CallingVolunteerTherapy,
+            try {
+                s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer!.Id,
+                new BO.Volunteer()
+                {
+                    Id = CurrentVolunteer.Id,
+                    Name = CurrentVolunteer.Name,
+                    Phone = CurrentVolunteer.Phone,
+                    Email = CurrentVolunteer.Email,
+                    Role = CurrentVolunteer.Role,
+                    Password = CurrentVolunteer.Password,
+                    Active = CurrentVolunteer.Active,
+                    Address = UpdateAddress,
+                    Latitude = CurrentVolunteer.Latitude,
+                    Longitude = CurrentVolunteer.Longitude,
+                    MaxDistanceForCall = CurrentVolunteer.MaxDistanceForCall,
+                    DistanceType = CurrentVolunteer.DistanceType,
+                    TotalCallsCanceled = CurrentVolunteer.TotalCallsCanceled,
+                    TotalCallsHandled = CurrentVolunteer.TotalCallsHandled,
+                    TotalCallsChoseHandleHaveExpired = CurrentVolunteer.TotalCallsChoseHandleHaveExpired,
+                    CallingVolunteerTherapy = CurrentVolunteer?.CallingVolunteerTherapy,
 
-            });
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
             queryOpenCallList();
+            
         }
         private void DisplayCallDescription(object sender, MouseButtonEventArgs e)
         {

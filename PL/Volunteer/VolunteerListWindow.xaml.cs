@@ -70,7 +70,7 @@ namespace PL.Volunteer
         {
             new VolunteerWindow().Show();
         }
-        private void lsvVolunteersList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void volunteersList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (SelectedVolunteer != null)
                 new VolunteerWindow(SelectedVolunteer.Id).Show();
@@ -91,7 +91,11 @@ namespace PL.Volunteer
                     }
                     catch (BO.BlCantDeleteException ex)
                     {
-                        MessageBox.Show(ex.Message, "Can't delete thr volunteer");
+                        MessageBox.Show(ex.Message, "Can't delete the volunteer");
+                    }
+                    catch (BO.BLTemporaryNotAvailableException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error");
                     }
             }
         }

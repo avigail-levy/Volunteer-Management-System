@@ -67,7 +67,7 @@ namespace PL.Volunteer
             }
             if (string.IsNullOrWhiteSpace(CurrentVolunteer.Phone) || CurrentVolunteer.Phone.ToString().Length != 10)
             {
-                MessageBox.Show("Phone number must be exactly 10 digits"); 
+                MessageBox.Show("Phone number must be exactly 10 digits");
                 return false;
             }
             if (string.IsNullOrWhiteSpace(CurrentVolunteer.Email) || !CurrentVolunteer.Email.Contains("@"))
@@ -85,7 +85,7 @@ namespace PL.Volunteer
                 MessageBox.Show("Address cannot be empty");
                 return false;
             }
-                
+
             return true;
         }
         public string ButtonText
@@ -124,7 +124,13 @@ namespace PL.Volunteer
             {
                 MessageBox.Show(ex.Message, "Error");
             }
+            catch (BO.BLTemporaryNotAvailableException ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
         }
+
+
         //private void VolunteerObserver()
         //{
         //    int id = CurrentVolunteer!.Id;
@@ -191,6 +197,10 @@ namespace PL.Volunteer
                     {
                         MessageBox.Show(ex.Message, "Can't cancel the assignment");
                     }
+                    catch (BO.BLTemporaryNotAvailableException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error");
+                    }
                 else
                 {
                     MessageBox.Show("you dony have a call now");
@@ -226,6 +236,10 @@ namespace PL.Volunteer
                     catch (BO.BlInvalidValueException ex)
                     {
                         MessageBox.Show(ex.Message, "Can't update with invalid value");
+                    }
+                    catch (BO.BLTemporaryNotAvailableException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error");
                     }
                 else
                 {

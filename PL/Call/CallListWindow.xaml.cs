@@ -106,6 +106,10 @@ namespace PL.Call
                     {
                         MessageBox.Show(ex.Message, "Can't delete thr call");
                     }
+                    catch (BO.BLTemporaryNotAvailableException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error");
+                    }
             }
         }
 
@@ -132,6 +136,10 @@ namespace PL.Call
                     catch (BO.BlCantUpdateException ex)
                     {
                         MessageBox.Show(ex.Message, "Can't cancel the assignment");
+                    }
+                    catch (BO.BLTemporaryNotAvailableException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error");
                     }
                 else
                 {

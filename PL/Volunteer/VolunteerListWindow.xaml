@@ -41,7 +41,7 @@
         </Grid>
         <DataGrid Grid.Row="1" ItemsSource="{Binding Path=VolunteerList}" IsReadOnly ="True" AutoGenerateColumns="False"
          EnableRowVirtualization="True" RowDetailsVisibilityMode="VisibleWhenSelected"
-         MouseDoubleClick="lsvVolunteersList_MouseDoubleClick" SelectedItem="{Binding SelectedVolunteer}">
+         MouseDoubleClick="volunteersList_MouseDoubleClick" SelectedItem="{Binding SelectedVolunteer}">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Delete" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
