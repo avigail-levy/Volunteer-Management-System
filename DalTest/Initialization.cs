@@ -85,6 +85,24 @@ public static class Initialization
             // אחוז קטן מהקריאות (20%) לא יקבלו הקצאה
             if (s_rand.NextDouble() < 0.2)
                 continue;
+
+            DateTime now = s_dal!.Config.Clock;
+
+            if (call.MaxTimeFinishCall < now)
+            {
+                // הקריאה פגה – נסמן כהקצאה שפג תוקפה
+                Assignment expiredAssignment = new()
+                {
+                    CallId = call.Id,
+                    VolunteerId = 0,
+                    EntryTimeForTreatment = call.OpeningTime,
+                    EndOfTreatmentTime = call.MaxTimeFinishCall,
+                    TypeOfTreatmentTermination = TypeOfTreatmentTermination.CancellationExpired
+                };
+                s_dal.Assignment.Create(expiredAssignment);
+                continue;
+            }
+
             // בחירת מתנדב אקראי מתוך הרשימה
             var volunteer = volunteers.Skip(4).ElementAt(s_rand.Next(volunteers.Count - 4));
             // חישוב זמן תחילת טיפול (בין 30 דקות ל-24 שעות לאחר פתיחת הקריאה)

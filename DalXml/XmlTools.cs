@@ -1,9 +1,11 @@
 ﻿namespace Dal;
-
 using DO;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using System.IO;
+using System.Threading;
+
 
 static class XMLTools
 {
@@ -49,36 +51,99 @@ static class XMLTools
     #endregion
 
     #region SaveLoadWithXElement
+    //public static void SaveListToXMLElement(XElement rootElem, string xmlFileName)
+    //{
+    //    string xmlFilePath = s_xmlDir + xmlFileName;
+
+    //    try
+    //    {
+    //        rootElem.Save(xmlFilePath);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw new DalXMLFileLoadCreateException($"fail to create xml file: {s_xmlDir + xmlFilePath}, {ex.Message}");
+    //    }
+    //}
     public static void SaveListToXMLElement(XElement rootElem, string xmlFileName)
     {
         string xmlFilePath = s_xmlDir + xmlFileName;
 
         try
         {
-            rootElem.Save(xmlFilePath);
+            WaitForFile(xmlFileName); //נחחכה שהקובץ יתפנה
+
+            using FileStream file = new(xmlFilePath, FileMode.Create, FileAccess.Write, FileShare.None);
+            rootElem.Save(file);
         }
         catch (Exception ex)
         {
-            throw new DalXMLFileLoadCreateException($"fail to create xml file: {s_xmlDir + xmlFilePath}, {ex.Message}");
+            throw new DalXMLFileLoadCreateException($"fail to create xml file: {xmlFilePath}, {ex.Message}");
         }
     }
+
+    //public static XElement LoadListFromXMLElement(string xmlFileName)
+    //{
+    //    string xmlFilePath = s_xmlDir + xmlFileName;
+
+    //    try
+    //    {
+    //        if (File.Exists(xmlFilePath))
+    //            return XElement.Load(xmlFilePath);
+    //        XElement rootElem = new(xmlFileName);
+    //        rootElem.Save(xmlFilePath);
+    //        return rootElem;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw new DalXMLFileLoadCreateException($"fail to load xml file: {s_xmlDir + xmlFilePath}, {ex.Message}");
+    //    }
+    //}
     public static XElement LoadListFromXMLElement(string xmlFileName)
     {
         string xmlFilePath = s_xmlDir + xmlFileName;
 
         try
         {
+            WaitForFile(xmlFileName); // נחכה שהקובץ יתפנה
+
             if (File.Exists(xmlFilePath))
-                return XElement.Load(xmlFilePath);
+            {
+                using FileStream file = new(xmlFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                return XElement.Load(file);
+            }
+
             XElement rootElem = new(xmlFileName);
             rootElem.Save(xmlFilePath);
             return rootElem;
         }
         catch (Exception ex)
         {
-            throw new DalXMLFileLoadCreateException($"fail to load xml file: {s_xmlDir + xmlFilePath}, {ex.Message}");
+            throw new DalXMLFileLoadCreateException($"fail to load xml file: {xmlFilePath}, {ex.Message}");
         }
     }
+
+    public static void WaitForFile(string xmlFileName)
+    {
+        string path = s_xmlDir + xmlFileName;
+        const int maxTries = 10000;
+        const int delay = 100;
+
+        for (int i = 0; i < maxTries; i++)
+        {
+            try
+            {
+                using FileStream stream = new(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                return; // הצליח  הקובץ באמת פנוי
+            }
+            catch (IOException)
+            {
+                Thread.Sleep(delay);
+            }
+        }
+
+        throw new IOException("File is still locked: " + path);
+    }
+
     #endregion
 
     #region XmlConfig

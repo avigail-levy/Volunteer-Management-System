@@ -3,321 +3,433 @@
   <Assignment>
     <Id>1</Id>
     <CallId>1</CallId>
-    <VolunteerId>328159801</VolunteerId>
-    <EntryTimeForTreatment>2025-06-25T05:12:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination xsi:nil="true" />
-    <EndOfTreatmentTime xsi:nil="true" />
+    <VolunteerId>0</VolunteerId>
+    <EntryTimeForTreatment>2025-07-06T22:30:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>CancellationExpired</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-07T22:30:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>2</Id>
     <CallId>2</CallId>
-    <VolunteerId>328118245</VolunteerId>
-    <EntryTimeForTreatment>2025-06-21T07:39:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-21T21:41:39</EndOfTreatmentTime>
+    <VolunteerId>0</VolunteerId>
+    <EntryTimeForTreatment>2025-07-07T22:30:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>CancellationExpired</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-08T22:30:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>3</Id>
     <CallId>3</CallId>
-    <VolunteerId>328178371</VolunteerId>
-    <EntryTimeForTreatment>2025-06-22T02:54:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination xsi:nil="true" />
-    <EndOfTreatmentTime xsi:nil="true" />
+    <VolunteerId>0</VolunteerId>
+    <EntryTimeForTreatment>2025-07-05T22:30:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>CancellationExpired</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-06T22:30:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>4</Id>
     <CallId>4</CallId>
-    <VolunteerId>328177191</VolunteerId>
-    <EntryTimeForTreatment>2025-06-27T07:17:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-27T22:52:39</EndOfTreatmentTime>
+    <VolunteerId>0</VolunteerId>
+    <EntryTimeForTreatment>2025-07-09T22:30:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>CancellationExpired</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-10T22:30:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>5</Id>
     <CallId>5</CallId>
-    <VolunteerId>328184304</VolunteerId>
-    <EntryTimeForTreatment>2025-06-28T04:49:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination xsi:nil="true" />
-    <EndOfTreatmentTime xsi:nil="true" />
+    <VolunteerId>0</VolunteerId>
+    <EntryTimeForTreatment>2025-07-08T22:30:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>CancellationExpired</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-09T22:30:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>6</Id>
     <CallId>6</CallId>
-    <VolunteerId>328119425</VolunteerId>
-    <EntryTimeForTreatment>2025-06-23T19:42:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination xsi:nil="true" />
-    <EndOfTreatmentTime xsi:nil="true" />
+    <VolunteerId>328128061</VolunteerId>
+    <EntryTimeForTreatment>2025-07-08T17:59:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-10T13:59:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>7</Id>
     <CallId>7</CallId>
-    <VolunteerId>328118245</VolunteerId>
-    <EntryTimeForTreatment>2025-07-01T10:44:39</EntryTimeForTreatment>
+    <VolunteerId>328115522</VolunteerId>
+    <EntryTimeForTreatment>2025-07-14T11:13:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-07-02T15:14:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-14T12:50:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>8</Id>
     <CallId>8</CallId>
-    <VolunteerId>328115522</VolunteerId>
-    <EntryTimeForTreatment>2025-06-22T07:46:39</EntryTimeForTreatment>
+    <VolunteerId>327934857</VolunteerId>
+    <EntryTimeForTreatment>2025-07-08T20:03:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-24T03:14:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-09T04:15:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>9</Id>
     <CallId>9</CallId>
-    <VolunteerId>328119425</VolunteerId>
-    <EntryTimeForTreatment>2025-06-23T03:48:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination xsi:nil="true" />
-    <EndOfTreatmentTime xsi:nil="true" />
+    <VolunteerId>328177191</VolunteerId>
+    <EntryTimeForTreatment>2025-07-14T17:35:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-16T07:46:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>10</Id>
-    <CallId>10</CallId>
-    <VolunteerId>328177191</VolunteerId>
-    <EntryTimeForTreatment>2025-06-29T07:09:39</EntryTimeForTreatment>
+    <CallId>11</CallId>
+    <VolunteerId>328159801</VolunteerId>
+    <EntryTimeForTreatment>2025-07-14T19:38:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-30T15:24:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-15T19:44:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>11</Id>
-    <CallId>11</CallId>
-    <VolunteerId>328183934</VolunteerId>
-    <EntryTimeForTreatment>2025-06-29T10:53:39</EntryTimeForTreatment>
+    <CallId>12</CallId>
+    <VolunteerId>328216437</VolunteerId>
+    <EntryTimeForTreatment>2025-07-05T01:45:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-29T16:04:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-06T16:01:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>12</Id>
-    <CallId>12</CallId>
-    <VolunteerId>328178371</VolunteerId>
-    <EntryTimeForTreatment>2025-06-28T13:01:39</EntryTimeForTreatment>
+    <CallId>13</CallId>
+    <VolunteerId>328159801</VolunteerId>
+    <EntryTimeForTreatment>2025-07-08T06:53:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-29T02:39:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-08T11:18:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>13</Id>
-    <CallId>13</CallId>
-    <VolunteerId>328119425</VolunteerId>
-    <EntryTimeForTreatment>2025-06-27T15:28:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-29T06:42:39</EndOfTreatmentTime>
+    <CallId>14</CallId>
+    <VolunteerId>328159801</VolunteerId>
+    <EntryTimeForTreatment>2025-07-04T13:32:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination xsi:nil="true" />
+    <EndOfTreatmentTime xsi:nil="true" />
   </Assignment>
   <Assignment>
     <Id>14</Id>
     <CallId>15</CallId>
-    <VolunteerId>328128061</VolunteerId>
-    <EntryTimeForTreatment>2025-06-24T09:10:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination xsi:nil="true" />
-    <EndOfTreatmentTime xsi:nil="true" />
+    <VolunteerId>328184304</VolunteerId>
+    <EntryTimeForTreatment>2025-07-11T03:43:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-12T12:56:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>15</Id>
     <CallId>16</CallId>
-    <VolunteerId>328178371</VolunteerId>
-    <EntryTimeForTreatment>2025-06-29T06:32:39</EntryTimeForTreatment>
+    <VolunteerId>328183934</VolunteerId>
+    <EntryTimeForTreatment>2025-07-13T11:31:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-29T08:33:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-14T06:07:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>16</Id>
-    <CallId>17</CallId>
-    <VolunteerId>328118245</VolunteerId>
-    <EntryTimeForTreatment>2025-06-30T03:44:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-30T16:57:39</EndOfTreatmentTime>
-  </Assignment>
-  <Assignment>
-    <Id>17</Id>
     <CallId>18</CallId>
-    <VolunteerId>328216437</VolunteerId>
-    <EntryTimeForTreatment>2025-06-25T00:09:39</EntryTimeForTreatment>
+    <VolunteerId>328128061</VolunteerId>
+    <EntryTimeForTreatment>2025-07-08T23:56:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-25T06:43:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-09T04:28:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>18</Id>
-    <CallId>19</CallId>
-    <VolunteerId>328216437</VolunteerId>
-    <EntryTimeForTreatment>2025-06-22T09:00:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination xsi:nil="true" />
-    <EndOfTreatmentTime xsi:nil="true" />
+    <CallId>20</CallId>
+    <VolunteerId>328178371</VolunteerId>
+    <EntryTimeForTreatment>2025-07-09T06:36:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-09T18:17:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>19</Id>
     <CallId>21</CallId>
-    <VolunteerId>328128061</VolunteerId>
-    <EntryTimeForTreatment>2025-06-26T08:36:39</EntryTimeForTreatment>
+    <VolunteerId>328184304</VolunteerId>
+    <EntryTimeForTreatment>2025-07-12T02:55:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-27T02:46:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-13T18:05:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>20</Id>
     <CallId>22</CallId>
     <VolunteerId>327934857</VolunteerId>
-    <EntryTimeForTreatment>2025-06-25T10:13:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination xsi:nil="true" />
-    <EndOfTreatmentTime xsi:nil="true" />
+    <EntryTimeForTreatment>2025-07-04T20:39:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-05T09:28:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>21</Id>
     <CallId>23</CallId>
     <VolunteerId>328119425</VolunteerId>
-    <EntryTimeForTreatment>2025-06-21T19:15:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination xsi:nil="true" />
-    <EndOfTreatmentTime xsi:nil="true" />
+    <EntryTimeForTreatment>2025-07-05T23:32:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-07T05:49:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>22</Id>
-    <CallId>24</CallId>
-    <VolunteerId>328159801</VolunteerId>
-    <EntryTimeForTreatment>2025-06-22T02:39:39</EntryTimeForTreatment>
+    <CallId>25</CallId>
+    <VolunteerId>328216437</VolunteerId>
+    <EntryTimeForTreatment>2025-07-05T14:30:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-23T15:55:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-06T22:50:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>23</Id>
-    <CallId>25</CallId>
-    <VolunteerId>328178371</VolunteerId>
-    <EntryTimeForTreatment>2025-07-01T20:48:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination xsi:nil="true" />
-    <EndOfTreatmentTime xsi:nil="true" />
+    <CallId>26</CallId>
+    <VolunteerId>328128061</VolunteerId>
+    <EntryTimeForTreatment>2025-07-09T09:07:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-09T09:46:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>24</Id>
-    <CallId>26</CallId>
-    <VolunteerId>328216437</VolunteerId>
-    <EntryTimeForTreatment>2025-06-29T09:48:39</EntryTimeForTreatment>
+    <CallId>27</CallId>
+    <VolunteerId>327934857</VolunteerId>
+    <EntryTimeForTreatment>2025-07-10T06:50:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-30T23:36:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-10T13:39:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>25</Id>
-    <CallId>29</CallId>
-    <VolunteerId>328119425</VolunteerId>
-    <EntryTimeForTreatment>2025-07-02T00:10:39</EntryTimeForTreatment>
+    <CallId>28</CallId>
+    <VolunteerId>328178371</VolunteerId>
+    <EntryTimeForTreatment>2025-07-09T02:15:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-07-02T02:50:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-09T05:25:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>26</Id>
-    <CallId>31</CallId>
-    <VolunteerId>328119425</VolunteerId>
-    <EntryTimeForTreatment>2025-07-02T02:25:39</EntryTimeForTreatment>
+    <CallId>29</CallId>
+    <VolunteerId>328178371</VolunteerId>
+    <EntryTimeForTreatment>2025-07-05T00:02:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-07-02T08:42:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-06T12:51:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>27</Id>
-    <CallId>32</CallId>
+    <CallId>30</CallId>
     <VolunteerId>328115522</VolunteerId>
-    <EntryTimeForTreatment>2025-06-28T02:03:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination xsi:nil="true" />
-    <EndOfTreatmentTime xsi:nil="true" />
+    <EntryTimeForTreatment>2025-07-08T11:42:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-09T18:36:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>28</Id>
-    <CallId>33</CallId>
-    <VolunteerId>328184304</VolunteerId>
-    <EntryTimeForTreatment>2025-07-01T14:36:39</EntryTimeForTreatment>
+    <CallId>31</CallId>
+    <VolunteerId>328178371</VolunteerId>
+    <EntryTimeForTreatment>2025-07-06T01:11:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-07-01T21:48:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-07T21:15:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>29</Id>
-    <CallId>35</CallId>
-    <VolunteerId>328177191</VolunteerId>
-    <EntryTimeForTreatment>2025-06-24T10:01:39</EntryTimeForTreatment>
+    <CallId>32</CallId>
+    <VolunteerId>328184304</VolunteerId>
+    <EntryTimeForTreatment>2025-07-06T19:54:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-25T17:52:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-08T05:02:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>30</Id>
-    <CallId>36</CallId>
-    <VolunteerId>328118245</VolunteerId>
-    <EntryTimeForTreatment>2025-06-26T08:58:39</EntryTimeForTreatment>
+    <CallId>34</CallId>
+    <VolunteerId>328115522</VolunteerId>
+    <EntryTimeForTreatment>2025-07-07T19:09:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-26T20:59:39</EndOfTreatmentTime>
-  </Assignment>
-  <Assignment>
-    <Id>31</Id>
-    <CallId>37</CallId>
-    <VolunteerId>328183934</VolunteerId>
-    <EntryTimeForTreatment>2025-06-22T11:22:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-22T21:44:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-08T02:52:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>32</Id>
-    <CallId>39</CallId>
-    <VolunteerId>328115522</VolunteerId>
-    <EntryTimeForTreatment>2025-06-25T19:21:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination xsi:nil="true" />
-    <EndOfTreatmentTime xsi:nil="true" />
+    <CallId>36</CallId>
+    <VolunteerId>328159801</VolunteerId>
+    <EntryTimeForTreatment>2025-07-11T09:37:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-13T00:19:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>33</Id>
-    <CallId>41</CallId>
-    <VolunteerId>328184304</VolunteerId>
-    <EntryTimeForTreatment>2025-06-23T01:58:39</EntryTimeForTreatment>
+    <CallId>37</CallId>
+    <VolunteerId>328119425</VolunteerId>
+    <EntryTimeForTreatment>2025-07-12T11:02:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-24T10:17:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-13T11:08:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>34</Id>
-    <CallId>42</CallId>
-    <VolunteerId>328178371</VolunteerId>
-    <EntryTimeForTreatment>2025-06-27T11:08:39</EntryTimeForTreatment>
+    <CallId>38</CallId>
+    <VolunteerId>328119425</VolunteerId>
+    <EntryTimeForTreatment>2025-07-11T15:22:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-29T04:34:39</EndOfTreatmentTime>
-  </Assignment>
-  <Assignment>
-    <Id>35</Id>
-    <CallId>43</CallId>
-    <VolunteerId>328159801</VolunteerId>
-    <EntryTimeForTreatment>2025-06-25T17:49:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination xsi:nil="true" />
-    <EndOfTreatmentTime xsi:nil="true" />
+    <EndOfTreatmentTime>2025-07-11T20:21:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>36</Id>
-    <CallId>44</CallId>
-    <VolunteerId>328178371</VolunteerId>
-    <EntryTimeForTreatment>2025-06-21T15:50:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-22T15:05:39</EndOfTreatmentTime>
-  </Assignment>
-  <Assignment>
-    <Id>37</Id>
-    <CallId>46</CallId>
-    <VolunteerId>328178371</VolunteerId>
-    <EntryTimeForTreatment>2025-06-30T15:28:39</EntryTimeForTreatment>
-    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-07-01T22:05:39</EndOfTreatmentTime>
-  </Assignment>
-  <Assignment>
-    <Id>38</Id>
-    <CallId>47</CallId>
-    <VolunteerId>328115522</VolunteerId>
-    <EntryTimeForTreatment>2025-06-25T03:57:39</EntryTimeForTreatment>
+    <CallId>40</CallId>
+    <VolunteerId>328159801</VolunteerId>
+    <EntryTimeForTreatment>2025-07-04T17:29:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination xsi:nil="true" />
     <EndOfTreatmentTime xsi:nil="true" />
   </Assignment>
   <Assignment>
-    <Id>39</Id>
-    <CallId>48</CallId>
-    <VolunteerId>327934857</VolunteerId>
-    <EntryTimeForTreatment>2025-06-28T19:44:39</EntryTimeForTreatment>
+    <Id>37</Id>
+    <CallId>41</CallId>
+    <VolunteerId>328184304</VolunteerId>
+    <EntryTimeForTreatment>2025-07-12T04:45:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-30T16:14:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-13T22:18:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>38</Id>
+    <CallId>43</CallId>
+    <VolunteerId>328115522</VolunteerId>
+    <EntryTimeForTreatment>2025-07-14T18:09:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-15T02:32:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>39</Id>
+    <CallId>44</CallId>
+    <VolunteerId>328128061</VolunteerId>
+    <EntryTimeForTreatment>2025-07-12T14:47:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-12T23:55:43</EndOfTreatmentTime>
   </Assignment>
   <Assignment>
     <Id>40</Id>
-    <CallId>49</CallId>
-    <VolunteerId>328159801</VolunteerId>
-    <EntryTimeForTreatment>2025-06-29T14:57:39</EntryTimeForTreatment>
+    <CallId>46</CallId>
+    <VolunteerId>328119425</VolunteerId>
+    <EntryTimeForTreatment>2025-07-04T00:44:43</EntryTimeForTreatment>
     <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
-    <EndOfTreatmentTime>2025-06-30T10:18:39</EndOfTreatmentTime>
+    <EndOfTreatmentTime>2025-07-05T05:24:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>41</Id>
+    <CallId>47</CallId>
+    <VolunteerId>328183934</VolunteerId>
+    <EntryTimeForTreatment>2025-07-09T23:48:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-10T01:25:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>42</Id>
+    <CallId>49</CallId>
+    <VolunteerId>328128061</VolunteerId>
+    <EntryTimeForTreatment>2025-07-13T11:19:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-13T13:22:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>35</Id>
+    <CallId>39</CallId>
+    <VolunteerId>327934857</VolunteerId>
+    <EntryTimeForTreatment>2025-07-10T05:36:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-16T22:31:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>31</Id>
+    <CallId>35</CallId>
+    <VolunteerId>328118245</VolunteerId>
+    <EntryTimeForTreatment>2025-07-13T10:53:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-16T22:31:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>17</Id>
+    <CallId>19</CallId>
+    <VolunteerId>328177191</VolunteerId>
+    <EntryTimeForTreatment>2025-07-09T09:51:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-16T22:31:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>43</Id>
+    <CallId>50</CallId>
+    <VolunteerId>328216437</VolunteerId>
+    <EntryTimeForTreatment>2025-07-14T11:44:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>Handled</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-16T22:31:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>44</Id>
+    <CallId>17</CallId>
+    <VolunteerId>327934857</VolunteerId>
+    <EntryTimeForTreatment>2025-07-16T22:32:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>SelfCancellation</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-16T22:35:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>46</Id>
+    <CallId>10</CallId>
+    <VolunteerId>327883591</VolunteerId>
+    <EntryTimeForTreatment>2025-07-16T22:36:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>SelfCancellation</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-16T22:40:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>45</Id>
+    <CallId>33</CallId>
+    <VolunteerId>328183934</VolunteerId>
+    <EntryTimeForTreatment>2025-07-16T22:32:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>SelfCancellation</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-16T22:46:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>47</Id>
+    <CallId>17</CallId>
+    <VolunteerId>327934857</VolunteerId>
+    <EntryTimeForTreatment>2025-07-16T22:36:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>SelfCancellation</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-16T22:55:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>51</Id>
+    <CallId>17</CallId>
+    <VolunteerId>328177191</VolunteerId>
+    <EntryTimeForTreatment>2025-07-16T22:55:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination xsi:nil="true" />
+    <EndOfTreatmentTime xsi:nil="true" />
+  </Assignment>
+  <Assignment>
+    <Id>49</Id>
+    <CallId>10</CallId>
+    <VolunteerId>327883591</VolunteerId>
+    <EntryTimeForTreatment>2025-07-16T22:47:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>SelfCancellation</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-16T22:57:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>48</Id>
+    <CallId>48</CallId>
+    <VolunteerId>328216437</VolunteerId>
+    <EntryTimeForTreatment>2025-07-16T22:42:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>SelfCancellation</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-16T23:01:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>50</Id>
+    <CallId>33</CallId>
+    <VolunteerId>328128061</VolunteerId>
+    <EntryTimeForTreatment>2025-07-16T22:50:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>SelfCancellation</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-16T23:04:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>54</Id>
+    <CallId>48</CallId>
+    <VolunteerId>328216437</VolunteerId>
+    <EntryTimeForTreatment>2025-07-16T23:06:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination xsi:nil="true" />
+    <EndOfTreatmentTime xsi:nil="true" />
+  </Assignment>
+  <Assignment>
+    <Id>52</Id>
+    <CallId>10</CallId>
+    <VolunteerId>327883591</VolunteerId>
+    <EntryTimeForTreatment>2025-07-16T22:58:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>SelfCancellation</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-16T23:12:43</EndOfTreatmentTime>
+  </Assignment>
+  <Assignment>
+    <Id>53</Id>
+    <CallId>33</CallId>
+    <VolunteerId>328183934</VolunteerId>
+    <EntryTimeForTreatment>2025-07-16T23:06:43</EntryTimeForTreatment>
+    <TypeOfTreatmentTermination>SelfCancellation</TypeOfTreatmentTermination>
+    <EndOfTreatmentTime>2025-07-16T23:12:43</EndOfTreatmentTime>
   </Assignment>
 </ArrayOfAssignment>
