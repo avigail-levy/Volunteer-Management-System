@@ -66,6 +66,43 @@
                 <DataGridTextColumn Binding="{Binding CallType}" Header="Call Type" Width="Auto"/>
 
             </DataGrid.Columns>
-        </DataGrid>        <Button Content="Add" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="100" Click="Button_Click"/>
+        </DataGrid>
+    
+        <Button Grid.Row="2" HorizontalAlignment="Center" Height="60" Width="120"
+        Content="הוסף" Foreground="White" FontWeight="Bold" FontSize="16" Click="Button_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Ellipse x:Name="ellipse" Fill="#007ACC" Stroke="Black" StrokeThickness="2"/>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Content="{TemplateBinding Content}" 
+                                  TextElement.Foreground="{TemplateBinding Foreground}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                      
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ellipse" Property="Fill" Value="Aqua"/>
+                        </Trigger>
+
+                        
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="ellipse" Property="Fill" Value="LightBlue"/>
+                        </Trigger>
+
+                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="ellipse"
+                                            Storyboard.TargetProperty="Fill.Color"
+                                            To="Gold" Duration="0:0:1"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+
     </Grid>
 </Window>
