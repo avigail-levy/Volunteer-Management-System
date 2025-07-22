@@ -157,6 +157,7 @@ static class XMLTools
     {
         XElement root = XMLTools.LoadListFromXMLElement(xmlFileName);
         root.Element(elemName)?.SetValue((elemVal).ToString());
+        WaitForFile(xmlFileName, 50, 100);
         XMLTools.SaveListToXMLElement(root, xmlFileName);
     }
     public static void SetConfigTimeSpanVal(string xmlFileName, string elemName, TimeSpan elemVal)

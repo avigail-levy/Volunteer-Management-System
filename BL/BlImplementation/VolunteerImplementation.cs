@@ -61,6 +61,7 @@ internal class VolunteerImplementation : IVolunteer
             try
             {
                 _dal.Volunteer.Update(updatedDoVolunteer);
+                
 
             }
 
@@ -73,6 +74,8 @@ internal class VolunteerImplementation : IVolunteer
 
         VolunteerManager.Observers.NotifyItemUpdated(updatedDoVolunteer.Id); //stage 5
         VolunteerManager.Observers.NotifyListUpdated(); //stage 5
+        CallManager.Observers.NotifyListUpdated(); //stage 5
+
         _ = VolunteerManager.UpdateCoordinatesForVolunteerAddressAsync(updatedDoVolunteer);
     }
     /// <summary>

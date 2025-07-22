@@ -184,7 +184,7 @@ internal class CallImplementation : ICall
             DO.Assignment assign;
             lock (AdminManager.BlMutex)
             {
-                assign = _dal.Assignment.Read(a => c.Id == a.CallId && a.TypeOfTreatmentTermination is not null)!;
+                assign = _dal.Assignment.Read(a =>a.VolunteerId==idVolunteer&& c.Id == a.CallId && a.TypeOfTreatmentTermination is not null)!;
             }
 
             return new BO.ClosedCallInList

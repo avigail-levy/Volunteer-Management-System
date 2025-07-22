@@ -1,16 +1,8 @@
 ﻿using PL.Call;
 using PL.Volunteer;
-using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace PL
@@ -65,6 +57,7 @@ namespace PL
 
         public MainWindow(int id)
         {
+            Interval = 1;
             CallByStatus = s_bl.Call.GetCallQuantitiesByStatus();
             Id = id;
             InitializeComponent();
@@ -92,18 +85,7 @@ namespace PL
             
 
         }
-        //private void clockObserver()
-        //{
-        //    CurrentTime = s_bl.Admin.GetClock();
-        //}
-        //private void configObserver()
-        //{
-        //    CurrentRiskRange = s_bl.Admin.GetRiskRange();
-        //}
-        //private void callByStatusObserver()
-        //{
-        //    CallByStatus = s_bl.Call.GetCallQuantitiesByStatus();
-        //}
+    
         private volatile DispatcherOperation? _observerOperationClock = null; //stage 7
         private volatile DispatcherOperation? _observerOperationConfig = null; //stage 7
         private volatile DispatcherOperation? _observerOperationCallByStatus = null; //stage 7
@@ -159,6 +141,8 @@ namespace PL
         private void btnUpdateRiskRange_click(object sender, RoutedEventArgs e)
         {
             s_bl.Admin.SetRiskRange(CurrentRiskRange);
+            MessageBox.Show("succeful update risk range!");
+
         }
 
         private void window_Loaded(object sender, RoutedEventArgs e)

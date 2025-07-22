@@ -471,16 +471,6 @@
     <MaxTimeFinishCall>2025-07-23T22:30:43</MaxTimeFinishCall>
   </Call>
   <Call>
-    <Id>48</Id>
-    <CallType>Ironing</CallType>
-    <CallAddress>הרצל 60, חדרה</CallAddress>
-    <Latitude>32.434046</Latitude>
-    <Longitude>34.918386</Longitude>
-    <OpeningTime>2025-07-11T22:30:43</OpeningTime>
-    <CallDescription>הרצל 60, חדרה 34.918386 32.434046 call</CallDescription>
-    <MaxTimeFinishCall>2025-07-21T22:30:43</MaxTimeFinishCall>
-  </Call>
-  <Call>
     <Id>49</Id>
     <CallType>Ironing</CallType>
     <CallAddress>קיבוץ גלויות 23, תל אביב</CallAddress>
@@ -499,5 +489,15 @@
     <OpeningTime>2025-07-13T22:30:43</OpeningTime>
     <CallDescription>הגליל 12, צפת 35.494012 32.965678 call</CallDescription>
     <MaxTimeFinishCall>2025-07-19T22:30:43</MaxTimeFinishCall>
+  </Call>
+  <Call>
+    <Id>48</Id>
+    <CallType>HouseCleaning</CallType>
+    <CallAddress>הרצל 60, חדרה</CallAddress>
+    <Latitude>32.5755646</Latitude>
+    <Longitude>34.95230255</Longitude>
+    <OpeningTime>2025-07-11T22:30:43</OpeningTime>
+    <CallDescription>הרצל 60, חדרה 34.918386 32.434046 call</CallDescription>
+    <MaxTimeFinishCall>2025-07-21T22:30:43</MaxTimeFinishCall>
   </Call>
 </ArrayOfCall>

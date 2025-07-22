@@ -103,17 +103,17 @@ namespace PL.Volunteer
             try
             {
                 if (CurrentVolunteer == null) return;
-                if (formatCheck()) ;
-                if (ButtonText == "Add")
-                {
-                    s_bl.Volunteer.AddVolunteer(CurrentVolunteer!);
-                    MessageBox.Show("volunteer added successfully.");
-                }
-                else
-                {
-                    s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer.Id, CurrentVolunteer);
-                    MessageBox.Show("volunteer updated successfully.");
-                }
+                if (formatCheck())
+                    if (ButtonText == "Add")
+                    {
+                        s_bl.Volunteer.AddVolunteer(CurrentVolunteer!);
+                        MessageBox.Show("volunteer added successfully.");
+                    }
+                    else
+                    {
+                        s_bl.Volunteer.UpdateVolunteerDetails(CurrentVolunteer.Id, CurrentVolunteer);
+                        MessageBox.Show("volunteer updated successfully.");
+                    }
                 Close();
             }
             catch (BO.BlAlreadyExistsException ex)
@@ -127,16 +127,12 @@ namespace PL.Volunteer
             catch (BO.BLTemporaryNotAvailableException ex)
             {
                 MessageBox.Show(ex.Message, "Error");
+                Close();
             }
         }
 
 
-        //private void VolunteerObserver()
-        //{
-        //    int id = CurrentVolunteer!.Id;
-        //    CurrentVolunteer = null;
-        //    CurrentVolunteer = s_bl.Volunteer.GetVolunteerDetails(id);
-        //}
+
 
         private volatile DispatcherOperation? _observerOperation = null; //stage 7
         private void VolunteerObserver() //stage 7
