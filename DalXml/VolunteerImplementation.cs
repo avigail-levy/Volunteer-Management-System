@@ -57,8 +57,8 @@ internal class VolunteerImplementation : IVolunteer
             new XElement("Role", item.Role),
             new XElement("Active", item.Active),
             new XElement("DistanceType", item.DistanceType),
-            new XElement("Latitude", item.Latitude),
-            new XElement("Longitude", item.Longitude),
+            item.Latitude == null ? null : new XElement("Latitude", item.Latitude),
+             item.Longitude == null ? null : new XElement("Longitude", item.Longitude),
             new XElement("Password", item.Password),
             new XElement("Address", item.Address),
             new XElement("MaxDistanceForCall", item.MaxDistanceForCall)

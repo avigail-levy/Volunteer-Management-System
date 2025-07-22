@@ -21,6 +21,7 @@ internal class AdminImplementation : IAdmin
             case BO.TimeUnit.Month: AdminManager.UpdateClock(AdminManager.Now.AddMonths(1)); break;
             case BO.TimeUnit.Year: AdminManager.UpdateClock(AdminManager.Now.AddYears(1)); break;
         };
+
     }
     /// <summary>
     /// Returns the value of the system clock.
