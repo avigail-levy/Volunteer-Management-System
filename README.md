@@ -7,6 +7,7 @@ The system provides functionality for administrators to manage volunteers, track
 Volunteers can view available calls, accept them, and update their status.
 
 **Features**
+
 For Administrators / Managers:
 Volunteer Management: Add, update, and manage volunteers, including roles, contact information, and availability.
 Call Management: Create, update, or delete calls with details such as address, type, description, and deadlines.
@@ -14,6 +15,7 @@ Assignment Management: Assign calls to volunteers, monitor progress, and generat
 Observers & Notifications: Real-time updates for volunteers and calls to reflect current statuses.
 
 **For Volunteers:**
+
 View Open Calls: Browse open calls within their available range.
 Accept Calls: Choose a call for handling based on availability and eligibility.
 Update Call Status: End treatment or cancel assigned calls with proper authorization.
