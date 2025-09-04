@@ -43,10 +43,10 @@ Open the solution in Visual Studio.
 Build the project.
 Run the application.
 Log in as a volunteer or manager to start managing calls and assignments
-Administrator login details: username:Eli Amar0556726282
+Administrator login details: username:Eli Amar0556726282,
                              password:327773271
 
-Volunteer login details:  username: yaeli shushan0527575821
+Volunteer login details:  username: yaeli shushan0527575821.
                           password:328216437
 
 
