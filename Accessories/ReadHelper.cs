@@ -117,7 +117,6 @@ namespace Accessories
                 enumInput = Console.ReadLine();
             }
             return (T)data;
-
         }
         public static string ReadOrDefault(string? input, string defaultValue)
         {

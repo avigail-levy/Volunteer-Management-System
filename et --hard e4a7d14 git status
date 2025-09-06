@@ -1,0 +1,198 @@
+[33m7be2002[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge branch 'main' of https://github.com/zipi-salomon/dotNet5785_2635_3271
+[33m6e1d987[m finito
+[33me4a7d14[m stage7 final commit
+[33me8c115d[m Extras
+[33mc26deb5[m add dalconfig
+[33m61ba342[m xml fix
+[33ma4cfa23[m[33m ([m[1;33mtag: [m[1;33mstage7[m[33m)[m stage7 final commit
+[33m93fcd4b[m  ssimulate
+[33m9bdc133[m simulation
+[33m5e912c6[m fix mutex
+[33m44cf640[m mutex
+[33m64812ff[m lock
+[33md6e7aec[m init
+[33m66861fe[m almost finish stage 7
+[33mab47c75[m more lock
+[33m64ecca4[m locks
+[33mf887b88[m start stage 7
+[33m3352d3c[m start stage 7
+[33me4099f4[m check init for start stage 7
+[33m16add2c[m[33m ([m[1;33mtag: [m[1;33mstage6[m[33m)[m Stage6 Final commit
+[33mfff1c95[m chhose call button
+[33mfb48555[m Finish
+[33mf11a38e[m observer
+[33m3fbba77[m call xml
+[33m7f7f850[m fix xml
+[33mda03ca5[m Stage6 Final commit
+[33m9db3921[m final
+[33m49ca3b1[m convert
+[33m8dedccf[m cancel and finish treatment
+[33me27eee2[m hyale
+[33m40371e2[m main window
+[33me9d5ec4[m buutons
+[33madce6e7[m filterValue
+[33mcac68ce[m יי
+[33m9a7a654[m tiltle change
+[33m9d209b2[m sort
+[33m8499e75[m sorted
+[33m5c7e248[m Key in app
+[33maf41769[m sort and history calls
+[33mc0789d1[m volunteer->call
+[33mcad51d5[m chooseCall+HistoryCalls
+[33m6c11fea[m begining choose
+[33mb2bcd1f[m call in progress
+[33m73d783e[m login page
+[33m7b8ea2f[m login 1
+[33me82e0f2[m choose call
+[33m212479c[m call volunteer window
+[33m511de4b[m add update call
+[33me8dbbf4[m fixed sort
+[33m737ed68[m fix expired
+[33m4a2c19f[m callInList
+[33mf853478[m call in list
+[33mf10555f[m uninstall
+[33m3546810[m call view
+[33m5456d6c[m call window
+[33m43eaa49[m stage 6 begining
+[33mf3f79b3[m[33m ([m[1;33mtag: [m[1;33mstage5[m[33m)[m Stage5 Final commit
+[33m2ea4293[m yes enable
+[33m7c2a0bb[m not isenable
+[33m5cc0760[m stage 5 part 10-11
+[33m29bbb87[m now it's pushed
+[33m13d109f[m ADD UPDATE VOLUNTEER
+[33m4a94bb9[m final volunterrwindow xml
+[33mec74c1f[m xaml volunteer
+[33m5a64a3a[m xaml volunteer add update
+[33m0f76fa0[m Xaml volunteerWindow
+[33m43fa72f[m Merge branch 'main' of https://github.com/zipi-salomon/dotNet5785_2635_3271
+[33m29526d2[m stage 5 volunteerWindow start
+[33m9651eed[m space
+[33mf04c55c[m fix GetVolunteersList
+[33mc659293[m stae 5 part 8
+[33mc136d99[m add call and assignment
+[33mc4fe74c[m add call
+[33m5f65bdb[m stage 5 part 8 3 4
+[33mc639dc2[m stage 5 8(1-3)
+[33m3d0028b[m stage 5 part 8 1-3
+[33mfcb7e19[m stage 5 enum
+[33mb846a16[m stage 5 part 7
+[33med6ac61[m stage 5 part 7
+[33mdf7a431[m stage5 part6 (6-11)
+[33m677c646[m mainWindow
+[33m70239e9[m begining wpf part 5-6(6)
+[33m3108da4[m Merge branch 'main' of https://github.com/zipi-salomon/dotNet5785_2635_3271
+[33m08a1562[m starting stage 5 part 1-2
+[33me9bc9f7[m stage5-continue
+[33m3109f8e[m begining stage5
+[33m0c8b4be[m[33m ([m[1;33mtag: [m[1;33mstage4[m[33m)[m Merge branch 'main' of https://github.com/zipi-salomon/dotNet5785_2635_3271
+[33m37d15f1[m Stage4 Final commit
+[33m99cae21[m Stage4 Final commit
+[33m4263eb8[m deletePassword
+[33md703922[m finish stage4
+[33mee44da0[m Documentaition
+[33m421f4b2[m decumentation
+[33md27652f[m callAssigninList documinatation
+[33m5a89738[m Documentation
+[33m7271a33[m nice dayyyyyyyyyyy
+[33m786f4b8[m finishing
+[33mcabfdd2[m Merge branch 'main' of https://github.com/zipi-salomon/dotNet5785_2635_3271
+[33m3c7bbf2[m k
+[33mc2e63ea[m Stage4 Final commit
+[33m3b347fd[m fix
+[33mc8db741[m י
+[33m2f8d270[m running!
+[33ma89fa72[m המשך
+[33m72457d1[m running
+[33m0340170[m start running
+[33m5f8af45[m BlTest Running...
+[33m8e37ce5[m finishhhhh
+[33m69502e1[m m
+[33m88cb7c9[m program changes
+[33m01be42e[m Program
+[33m4abcc18[m Admin
+[33maedce5d[m BL
+[33m77b0730[m volunteer+call
+[33m63d0b76[m stage 4 part 9 10
+[33m369aef1[m ד
+[33ma471847[m !!!
+[33mfdc5724[m push
+[33m88fb08e[m more
+[33mebb0835[m ל
+[33m4bd2682[m UpdateCancelTreatmentOnCall
+[33mf9f1ced[m ננננ
+[33m574c19f[m GetCallsList
+[33m7ac5cf4[m GetCallList
+[33m0619906[m Avigail Levy
+[33m2c899fb[m -----
+[33m3cbc78e[m continueeeeeee
+[33m85b2fff[m stage 4 part 9 continue
+[33m3aedc68[m j
+[33m23d1f5c[m continueee
+[33m83bd3d8[m deleteCall start
+[33m83d218c[m stage 4 part 12
+[33m2e6a9f5[m stage 4 part 9...
+[33ma1ad132[m starting updateBoVolunteer
+[33m6314253[m stage 4 continue part 9
+[33me36602a[m fix
+[33m1883203[m try
+[33m92d744f[m GetVolunteerDetails method
+[33md649ae2[m more changes
+[33mdbc97fc[m level 4 part 9(begining)
+[33m730244e[m stage 4 start part 9
+[33m868cdff[m level 4 part 8
+[33mb7b0b51[m stage 4 start part 7
+[33m05d09b4[m level4n part 7-8
+[33m4b3d53e[m !
+[33m6a6f9b4[m space
+[33m6aae81a[m stage 4 finish part 6 logic Entities
+[33m6361a07[m stage 4 part 6 3 logic Entities
+[33mf367ba7[m Stage 4 starting part 6
+[33m90eb6fc[m Stage 4 parts 4-5
+[33mbef77b9[m Stage 4 part 1,2,3
+[33meed7668[m[33m ([m[1;33mtag: [m[1;33mstage3[m[33m)[m Stage3 Final commit
+[33m954ebaf[m stage 3(3-6)
+[33mb5ff725[m begining stage 3 (1-3)
+[33m6db40f8[m[33m ([m[1;33mtag: [m[1;33mstage2[m[33m)[m Stage2 Final commit
+[33m3bc595f[m Stage2 Final commit
+[33md05954c[m stage 2 (9-11)
+[33ma942d2b[m stage 2 (1-9)
+[33m491665a[m[33m ([m[1;33mtag: [m[1;33mstage1[m[33m)[m Documentation stage 1
+[33me60e7c4[m program description and finishes
+[33m8dadd66[m program documentation
+[33m80ff5f4[m ///\\\
+[33md5cc1d6[m End of the program
+[33m8f07589[m continue program befor run
+[33m5523129[m continue program 2
+[33m6b5d60c[m build program
+[33m15351bb[m part 10-11 stage1
+[33ma5f451d[m create objects
+[33mc3c6bc7[m part 7 8 9, db functions
+[33mbccbe32[m build interfaces for each class
+[33me6e76ae[m revah
+[33mc58de9c[m points2
+[33m92a6623[m points
+[33m4f92a68[m update
+[33m1bd1a04[m satage 3-4
+[33ma960aa5[m Assignment entity
+[33m40b2a64[m the first entity-call
+[33m0530121[m Merge branch 'main' of https://github.com/zipi-salomon/dotNet5785_2635_3271
+[33m2fd9c2b[m first entity- volunteer
+[33m3cc9c55[m Update README.md
+[33meb996b8[m Update README.md
+[33m5262f95[m Stage0 Final commit
+[33m05db029[m Stage0 Final commit
+[33me35ca07[m[33m ([m[1;33mtag: [m[1;33mstage0[m[33m)[m Stage0 Final commit
+[33m5c32e37[m Merge: succesful
+[33mb3ebb77[m hiii
+[33m7f82318[m hello world
+[33me1f8dd9[m new sentence
+[33m6c0d05d[m the last one!!!
+[33m71916c2[m chnage
+[33mfdf5dec[m readMe2
+[33m935cbe0[m readme
+[33mdbcb20a[m 2635 welcome function
+[33m7998eb7[m Initial Code + Welcome functions
+[33m3409779[m Update README.md
+[33m0d84589[m Update README.md
+[33ma6baf12[m Update README.md
+[33m0314f39[m Initial commit
